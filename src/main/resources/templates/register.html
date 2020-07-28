@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="lang-en country-en" lang="en">
-
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=cover">
@@ -31,7 +31,7 @@
 				<div class="container d-flex align-items-center">
 					<div class="header__link ml-auto mr-5"><a href="#" class="nav__link">Switch to Russian</a>
 					</div>
-					<div class="header__link ml-5"><a href="sign-in.html" class="nav__link">Sign in</a>
+					<div class="header__link ml-5"><a th:href="@{/sign-in}" class="nav__link">Sign in</a>
 					</div>
 				</div>
 			</header>
