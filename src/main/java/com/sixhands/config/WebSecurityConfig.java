@@ -19,7 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/js/**",
             "/images/**",
             "/fonts/**",
-            "/"
+            "/",
+            "/sign-in",
+            "/register"
     };
 
     @Override
