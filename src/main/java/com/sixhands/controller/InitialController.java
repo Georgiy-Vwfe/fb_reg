@@ -21,5 +21,4 @@ public class InitialController {
     public String signIn(){
         return "sign-in";
     }
-
 }
