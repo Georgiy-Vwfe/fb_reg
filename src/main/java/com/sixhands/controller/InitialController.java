@@ -8,17 +8,22 @@ import org.springframework.web.bind.annotation.*;
 public class InitialController {
 
     @GetMapping("/")
-    public String index(){
+    public String index() {
         return "index";
     }
 
     @GetMapping("/register")
-    public String register(){
+    public String register() {
         return "register";
     }
 
     @GetMapping("/sign-in")
-    public String signIn(){
+    public String signIn() {
         return "sign-in";
+    }
+
+    @GetMapping("/forget-password")
+    public String forgetPassword() {
+        return "forget-password";
     }
 }
