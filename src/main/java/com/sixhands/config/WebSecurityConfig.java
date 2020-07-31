@@ -21,7 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/fonts/**",
             "/",
             "/sign-in",
-            "/register"
+            "/register",
+            "/forget-password"
     };
 
     @Override
