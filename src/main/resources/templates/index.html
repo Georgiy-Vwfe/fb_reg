@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Главная</title>
 </head>
 <body>
-<img style="width: 300px; height: 300px;display: block; text-align: center;" src="https://sun9-68.userapi.com/c543109/v543109873/18576/iEYn0W84Pfg.jpg" alt="mem">
+<img style="width: 300px; height: 300px;display: block; text-align: center;"
+     src="https://sun9-68.userapi.com/c543109/v543109873/18576/iEYn0W84Pfg.jpg" alt="mem">
 <br>
 <a th:href="@{/sign-in}">Авторизация</a>
 <hr>
