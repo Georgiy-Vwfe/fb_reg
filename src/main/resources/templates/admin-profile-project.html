@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html class="lang-en country-en" lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=cover">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="imagetoolbar" content="no">
+		<meta name="msthemecompatible" content="no">
+		<meta name="cleartype" content="on">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="format-detection" content="address=no">
+		<meta name="google" content="notranslate">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="application-name" content="Profile (owners mode)">
+		<meta name="msapplication-tap-highlight" content="no">
+		<title>Profile (owners mode) | 6hands</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<link href="css/fonts/fonts.css?t=1571117825218" rel="stylesheet" type="text/css">
+		<link href="css/vendor/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
+		<link href="css/vendor/bootstrap-grid.min.css" rel="stylesheet" type="text/css">
+		<link href="css/hands/app.css?t=1571117825218" rel="stylesheet" type="text/css">
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" defer></script>
+		<script src="scripts/hands/app.js" type="text/javascript" defer></script>
+		<script src="scripts/vendor/babelHelpers.min.js" type="text/javascript" defer></script>
+	</head>
+
+	<body>
+		<div style="" class="root d-flex flex-column">
+			<header class="header">
+				<div class="container d-flex align-items-center">
+					<nav class="header__nav nav nav_inline nav_alpha">
+						<li class="nav__item"><a href="my-network.html" class="nav__link">My network</a>
+						</li>
+						<li class="nav__item"><a href="#" class="nav__link">Search professional</a>
+						</li>
+					</nav>
+					<div class="header__link ml-auto"><a href="#" class="nav__link">Switch to Russian</a>
+					</div>
+					<ul class="chain chain_alpha header__chain d-flex align-items-center">
+						<li class="chain__item">
+							<div class="middle">
+								<a href="#">
+									<img src="images/chain/alpha/star.svg" />
+								</a>
+							</div>
+						</li>
+						<li class="chain__item">
+							<div class="middle">
+								<a href="#">
+									<img src="images/chain/alpha/bell.svg" />
+								</a>
+							</div>
+						</li>
+						<li class="chain__item">
+							<div class="middle">
+								<a href="#">
+									<img src="images/chain/alpha/message.svg" />
+								</a>
+							</div>
+						</li>
+					</ul>
+					<div class="header__user ml-2">
+						<div class="middle">
+							<a href="#"></a>
+						</div>
+					</div>
+				</div>
+			</header>
+			<div data-page="adminProfileProject" class="dataProvider"></div>
+			<main class="root__in pb-5">
+				<div class="container">
+					<section class="box box_admin box_text_center">
+						<div class="box__inner">
+							<h2 class="box__inner-title title title_h2">Add your project</h2>
+							<div class="box__inner-desc">Expertise, tools, companies and other details about this project will fill up your resume.</div>
+						</div>
+					</section>
+				</div>
+				<form id="formProfileProject" novalidate="novalidate" autocomplete="off">
+					<div class="container">
+						<section class="box box_admin box_widget_white py-0">
+							<div class="box__outer">
+								<div class="box__outer-title">Main details</div>
+							</div>
+							<div class="box__inner">
+								<div class="box__inner-widget">
+									<div class="container">
+										<div class="row justify-content-center pt-4 pb-5">
+											<div class="col-12 col-lg-2">
+												<div class="upload">
+													<div class="upload__image">
+														<div class="middle">
+															<div>
+																<img src="" alt="">
+															</div>
+														</div>
+													</div>
+													<div class="upload__content">Upload</div>
+													<input type="file" name="file">
+												</div>
+											</div>
+											<div class="col-12 col-lg-10 pt-4 pt-lg-0">
+												<div class="row">
+													<div class="col-12 col-md-6 mb-md-5 pb-md-5">
+														<div class="form-group form-group_large">
+															<label for="profileSurname" class="form-group__label">Surname</label>
+															<input id="profileSurname" type="text" name="profileSurname" placeholder="Surname" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6 mb-md-5 pb-md-5">
+														<div class="form-group form-group_large">
+															<label for="profileName" class="form-group__label">Name</label>
+															<input id="profileName" type="text" name="profileName" placeholder="Name" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6">
+														<div class="form-group">
+															<label for="profileAge" class="form-group__label">Age</label>
+															<input id="profileAge" type="number" name="profileAge" placeholder="Age" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6">
+														<div class="form-group">
+															<label for="profilePhone" class="form-group__label">Phone</label>
+															<input id="profilePhone" type="tel" name="profilePhone" placeholder="Phone" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6">
+														<div class="form-group">
+															<label for="profileRegion" class="form-group__label">Region</label>
+															<input id="profileRegion" type="text" name="profileRegion" placeholder="Region" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6">
+														<div class="form-group">
+															<label for="profileEmail" class="form-group__label">E-Mail</label>
+															<input id="profileEmail" type="email" name="profileEmail" placeholder="E-Mail" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6">
+														<div class="form-group">
+															<label for="profileCity" class="form-group__label">City</label>
+															<input id="profileCity" type="text" name="profileCity" placeholder="City" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-6">
+														<div class="d-flex mt-3 mb-3">
+															<p class="title title_h3 mr-4">Social Networks</p>
+															<ul class="chain chain_beta d-flex align-items-center">
+																<li class="chain__item">
+																	<div class="middle">
+																		<a href="#">
+																			<img src="images/chain/beta/google-plus.svg">
+																		</a>
+																	</div>
+																</li>
+																<li class="chain__item">
+																	<div class="middle">
+																		<a href="#">
+																			<img src="images/chain/beta/twitter.svg">
+																		</a>
+																	</div>
+																</li>
+																<li class="chain__item">
+																	<div class="middle">
+																		<a href="#">
+																			<img src="images/chain/beta/facebook.svg">
+																		</a>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</div>
+													<div class="col-12 mt-5 pt-md-5">
+														<div class="form-group">
+															<label for="profileAboutMe" class="form-group__label">About me</label>
+															<textarea id="profileAboutMe" name="profileAboutMe" placeholder="About me" rows="4" class="form-group__field field"></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+					<div class="container">
+						<section class="box box_admin box_widget_white pt-5 pb-0 mod002">
+							<div class="box__outer">
+								<div class="box__outer-title">Project details</div>
+							</div>
+							<div class="box__inner">
+								<div class="box__inner-widget">
+									<div class="container">
+										<div class="row justify-content-center pt-4 pb-5">
+											<div class="col-12 col-md-9">
+												<div class="form-group form-group_large">
+													<label for="projectName" class="form-group__label">Project name</label>
+													<input id="projectName" type="text" name="projectName" placeholder="Project name" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectCompany" class="form-group__label">Company</label>
+													<input id="projectCompany" type="text" name="projectCompany" placeholder="Company" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectPosition" class="form-group__label">Position</label>
+													<input id="projectPosition" type="text" name="projectPosition" placeholder="Position" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectRole" class="form-group__label">Role</label>
+													<input id="projectRole" type="text" name="projectRole" placeholder="Role" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectDuties" class="form-group__label">Duties</label>
+													<input id="projectDuties" type="text" name="projectDuties" placeholder="Duties" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectDescription" class="form-group__label">Project description</label>
+													<input id="projectDescription" type="text" name="projectDescription" placeholder="Project description" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectSkills" class="form-group__label">Skills</label>
+													<input id="projectSkills" type="text" name="projectSkills" placeholder="Skills" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectTools" class="form-group__label">Tools</label>
+													<input id="projectTools" type="text" name="projectTools" placeholder="Tools" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="form-group">
+													<label for="projectIndustry" class="form-group__label">Industry</label>
+													<input id="projectIndustry" type="text" name="projectIndustry" placeholder="Industry" class="form-group__field field">
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<p class="title title_h3 mt-5 mb-4">Project team</p>
+												<div class="d-flex flex-wrap">
+													<button type="button" data-collapse="projectTeamEmail" class="btn btn_bordered btn_sm mr-3 mb-3">Invite by email</button>
+													<button type="button" data-collapse="projectTeamFb" class="btn btn_bordered btn_sm mr-3 mb-3">fb</button>
+													<button type="button" data-collapse="projectTeamVk" class="btn btn_bordered btn_sm mr-3 mb-3">VK</button>
+													<button type="button" data-collapse="projectTeamLn" class="btn btn_bordered btn_sm mr-3 mb-3">ln</button>
+													<button type="button" data-collapse="projectTeamContacts" class="btn btn_bordered btn_sm mr-3 mb-3">Pick in Contacts</button>
+												</div>
+												<div data-collapse-target="projectTeamEmail" class="collapse bg-main px-3">
+													<div class="row mb-3 py-3">
+														<div class="col">
+															<input id="projectTeamEmail" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">
+														</div>
+														<div class="col">
+															<input id="projectTeamEmailRole" type="text" name="projectTeamEmailRole" placeholder="Role" class="field">
+														</div>
+													</div>
+												</div>
+												<div data-collapse-target="projectTeamFb" class="collapse bg-main px-3">
+													<div class="row mb-3 py-3">
+														<div class="col">
+															<input id="projectTeamFb" type="url" name="projectTeamFb" placeholder="Facebook user account" class="field">
+														</div>
+														<div class="col">
+															<input id="projectTeamFbRole" type="text" name="projectTeamFbRole" placeholder="Role" class="field">
+														</div>
+													</div>
+												</div>
+												<div data-collapse-target="projectTeamVk" class="collapse bg-main px-3">
+													<div class="row mb-3 py-3">
+														<div class="col">
+															<input id="projectTeamVk" type="url" name="projectTeamVk" placeholder="Vkontakte user account" class="field">
+														</div>
+														<div class="col">
+															<input id="projectTeamVkRole" type="text" name="projectTeamVkRole" placeholder="Role" class="field">
+														</div>
+													</div>
+												</div>
+												<div data-collapse-target="projectTeamLn" class="collapse bg-main px-3">
+													<div class="row mb-3 py-3">
+														<div class="col">
+															<input id="projectTeamLn" type="url" name="projectTeamLn" placeholder="Linkedin user account" class="field">
+														</div>
+														<div class="col">
+															<input id="projectTeamLnRole" type="text" name="projectTeamLnRole" placeholder="Role" class="field">
+														</div>
+													</div>
+												</div>
+												<div data-collapse-target="projectTeamContacts" class="collapse bg-main px-3">
+													<div class="row mb-3 py-3">
+														<div class="col">
+															<input id="projectTeamEmail" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">
+														</div>
+														<div class="col">
+															<input id="projectTeamEmailRole" type="text" name="projectTeamEmailRole" placeholder="Role" class="field">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-9">
+												<div class="row">
+													<div class="col-12 col-md-5 col-lg-4">
+														<div class="form-group">
+															<label for="projectStartDate" class="form-group__label">Project start date</label>
+															<input id="projectStartDate" type="text" name="projectStartDate" placeholder="Project start date" class="form-group__field field">
+														</div>
+													</div>
+													<div class="col-12 col-md-5 col-lg-4">
+														<div class="form-group">
+															<label for="projectFinishDate" class="form-group__label">Project finish date</label>
+															<input id="projectFinishDate" type="text" name="projectFinishDate" placeholder="Project finish date" class="form-group__field field">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 text-center">
+												<button type="submit" disabled="disabled" class="btn btn_primary btn_lg mt-4 mod__elem-1">Done</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</form>
+			</main>
+			<footer class="footer  mt-auto">
+				<div class="container">
+					<div class="row justify-content-center">
+						<nav class="footer__nav nav nav_inline text-center">
+							<li class="nav__item"><a href="#" class="nav__link">Terms of the License Agreement</a>
+							</li>
+							<li class="nav__item"><a href="#" class="nav__link">Help</a>
+							</li>
+							<li class="nav__item"><a href="#" class="nav__link">Mobile App</a>
+							</li>
+							<li class="nav__item"><a href="#" class="nav__link">Facebook</a>
+							</li>
+							<li class="nav__item"><a href="#" class="nav__link">Twitter</a>
+							</li>
+						</nav>
+					</div>
+				</div>
+			</footer>
+		</div>
+<!--		<script src="scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>-->
+<!--		<script src="scripts/vendor/babelHelpers.min.js" type="text/javascript"></script>-->
+<!--		<script src="scripts/hands/app.js" type="text/javascript"></script>-->
+	</body>
+
+</html>
