@@ -26,4 +26,8 @@ public class InitialController {
     public String forgetPassword() {
         return "forget-password";
     }
+    @RequestMapping("/admin-profile-project")
+    public String adminProfileProject(){
+        return "admin-profile-project";
+    }
 }
