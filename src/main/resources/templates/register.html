@@ -76,10 +76,13 @@
                                     </div>
                                     <div class="col-11 col-sm-9 text-center mb-3">
                                         <button id="submit" type="submit" class="btn btn_bordered"
-                                                onClick="ValidMail()">Register
+                                                onClick="ValidMail()"><a
+                                                th:href="@{/admin-profile-project}">Register</a>
                                         </button>
                                     </div>
-                                    <div class=" col-11 col-sm-9 text-center"><a href="/login" class="title title_h3">Sign in
+                                    <div class=" col-11 col-sm-9 text-center"><a class="title title_h3"
+                                                                                 th:href="@{/admin-profile-project}">Sign
+                                        in
                                         through Facebook</a>
                                     </div>
                                 </div>
