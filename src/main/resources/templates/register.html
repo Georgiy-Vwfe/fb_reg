@@ -44,7 +44,11 @@
             <section class="box box_widget_white box_widget_shadow box_widget_rounded py-5 mod001">
                 <div class="box__inner">
                     <div class="box__inner-widget">
-                        <form id="register" novalidate=novalidate autocomplete="off" method="post" class="form py-5">
+<!--                        <div class="alert alert-info" th:if="${emailSent}">An email has been sent to the email address-->
+<!--                            you just registered. Please validate your email address.-->
+<!--                        </div>  УВЕДОМЛЕНИЕ ОБ ОТПРАВКЕ ПИСЬМА-->
+                        <form th:action="@{/newUser}" id="register" novalidate=novalidate autocomplete="off"
+                              method="post" class="form py-5"><!--ДОБАВИЛ th:action="@{/newUser}"-->
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
