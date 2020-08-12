@@ -12,17 +12,17 @@ public class InitialController {
         return "index";
     }
 
-    @GetMapping("/register")
+    @RequestMapping("/register")
     public String register() {
         return "register";
     }
 
-    @GetMapping("/sign-in")
+    @RequestMapping("/sign-in")
     public String signIn() {
         return "sign-in";
     }
 
-    @GetMapping("/forget-password")
+    @RequestMapping("/forget-password")
     public String forgetPassword() {
         return "forget-password";
     }
