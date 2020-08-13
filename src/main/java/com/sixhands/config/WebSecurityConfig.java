@@ -28,7 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/sign-in",
             "/register",
             "/forget-password",
-            "/admin-profile-project"
+            "/admin-profile-project",
+            "/activation/"
     };
 
     @Override

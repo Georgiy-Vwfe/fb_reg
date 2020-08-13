@@ -12,22 +12,18 @@ public class InitialController {
         return "index";
     }
 
-    @RequestMapping("/register")
-    public String register() {
-        return "register";
-    }
-
-    @RequestMapping("/sign-in")
+    @GetMapping("/sign-in")
     public String signIn() {
         return "sign-in";
     }
 
-    @RequestMapping("/forget-password")
+    @GetMapping("/forget-password")
     public String forgetPassword() {
         return "forget-password";
     }
-    @RequestMapping("/admin-profile-project")
-    public String adminProfileProject(){
+
+    @GetMapping("/admin-profile-project")
+    public String adminProfileProject() {
         return "admin-profile-project";
     }
 }

@@ -28,6 +28,8 @@ public class User {
     private String social_networks;
     private String create_time;
 
+    private String activationCode;
+
     public Long getUuid() {
         return uuid;
     }
@@ -146,5 +148,13 @@ public class User {
 
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }
