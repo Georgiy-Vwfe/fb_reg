@@ -36,15 +36,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers(PUBLIC_MATCHERS).permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/admin-profile-project").permitAll()
-                .permitAll()
+                    .formLogin()
+                    .loginPage("/register").permitAll()
+                    .loginPage("/sign-in").permitAll()
+                    .permitAll()
                 .and()
-                .logout()
-                .permitAll();
+                    .logout()
+                    .permitAll();
     }
 
 /*    @Bean
@@ -60,11 +61,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new InMemoryUserDetailsManager(user);
     }*/
 
-    @Bean
-    public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
-        return map -> {
-            User newUser = new User();
-            return newUser;
-        };
-    }
 }
