@@ -46,8 +46,8 @@
         <div class="container">
             <section class="box box_widget_white box_widget_shadow box_widget_rounded py-5 mod001">
                 <div class="box__inner">
-                    <div class="box__inner-widget">
-                        <form id="signIn" novalidate="novalidate" autocomplete="off" class="form py-5">
+                    <div class="box__inner-widget" th:classappend="${isActivated}? 'is active'">
+                        <form id="signIn" novalidate="novalidate" autocomplete="off" class="form py-5" >
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
@@ -71,7 +71,7 @@
                                     </div>
                                     <div th:if="${param.error != null}" style="color:red;">Login or password is not correct. Please try again.</div>
                                     <div class="col-11 col-sm-9 text-center mb-3">
-                                        <button type="submit" class="btn btn_bordered"><a th:href="@{/admin-profile-project.html}">Sign in</a></button>
+                                        <button type="submit" class="btn btn_bordered">Sign in</button>
                                     </div>
                                     <div class="col-11 col-sm-9 text-center"><a href="#" class="title title_h3">Sign in
                                         through Facebook</a>
