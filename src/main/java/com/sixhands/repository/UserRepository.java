@@ -4,4 +4,6 @@ import com.sixhands.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
+
+    User findByActivationCode(String code);
 }
