@@ -44,7 +44,7 @@
             <section class="box box_widget_white box_widget_shadow box_widget_rounded py-5 mod001">
                 <div class="box__inner">
                     <div class="box__inner-widget">
-                        <form id="register" novalidate=novalidate autocomplete="off" method="post" class="form py-5">
+                        <form id="register" novalidate=novalidate th:action="@{/register}" th:object="${greeting}" autocomplete="off" method="post" class="form py-5">
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
@@ -55,14 +55,14 @@
                                             <label for="email" class="form-group__label">E-mail</label>
                                             <input id="email" required="required" type="email"
                                                    placeholder="email@email.com" name="email"
-                                                   class="form-group__field field">
+                                                   class="form-group__field field" th:field="*{id}"/>
                                         </div>
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
                                             <label for="password" class="form-group__label">Password</label>
                                             <input id="password" required="required" type="password" name="password"
-                                                   placeholder="Enter password" class="form-group__field field ">
+                                                   placeholder="Enter password" class="form-group__field field " th:field="*{content}"/>
                                         </div>
                                     </div>
                                     <div class="col-11 col-sm-9">
@@ -71,13 +71,12 @@
                                                 check</label>
                                             <input id="passwordCorrect" required="required" type="password"
                                                    name="passwordCorrect"
-                                                   placeholder="Repeat password" class="form-group__field field ">
+                                                   placeholder="Repeat password" class="form-group__field field " th:field="*{content2}"/>
                                         </div>
                                     </div>
                                     <div class="col-11 col-sm-9 text-center mb-3">
                                         <button id="submit" type="submit" class="btn btn_bordered"
-                                                onClick="ValidMail()"><a
-                                                th:href="@{/admin-profile-project}">Register</a>
+                                                onClick="ValidMail()"><a>Register</a>
                                         </button>
                                     </div>
                                     <div class=" col-11 col-sm-9 text-center"><a class="title title_h3"
