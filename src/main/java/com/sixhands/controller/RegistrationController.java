@@ -1,20 +1,44 @@
 package com.sixhands.controller;
 
+import com.sixhands.domain.Greeting;
 import com.sixhands.domain.User;
+import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrationController {
-    @Autowired
+    // @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
-    @GetMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String greetingForm(Model model) {
+        model.addAttribute("greeting", new Greeting());
+        return "register";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String greetingSubmit(@ModelAttribute Greeting greeting, Model model, User user) {
+        Greeting userFrobDB = userRepository.findByEmail(greeting.getId());
+        if (userFrobDB != null) {
+           model.addAttribute("greeting", greeting);
+            return "register";
+        }
+        String encoded = new BCryptPasswordEncoder().encode(greeting.getContent());
+
+        user.setEmail(greeting.getId());
+        user.setPassword(encoded);
+        userRepository.save(user);
+        return "admin-profile-project";
+    }
+
+   /* @GetMapping("/register")
     public String register() {
         return "register";
     }
@@ -27,7 +51,7 @@ public class RegistrationController {
         }
 
         return "redirect:/admin-profile-project";
-    }
+    }*/
 
     @GetMapping("/activation/{code}")
     public String activate(Model model, @PathVariable String code) {
