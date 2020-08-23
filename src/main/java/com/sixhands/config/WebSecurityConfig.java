@@ -38,7 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/forget-password",
             "/admin-profile-project",
             "/activation/",
-            "/greeting"
+            "/greeting",
+            "/recovery-password"
     };
 
     @Override
@@ -49,8 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/register").permitAll()
-                    .loginPage("/sign-in").permitAll()
+//                    .loginPage("/register").permitAll()
+//                    .loginPage("/sign-in").permitAll()
                     .permitAll()
                 .and()
                 .logout()

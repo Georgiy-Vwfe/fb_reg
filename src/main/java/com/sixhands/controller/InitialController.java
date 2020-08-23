@@ -26,4 +26,9 @@ public class InitialController {
     public String adminProfileProject() {
         return "admin-profile-project";
     }
+
+    @GetMapping("/recovery-password")
+    public String recoveryPassword(){
+        return "recovery-password";
+    }
 }
