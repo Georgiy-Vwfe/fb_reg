@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.UUID;
 
+@Service
 public class UserService implements UserDetailsService {
 
     @Autowired
     private MailSender mailSender;
-
+    @Autowired
     UserRepository userRepo;
 
     @Override
@@ -50,15 +52,13 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean activateUser(String code) {
-
         User user = userRepo.findByActivationCode(code);
 
-        if(user == null) {
+        if (user == null) {
             return false;
         }
 
         user.setActivationCode(null);
-
         userRepo.save(user);
 
         return true;

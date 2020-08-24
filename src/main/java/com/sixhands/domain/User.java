@@ -1,5 +1,7 @@
 package com.sixhands.domain;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
@@ -27,6 +29,7 @@ public class User {
     private String user_img;
     private String social_networks;
     private String create_time;
+    private String role;
 
     private String activationCode;
 
@@ -156,5 +159,13 @@ public class User {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

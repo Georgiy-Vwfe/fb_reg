@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrationController {
-    // @Autowired
+    @Autowired
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
@@ -28,7 +28,7 @@ public class RegistrationController {
         Greeting userFrobDB = userRepository.findByEmail(greeting.getId());
         if (userFrobDB != null) {
            model.addAttribute("greeting", greeting);
-            return "register";
+           return "register";
         }
         String encoded = new BCryptPasswordEncoder().encode(greeting.getContent());
 
