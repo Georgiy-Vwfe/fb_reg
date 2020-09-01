@@ -51,6 +51,18 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public boolean recoverPassword(User user){
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String emailText = String.format(
+                    "Hello, %s! \n" +
+                            "You want to recover your password. Please, visit link: http://localhost:8081/recover_password",
+                    user.getEmail()
+            );
+            mailSender.send(user.getEmail(), "Recover password", emailText);
+        }
+        return true;
+    }
+
     public boolean activateUser(String code) {
         User user = userRepo.findByActivationCode(code);
 

@@ -17,13 +17,13 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @GetMapping("/register")
     public String greetingForm(Model model) {
         model.addAttribute("greeting", new Greeting());
         return "register";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public String greetingSubmit(@ModelAttribute Greeting greeting, Model model, User user) {
         Greeting userFrobDB = userRepository.findByEmail(greeting.getId());
         if (userFrobDB != null) {
@@ -37,13 +37,8 @@ public class RegistrationController {
         userRepository.save(user);
         return "admin-profile-project";
     }
-
-   /* @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
-
-    @PostMapping("/register")
+    
+    /*@PostMapping("/register")
     public String addUser(User user, Model model) {
         if (!userService.addUser(user)) {
 
