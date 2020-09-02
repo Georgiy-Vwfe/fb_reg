@@ -5,10 +5,14 @@ import com.sixhands.domain.User;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class RegistrationController {
@@ -25,8 +29,8 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String greetingSubmit(@ModelAttribute Greeting greeting, Model model, User user) {
-        Greeting userFrobDB = userRepository.findByEmail(greeting.getId());
-        if (userFrobDB != null) {
+        Greeting userFromDB = userRepository.findByEmail(greeting.getId());
+        if (userFromDB != null) {
            model.addAttribute("greeting", greeting);
            return "register";
         }
