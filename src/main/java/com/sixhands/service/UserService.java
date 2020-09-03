@@ -1,9 +1,9 @@
 package com.sixhands.service;
 
 import com.sixhands.domain.User;
+import com.sixhands.domain.UserProjectExp;
+import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,23 +13,30 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
-
     @Autowired
     private MailSender mailSender;
+    @Autowired
+    public UserProjectExpRepository userProjectExpRepo;
     @Autowired
     private UserRepository userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //TODO написать логику поиска пользователя из БД
-        return null;
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+         UsernameNotFoundException notFoundException = new UsernameNotFoundException("Unable to find user "+username);
+        if(StringUtils.isEmpty(username)) throw notFoundException;
+        return StreamSupport.stream(userRepo.findAll().spliterator(),false).filter((u)->u.getEmail().equals(username)).findFirst()
+                .orElseThrow(()->notFoundException);
     }
 
     public boolean addUser(User user) {
@@ -58,13 +65,16 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public List<UserProjectExp> getProjectExpForUser(User user){
+        if(user == null||user.getUuid()==null) return new ArrayList<>();
+        return StreamSupport.stream(userProjectExpRepo.findAll().spliterator(),false)
+                .filter((exp)-> exp.getUser_uuid().equals(user.getUuid())).collect(Collectors.toList());
+    }
+
     public static Optional<String> getCurrentUsername() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null) {
-            LOG.debug("no authentication in security context found");
-            return Optional.empty();
-        }
+        if (authentication == null) return Optional.empty();
 
         String username = null;
         if (authentication.getPrincipal() instanceof UserDetails) {
@@ -73,9 +83,7 @@ public class UserService implements UserDetailsService {
         } else if (authentication.getPrincipal() instanceof String) {
             username = (String) authentication.getPrincipal();
         }
-
-        LOG.debug("found username '{}' in security context", username);
-
+        username = username==null || username.length() == 0 || username.equals("anonymousUser") ? null : username;
         return Optional.ofNullable(username);
     }
 

@@ -1,5 +1,6 @@
 package com.sixhands.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,8 @@ import java.util.HashSet;
 
 @Entity
 @Table(name = "user")
+//Ignore properties on deserialization
+@JsonIgnoreProperties(value={ "uuid", "role", "activationCode", "create_time", "rating" }, allowGetters=true)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,9 +56,10 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    //TODO: Return stored authorities ?as list
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<>(AuthorityUtils.createAuthorityList("ROLE_USER"));
+        return new HashSet<>(AuthorityUtils.createAuthorityList(role));
     }
 
     public String getPassword() {

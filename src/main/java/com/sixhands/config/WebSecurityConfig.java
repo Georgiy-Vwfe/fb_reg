@@ -1,7 +1,6 @@
 package com.sixhands.config;
 
 import com.sixhands.domain.User;
-import com.sixhands.repository.UserDetailsRepo;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +23,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import javax.sql.DataSource;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
+import java.util.stream.StreamSupport;
 
 @Configuration
 @EnableWebSecurity
 //@EnableOAuth2Sso
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
     private static final String[] PUBLIC_MATCHERS = {
             "/css/**",
             "/js/**",
@@ -42,22 +40,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/register",
             "/forget-password",
             "/admin-profile-project",
-            "/activation/",
+            "/activation/**",
             "/greeting",
             "/recovery-password",
+            "/project",
+
+            //TODO: DELETE ME
+            "/**"
     };
 
-    //TODO: Replace w/ user service method
     @Autowired
     private UserRepository userRepo;
-    private UserDetailsService userDetailsService = s -> userRepo.findAll().stream().filter((u)->u.getEmail().equals(s)).findFirst()
-            .orElseThrow(()->new UsernameNotFoundException("Unable to find user "+s));
+    @Autowired
+    private UserService userService;
 
     @Bean
     public DaoAuthenticationProvider myAuthProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userService);
         return provider;
     }
 

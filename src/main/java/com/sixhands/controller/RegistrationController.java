@@ -1,6 +1,7 @@
 package com.sixhands.controller;
 
 import com.sixhands.domain.Greeting;
+import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
@@ -38,6 +39,7 @@ public class RegistrationController {
 
         user.setEmail(greeting.getId());
         user.setPassword(encoded);
+        user.setRole("ROLE_USER");
         userRepository.save(user);
         return "admin-profile-project";
     }

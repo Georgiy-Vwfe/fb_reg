@@ -1,5 +1,6 @@
 package com.sixhands.controller;
 
+import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
