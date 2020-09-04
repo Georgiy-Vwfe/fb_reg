@@ -56,7 +56,7 @@ public class RegistrationController {
         } catch (ServletException e) {
             // log.debug("Autologin fail", e);
         }
-        return "redirect:/";
+        return "admin-profile-project";
     }
     
     /*@PostMapping("/register")
@@ -68,7 +68,6 @@ public class RegistrationController {
 
         return "redirect:/admin-profile-project";
     }*/
-
     @GetMapping("/activation/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
