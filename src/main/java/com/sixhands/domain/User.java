@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -23,7 +25,12 @@ public class User implements UserDetails {
     private Long uuid;
 
     private String email;
+
+    @NotNull
+    @Size(min = 3, message = "Password can have 3+ symbols")
     private String password;
+    private String confirmPassword;
+
     private String first_name;
     private String last_name;
     private char sex;
@@ -205,5 +212,13 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -36,8 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/images/**",
             "/fonts/**",
             "/",
-            "/sign-in",
-            "/register",
+            "/login",
+            "/registration",
             "/forget-password",
             "/admin-profile-project",
             "/activation/**",
@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-//                    .loginPage("/register").permitAll()
+//                    .loginPage("/registration").permitAll()
                     .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/",true)
                 .and()
