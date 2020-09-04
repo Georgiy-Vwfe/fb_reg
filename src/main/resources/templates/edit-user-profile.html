@@ -4,7 +4,6 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=cover">
@@ -77,7 +76,7 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-md-5 pb-md-5">
                                                 <div class="form-group form-group_large">
-                                                    <label for="profileSurname" class="form-group__label">Surname (A-Z, a-z, А-Я, а-я, -)</label>
+                                                    <label for="profileSurname" class="form-group__label">Surname</label>
                                                     <input minlength="2" maxlength="24" pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" placeholder="Surname" class="form-group__field field">
                                                 </div>
                                             </div>
@@ -91,8 +90,8 @@
                                             <!--TODO: replace with date of birth?-->
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="profileAge" class="form-group__label">Age</label>
-                                                    <input id="profileAge" type="number" name="profileAge" placeholder="Age" class="form-group__field field">
+                                                    <label for="dateOfBirth" class="form-group__label">Date of birth</label>
+                                                    <input id="dateOfBirth" th:field="*{date_of_birth}" type="date" name="dateOfBirth" placeholder="Date of birth" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">

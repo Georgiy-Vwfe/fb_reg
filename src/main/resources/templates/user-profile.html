@@ -51,7 +51,7 @@
         <div th:if="${user != null}" class="container box box_admin box_text_center">
             <div>Projects</div>
             <ul th:if="${projects.length > 0}">
-                <li th:each="proj : ${projects}" th:text="${proj.role}"></li>
+                <li th:each="proj : ${projects}" th:text="${proj}"></li>
             </ul>
             <span th:if="${projects.length == 0}">No projects found</span>
         </div>

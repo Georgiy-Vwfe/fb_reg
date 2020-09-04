@@ -5,11 +5,14 @@ import com.sixhands.domain.UserProjectExp;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.concurrent.RejectedExecutionException;
@@ -29,12 +32,12 @@ public class UserController {
     }
     @GetMapping("/{id}")
     public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0",required = false) Integer edit, Model model){
-        User user = userRepo.findById(id).orElse(null);
+        User user = userRepo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User with id "+id+" is not found"));
         boolean canEdit = false;
         try {
             User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
             canEdit = curUser.getUuid().equals(user.getUuid());
-        }catch (UsernameNotFoundException ignored){}
+        }catch (Exception ignored){}
         UserProjectExp[] projectExps = userService.getProjectExpForUser(user).toArray(new UserProjectExp[0]);
         model.addAttribute("user",user);
         model.addAttribute("canEdit",canEdit);
@@ -58,8 +61,11 @@ public class UserController {
         curUser.setUser_img(editUser.getUser_img());
         curUser.setAbout_user(editUser.getAbout_user());
 
-        //curUser.setEmail(editUser.getEmail());
-        //curUser.setPhone_number(editUser.getPhone_number());
+        curUser.setEmail(editUser.getEmail());
+        curUser.setPhone_number(editUser.getPhone_number());
+        //TODO: Parse&validate date of birth
+        curUser.setDate_of_birth(editUser.getDate_of_birth());
+
         //curUser.setPassword(editUser.getPassword());
 
         userRepo.save(curUser);

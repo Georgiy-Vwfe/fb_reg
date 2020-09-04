@@ -1,15 +1,15 @@
 package com.sixhands.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user_project_exp")
 public class UserProjectExp {
     @Id
-    private Long user_uuid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long user_project_uuid;
 
+    private Long user_uuid;
     private Long project_uuid;
     private String position;
     private String role;
@@ -71,5 +71,13 @@ public class UserProjectExp {
 
     public void setIndustry(String industry) {
         this.industry = industry;
+    }
+
+    public Long getUser_project_uuid() {
+        return user_project_uuid;
+    }
+
+    public void setUser_project_uuid(Long user_project_uuid) {
+        this.user_project_uuid = user_project_uuid;
     }
 }
