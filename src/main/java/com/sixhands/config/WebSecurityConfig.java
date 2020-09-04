@@ -38,13 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/images/**",
             "/fonts/**",
             "/",
-            "/sign-in",
-            "/register",
+            "/login",
+            "/registration",
             "/forget-password",
             "/admin-profile-project",
             "/activation/",
-            "/greeting",
-            "/recovery-password",
+            "/recovery-password"
     };
 
     //TODO: Replace w/ user service method
@@ -69,12 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-//                    .loginPage("/register").permitAll()
-//                    .loginPage("/sign-in").permitAll()
-                    .permitAll()
+                        .loginPage("/login").permitAll()
+                        .defaultSuccessUrl("/", true)
                 .and()
-                .logout()
-                .permitAll();
+                    .logout()
+                    .permitAll();
     }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

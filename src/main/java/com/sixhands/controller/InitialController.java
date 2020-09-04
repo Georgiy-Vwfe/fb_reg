@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +21,13 @@ public class InitialController {
         return "index";
     }
 
-    @GetMapping("/sign-in")
+    @GetMapping("/login")
     public String signIn() {
-        return "sign-in";
+        return "login";
     }
 
-    @Autowired
-    private UserService userService;
+  //  @Autowired
+    //private UserService userService;
 
     @GetMapping("/current-user")
     public ResponseEntity<Map<String,Object>> getCurUser() {

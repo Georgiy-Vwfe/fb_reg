@@ -39,7 +39,7 @@
         <div class="container d-flex align-items-center">
             <div class="header__link ml-auto mr-5"><a href="#" class="nav__link">Switch to Russian</a>
             </div>
-            <div class="header__link ml-5"><a th:href="@{/sign-in}" class="nav__link">Sign in</a>
+            <div class="header__link ml-5"><a th:href="@{/login}" class="nav__link">Sign in</a>
             </div>
         </div>
     </header>
@@ -54,7 +54,7 @@
 <!--                        </div>  УВЕДОМЛЕНИЕ ОБ ОТПРАВКЕ ПИСЬМА-->
 <!--                        <form th:action="@{/newUser}" id="register" novalidate=novalidate autocomplete="off"-->
 <!--                              method="post" class="form py-5">&lt;!&ndash;ДОБАВИЛ th:action="@{/newUser}"&ndash;&gt;-->
-                        <form id="register" novalidate=novalidate th:action="@{/register}" th:object="${greeting}" autocomplete="off" method="post" class="form py-5">
+                        <form id="register" novalidate=novalidate th:action="@{/registration}" th:object="${user}" autocomplete="off" method="post" class="form py-5">
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
@@ -65,14 +65,25 @@
                                             <label for="email" class="form-group__label">E-mail</label>
                                             <input id="email" required="required" type="email"
                                                    placeholder="email@email.com" name="email"
-                                                   class="form-group__field field" th:field="*{id}"/>
+                                                   class="form-group__field field" th:field="*{email}"/>
+                                            <div class="alert alert-danger mt-2" role="alert"
+                                                 th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                                            </div>
+
+                                            <div class="alert alert-danger mt-2" role="alert"
+                                                 th:if="${usernameError}" th:text="${usernameError}">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
                                             <label for="password" class="form-group__label">Password</label>
                                             <input id="password" required="required" type="password" name="password"
-                                                   placeholder="Enter password" class="form-group__field field " th:field="*{content}"/>
+                                                   placeholder="Enter password" class="form-group__field field"
+                                                   th:field="*{password}"/>
+                                            <div class="alert alert-danger mt-2" role="alert"
+                                                 th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-11 col-sm-9">
@@ -81,9 +92,13 @@
                                                 check</label>
                                             <input id="passwordCorrect" required="required" type="password"
                                                    name="passwordCorrect"
-                                                   placeholder="Repeat password" class="form-group__field field ">
+                                                   placeholder="Repeat password" class="form-group__field field " th:field="*{confirmPassword}"}>
+                                            <div class="alert alert-danger mt-2" role="alert"
+                                                 th:if="${passNotEquals}" th:text="${passNotEquals}">
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div class="col-11 col-sm-9 text-center mb-3">
                                         <button id="submit" type="submit" class="btn btn_bordered"
                                                 onClick="ValidMail()">Register

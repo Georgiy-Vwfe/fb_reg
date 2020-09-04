@@ -1,45 +1,62 @@
 package com.sixhands.controller;
 
-import com.sixhands.domain.Greeting;
 import com.sixhands.domain.User;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Controller
 public class RegistrationController {
-    @Autowired
+    // @Autowired
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/register")
+
+    @GetMapping("/registration")
     public String greetingForm(Model model) {
-        model.addAttribute("greeting", new Greeting());
-        return "register";
+        model.addAttribute("user", new User());
+        return "registration";
     }
 
-    @PostMapping("/register")
-    public String greetingSubmit(@ModelAttribute Greeting greeting, Model model, User user) {
-        Greeting userFromDB = userRepository.findByEmail(greeting.getId());
-        if (userFromDB != null) {
-           model.addAttribute("greeting", greeting);
-           return "register";
-        }
-        String encoded = new BCryptPasswordEncoder().encode(greeting.getContent());
+    @PostMapping("/registration")
+    public String addUser(@ModelAttribute User user, Model model,
+                          BindingResult bindingResult,
+                          HttpServletRequest request) {
 
-        user.setEmail(greeting.getId());
-        user.setPassword(encoded);
-        userRepository.save(user);
-        return "admin-profile-project";
+        String username = user.getUsername();
+        String password = user.getPassword();
+        Optional<User> userFromDB = userRepository.findByEmail(user.getEmail());
+        if (bindingResult.hasErrors()) {
+            return "registration";
+
+        } else if (!user.getPassword().equals(user.getConfirmPassword())) {
+            model.addAttribute("passNotEquals", "passwords isn't equals");
+            return "registration";
+        } else if (userFromDB.isPresent()) {
+            model.addAttribute("usernameError", "A user with the same name already exists.");
+            return "registration";
+        } else {
+            String encoded = new BCryptPasswordEncoder().encode(user.getPassword());
+            user.setPassword(encoded);
+            userRepository.save(user);
+        }
+
+        try {
+            request.login(username, password);
+        } catch (ServletException e) {
+            // log.debug("Autologin fail", e);
+        }
+        return "redirect:/";
     }
     
     /*@PostMapping("/register")
