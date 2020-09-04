@@ -43,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/forget-password",
             "/admin-profile-project",
             "/activation/",
-            "/recovery-password"
+            "/recovery-password",
+            "/project-not-aproved"
     };
 
     //TODO: Replace w/ user service method

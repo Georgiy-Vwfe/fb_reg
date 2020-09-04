@@ -46,6 +46,11 @@ public class InitialController {
         }else resp.put("error","user is already logged in");
         return ResponseEntity.ok(resp);
     }
+    @GetMapping("/project-not-aproved")
+    public String projectNotAproved() {
+        return "project-not-aproved";
+    }
+
     @GetMapping("/forget-password")
     public String forgetPassword() {
         return "forget-password";
