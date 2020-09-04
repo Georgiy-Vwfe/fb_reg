@@ -47,7 +47,7 @@
             <section class="box box_widget_white box_widget_shadow box_widget_rounded py-5 mod001">
                 <div class="box__inner">
                     <div class="box__inner-widget" th:classappend="${isActivated}? 'is active'">
-                        <form id="signIn" novalidate="novalidate" autocomplete="off" class="form py-5" >
+                        <form th:action="@{/login}" method="post" id="signIn" novalidate="novalidate" autocomplete="off" class="form py-5" >
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
@@ -55,8 +55,8 @@
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="email" class="form-group__label">E-mail</label>
-                                            <input id="email" type="email" name="email" placeholder="email@email.com"
+                                            <label for="username" class="form-group__label">E-mail</label>
+                                            <input id="username" name="username" type="email" placeholder="email@email.com"
                                                    class="form-group__field field">
                                         </div>
                                     </div>

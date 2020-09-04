@@ -24,9 +24,9 @@ public class InitialController {
         return "index";
     }
 
-    @GetMapping("/sign-in")
+    @GetMapping("/login")
     public String signIn() {
-        return "sign-in";
+        return "login";
     }
 
     @Autowired
