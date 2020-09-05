@@ -6,7 +6,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=cover">
@@ -36,7 +35,7 @@
 
 <body>
     <div style="" class="root d-flex flex-column">
-        <div th:replace="header :: header">&nbsp;</div>
+        <div th:replace="common/header :: header">&nbsp;</div>
         <div data-page="adminProfileProject" class="dataProvider"></div>
         <main class="root__in pb-5">
         <form id="formProject" th:object="${projectDTO}" th:action="@{/project/save}" method="post" novalidate="novalidate" autocomplete="off">
@@ -193,7 +192,7 @@
             </div>
         </form>
         </main>
-        <div th:replace="footer :: footer"></div>
+        <div th:replace="common/footer :: footer"></div>
     </div>
 </body>
 </html>

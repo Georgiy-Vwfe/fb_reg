@@ -27,7 +27,7 @@
 
 	<body>
 		<div style="" class="root d-flex flex-column">
-			<div th:replace="header :: header"></div>
+			<div th:replace="common/header :: header"></div>
 			<div data-page="adminProject" class="dataProvider"></div>
 			<main class="root__in pb-5">
 				<div class="bg-main-light py-4">
@@ -185,11 +185,11 @@
 					</div>
 				</form>
 			</main>
-			<div th:replace="footer :: footer"></div>
+			<div th:replace="common/footer :: footer"></div>
 		</div>
-		<script src="../../../../../6hands%20исходники/dist/dist/scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>
-		<script src="../../../../../6hands%20исходники/dist/dist/scripts/vendor/babelHelpers.min.js" type="text/javascript"></script>
-		<script src="../../../../../6hands%20исходники/dist/dist/scripts/hands/app.js" type="text/javascript"></script>
+		<script src="scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>
+		<script src="scripts/vendor/babelHelpers.min.js" type="text/javascript"></script>
+		<script src="scripts/hands/app.js" type="text/javascript"></script>
 	</body>
 
 </html>
