@@ -1,6 +1,5 @@
 package com.sixhands.controller;
 
-import com.sixhands.domain.Greeting;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.service.UserService;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +27,8 @@ public class InitialController {
         return "login";
     }
 
-    @Autowired
-    private UserService userService;
+  //  @Autowired
+    //private UserService userService;
 
     @GetMapping("/current-user")
     public ResponseEntity<Map<String,Object>> getCurUser() {
@@ -49,6 +47,11 @@ public class InitialController {
         }else resp.put("error","user is already logged in");
         return ResponseEntity.ok(resp);
     }
+    @GetMapping("/project-not-aproved")
+    public String projectNotAproved() {
+        return "project-not-aproved";
+    }
+
     @GetMapping("/forget-password")
     public String forgetPassword() {
         return "forget-password";
@@ -60,8 +63,7 @@ public class InitialController {
     }
 
     @GetMapping("/recovery-password")
-    public String recoveryPassword(Model model){
-        model.addAttribute("greeting", new Greeting());
+    public String recoveryPassword(){
         return "recovery-password";
     }
 }

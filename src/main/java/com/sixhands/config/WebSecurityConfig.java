@@ -44,9 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/greeting",
             "/recovery-password",
             "/project",
-
-            //TODO: DELETE ME
-            "/**"
+            "/project-not-aproved"
     };
 
     @Autowired
@@ -70,12 +68,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-//                    .loginPage("/registration").permitAll()
-                    .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/",true)
                 .and()
-                .logout()
-                .permitAll();
+                    .logout()
+                    .permitAll();
     }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
