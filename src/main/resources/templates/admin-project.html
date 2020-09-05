@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="lang-en country-en" lang="en">
+<html class="lang-en country-en" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 	<head>
 		<meta charset="utf-8">
@@ -27,46 +27,7 @@
 
 	<body>
 		<div style="" class="root d-flex flex-column">
-			<header class="header">
-				<div class="container d-flex align-items-center">
-					<nav class="header__nav nav nav_inline nav_alpha">
-						<li class="nav__item"><a href="../../../../../6hands%20исходники/dist/dist/my-network.html" class="nav__link">My network</a>
-						</li>
-						<li class="nav__item"><a href="#" class="nav__link">Search professional</a>
-						</li>
-					</nav>
-					<div class="header__link ml-auto"><a href="#" class="nav__link">Switch to Russian</a>
-					</div>
-					<ul class="chain chain_alpha header__chain d-flex align-items-center">
-						<li class="chain__item">
-							<div class="middle">
-								<a href="#">
-									<img src="../../../../../6hands%20исходники/dist/dist/images/chain/alpha/star.svg" />
-								</a>
-							</div>
-						</li>
-						<li class="chain__item">
-							<div class="middle">
-								<a href="#">
-									<img src="../../../../../6hands%20исходники/dist/dist/images/chain/alpha/bell.svg" />
-								</a>
-							</div>
-						</li>
-						<li class="chain__item">
-							<div class="middle">
-								<a href="#">
-									<img src="../../../../../6hands%20исходники/dist/dist/images/chain/alpha/message.svg" />
-								</a>
-							</div>
-						</li>
-					</ul>
-					<div class="header__user ml-2">
-						<div class="middle">
-							<a href="#"></a>
-						</div>
-					</div>
-				</div>
-			</header>
+			<div th:replace="header :: header"></div>
 			<div data-page="adminProject" class="dataProvider"></div>
 			<main class="root__in pb-5">
 				<div class="bg-main-light py-4">
@@ -224,24 +185,7 @@
 					</div>
 				</form>
 			</main>
-			<footer class="footer  mt-auto">
-				<div class="container">
-					<div class="row justify-content-center">
-						<nav class="footer__nav nav nav_inline text-center">
-							<li class="nav__item"><a href="#" class="nav__link">Terms of the License Agreement</a>
-							</li>
-							<li class="nav__item"><a href="#" class="nav__link">Help</a>
-							</li>
-							<li class="nav__item"><a href="#" class="nav__link">Mobile App</a>
-							</li>
-							<li class="nav__item"><a href="#" class="nav__link">Facebook</a>
-							</li>
-							<li class="nav__item"><a href="#" class="nav__link">Twitter</a>
-							</li>
-						</nav>
-					</div>
-				</div>
-			</footer>
+			<div th:replace="footer :: footer"></div>
 		</div>
 		<script src="../../../../../6hands%20исходники/dist/dist/scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>
 		<script src="../../../../../6hands%20исходники/dist/dist/scripts/vendor/babelHelpers.min.js" type="text/javascript"></script>
