@@ -39,7 +39,7 @@
         <div th:replace="header :: header">&nbsp;</div>
         <div data-page="adminProfileProject" class="dataProvider"></div>
         <main class="root__in pb-5">
-        <form id="formProject" th:object="${projectDTO}" th:action="@{/project/save}" method="post" novalidate="novalidate" autocomplete="off">
+        <form id="formProject" th:object="${projectDTO}" th:action="@{/project/save}" th:method="${isEditing}?'put':'post'" novalidate="novalidate" autocomplete="off">
             <div class="container">
                 <section class="box box_admin box_widget_white pt-5 pb-0 mod002">
                     <div class="box__outer">
@@ -49,6 +49,8 @@
                         <div class="box__inner-widget">
                             <div class="container">
                                 <div th:object="${projectDTO}" class="row justify-content-center pt-4 pb-5">
+                                    <input th:field="*{project.uuid}" type="text" class="d-none">
+                                    <input th:field="*{projectExp.user_project_exp_uuid}" type="text" class="d-none">
                                     <div class="col-12 col-md-9">
                                         <div class="form-group form-group_large">
                                             <label for="projectName" class="form-group__label">Project name</label>
@@ -75,7 +77,6 @@
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
-                                            <!--TODO: ??Add duties field-->
                                             <label for="projectDuties" class="form-group__label">Duties</label>
                                             <input id="projectDuties" type="text" name="projectDuties" placeholder="Duties" class="form-group__field field">
                                         </div>
@@ -107,7 +108,6 @@
                                     <div class="col-12 col-md-9">
                                         <p class="title title_h3 mt-5 mb-4">Project team</p>
                                         <div class="d-flex flex-wrap">
-                                            <!--TODO: Check if form is valid?-->
                                             <input type="submit"
                                                    onclick="this.form.action+='?action=add-member'"
                                                    data-collapse="projectTeamEmail"
@@ -119,6 +119,7 @@
                                         </div>
                                         <div data-collapse-target="projectTeamEmail" th:each="mem,iter : ${projectDTO.members}" th:object="${projectDTO}" class="bg-main px-3">
                                             <div th:if="${mem != null}" class="row mb-3 py-3">
+                                                <input th:field="*{members[__${iter.index}__].uuid}" type="number" class="d-none">
                                                 <div class="col">
                                                     <input id="projectTeamEmail"
                                                            th:field="*{members[__${iter.index}__].email}" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">

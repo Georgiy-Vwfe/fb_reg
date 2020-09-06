@@ -1,5 +1,6 @@
 package com.sixhands.service;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -21,6 +22,9 @@ public class MailSender {
         mailMessage.setTo(emailTo);
         mailMessage.setSubject(emailSubject);
         mailMessage.setText(emailText);
+
+        //mailSender.send(mailMessage);
+        System.out.println("Sending out a message\n"+new JSONObject(mailMessage).toString(2));
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,10 +19,11 @@ import java.util.Map;
 public class InitialController {
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        if(UserService.getCurrentUsername().isPresent()) model.addAttribute("isAuthenticated",true);
         return "index";
     }
-
+    //TODO: ?Display error for unverified users
     @GetMapping("/login")
     public String signIn() {
         return "login";
