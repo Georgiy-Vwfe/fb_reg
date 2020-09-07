@@ -98,6 +98,8 @@ public class User implements UserDetails {
         return activationCode==null;
     }
 
+    //#region getters/setters
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -222,6 +224,8 @@ public class User implements UserDetails {
         this.confirmPassword = confirmPassword;
     }
 
+    //#endregion
+
     public User safeAssignProperties(User editUser) {
         country = editUser.getCountry();
         city = editUser.getCity();
@@ -239,6 +243,8 @@ public class User implements UserDetails {
         phone_number = editUser.getPhone_number();
         //TODO: Parse&validate date
         date_of_birth = editUser.getDate_of_birth();
+
+        sex = editUser.getSex();
 
         return this;
     }
