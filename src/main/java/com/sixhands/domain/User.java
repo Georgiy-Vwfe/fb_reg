@@ -1,15 +1,12 @@
 package com.sixhands.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -18,7 +15,7 @@ import java.util.HashSet;
 @Entity
 @Table(name = "user")
 //Ignore properties on deserialization
-@JsonIgnoreProperties(value={ "uuid", "role", "activationCode", "create_time", "rating" }, allowGetters=true)
+//@JsonIgnoreProperties(value={ "uuid", "role", "activationCode", "create_time", "rating" }, allowGetters=true)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +26,7 @@ public class User implements UserDetails {
     @NotNull
     @Size(min = 3, message = "Password can have 3+ symbols")
     private String password;
+    @Transient
     private String confirmPassword;
 
     private String first_name;
@@ -46,6 +44,8 @@ public class User implements UserDetails {
     private String role;
 
     private String activationCode;
+
+    private String invited_project_role;
 
     public Long getUuid() {
         return uuid;
@@ -220,5 +220,26 @@ public class User implements UserDetails {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public User safeAssignProperties(User editUser) {
+        country = editUser.getCountry();
+        city = editUser.getCity();
+
+        date_of_birth = editUser.getDate_of_birth();
+
+        first_name = editUser.getFirst_name();
+        last_name = editUser.getLast_name();
+
+        social_networks = editUser.getSocial_networks();
+        user_img = editUser.getUser_img();
+        about_user = editUser.getAbout_user();
+
+        email = editUser.getEmail();
+        phone_number = editUser.getPhone_number();
+        //TODO: Parse&validate date
+        date_of_birth = editUser.getDate_of_birth();
+
+        return this;
     }
 }

@@ -1,10 +1,8 @@
 package com.sixhands.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "project")
@@ -20,6 +18,16 @@ public class Project {
     private String start_date;
     private String end_date;
     private String link;
+    public Project safeAssignProperties(Project reqProject){
+        name = reqProject.getName();
+        description = reqProject.getDescription();
+        company = reqProject.getCompany();
+        industry = reqProject.getIndustry();
+        start_date = reqProject.getStart_date();
+        end_date = reqProject.getEnd_date();
+        link = reqProject.getLink();
+        return this;
+    }
 
     public Long getUuid() {
         return uuid;
