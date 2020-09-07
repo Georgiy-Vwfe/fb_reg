@@ -1,6 +1,6 @@
 package com.sixhands.service;
 
-import com.sixhands.controller.ProjectDTO;
+import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProjectService {
@@ -79,13 +80,12 @@ public class ProjectService {
                 .toArray(User[]::new));
         return ret;
     }
-    public Project[] findProjectsCreatedByUser(User user){
+    public Project[] findProjectsByUser(User user, boolean onlyCreated){
         for (Object obj:new Object[]{user, user.getUuid()})
             Objects.requireNonNull(obj);
-
-        return projectRepo.findAll().stream()
-                .filter( (p)-> projectExpByUser(p,user).map(UserProjectExp::isProject_creator).orElse(false) )
-                .toArray(Project[]::new);
+        Stream<Project> projectStream = projectRepo.findAll().stream();
+        if(onlyCreated) projectStream = projectStream.filter( (p)-> projectExpByUser(p,user).map(UserProjectExp::isProject_creator).orElse(false) );
+        return projectStream.toArray(Project[]::new);
     }
     public Optional<UserProjectExp> projectExpByUser(Project project, User user){
         for (Object obj:new Object[]{project, user, project.getUuid(), user.getUuid()})
@@ -110,29 +110,26 @@ public class ProjectService {
                 .filter((pe)-> pe.getProject_uuid().equals(project.getUuid()))
                 .toArray(UserProjectExp[]::new);
     }
-
-    public ProjectDTO updateProject(ProjectDTO projectDTO) {
+    public Project projectByProjectExp(UserProjectExp projectExp){
+        return projectRepo.getOne(projectExp.getProject_uuid());
+    }
+    public ProjectDTO updateProject(ProjectDTO projectDTO, boolean byCreator) {
         //TODO:
         // Check if project & projectExp is created by curUsers
         // Reuse createProject logic for members with updated emails
         // Edit member roles
+        // Project creator can update all fields, members can only add new members and edit UserProjectExp custom_description
         Project reqProject = projectDTO.getProject();
         Project curProject = projectRepo.getOne(reqProject.getUuid());
         curProject = GenericUtils.initializeAndUnproxy(curProject);
-        System.out.println(new JSONObject(curProject));
 
-        projectRepo.save(curProject.safeAssignProperties(reqProject));
-        System.out.println(new JSONObject(curProject));
+        if(byCreator) curProject.setDescription(reqProject.getDescription());
 
         UserProjectExp reqUserProjectExp = projectDTO.getProjectExp();
         UserProjectExp curUserProjectExp = userProjectExpRepo.getOne(reqUserProjectExp.getUser_project_exp_uuid());
         curUserProjectExp = GenericUtils.initializeAndUnproxy(curUserProjectExp);
-        System.out.println(new JSONObject(curUserProjectExp));
 
-        curUserProjectExp.safeAssignProperties(reqUserProjectExp);
-        System.out.println(new JSONObject(curUserProjectExp));
-
-        userProjectExpRepo.save(curUserProjectExp);
+        if(!byCreator) curUserProjectExp.setCustom_description(reqProject.getDescription());
 
         User[] reqMembers = Arrays.stream(projectDTO.getMembers())
                 .filter(Objects::nonNull)
@@ -140,12 +137,15 @@ public class ProjectService {
         User[] curMembers = Arrays.stream(reqMembers)
                 .map((ru)->userRepo.getOne(ru.getUuid()))
                 .toArray(User[]::new);
-        for (int i = 0; i < curMembers.length; i++)
-            curMembers[i].safeAssignProperties(reqMembers[i]);
+        //for (int i = 0; i < curMembers.length; i++)
+        //    curMembers[i].safeAssignProperties(reqMembers[i]);
 
-        projectRepo.save(curProject);
+        //projectRepo.save(curProject.safeAssignProperties(reqProject));
+        //userProjectExpRepo.save(curUserProjectExp.safeAssignProperties(reqUserProjectExp));
+
         Arrays.stream(curMembers).forEach(userRepo::save);
-        userProjectExpRepo.save( curUserProjectExp );
+        userProjectExpRepo.save(curUserProjectExp);
+        projectRepo.save(curProject);
 
         ProjectDTO ret = new ProjectDTO();
         ret.setProject(curProject);

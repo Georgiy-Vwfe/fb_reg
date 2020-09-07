@@ -1,6 +1,7 @@
 package com.sixhands.service;
 
 import com.sixhands.SixHandsApplication;
+import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
@@ -11,7 +12,6 @@ import com.sixhands.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +35,8 @@ public class UserService implements UserDetailsService {
     public UserProjectExpRepository userProjectExpRepo;
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private ProjectService projectService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -69,42 +71,6 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
-    @Value("${6hands.domain}")
-    private String domain;
-
-    private void sendMemberVerificationMail(User user, String plainPassword) {
-        if(StringUtils.isEmpty(user.getEmail())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User email is null or empty");
-        String emailText = String.format(
-                "Hello, %s! \n" +
-                "You are invited as a member of a project. \n" +
-                "Your password is %s\n" +
-                "Please, visit this link to verify your account: http://%s/activation/%s",
-                user.getEmail(),
-                plainPassword,
-                domain,
-                user.getActivationCode()
-        );
-        mailSender.send(user.getEmail(), "Activate your profile", emailText);
-    }
-
-    private void sendVerificationMail(User user){
-        if(StringUtils.isEmpty(user.getEmail())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User email is null or empty");
-        String emailText = String.format(
-            "Hello, %s! \n" +
-            "Welcome to 6hands. Please, visit link: http://%s/activation/%s",
-            user.getEmail(),
-            domain,
-            user.getActivationCode()
-        );
-        mailSender.send(user.getEmail(), "Activate your profile", emailText);
-    }
-
-    public List<UserProjectExp> getProjectExpForUser(User user){
-        if(user == null || user.getUuid() == null) return new ArrayList<>();
-        return userProjectExpRepo.findAll().stream()
-                .filter((exp)-> exp.getUser_uuid().equals(user.getUuid()))
-                .collect(Collectors.toList());
-    }
 
     public static Optional<String> getCurrentUsername() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -122,19 +88,6 @@ public class UserService implements UserDetailsService {
         return Optional.ofNullable(username);
     }
 
-    public boolean sendRecoverMail(User user){
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String emailText = String.format(
-                "Hello, %s! \n" +
-                        "You want to recover your password. Please, visit link: http://%s/recover_password",
-                user.getEmail(),
-                domain
-            );
-            mailSender.send(user.getEmail(), "Recover password", emailText);
-        }
-        return true;
-    }
-
     public boolean activateUser(String code) {
         User user = userRepo.findByActivationCode(code);
 
@@ -147,4 +100,72 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+
+    @Value("${6hands.domain}")
+    private String domain;
+
+    public List<UserProjectExp> getProjectExpForUser(User user){
+        if(user == null || user.getUuid() == null) return new ArrayList<>();
+        return userProjectExpRepo.findAll().stream()
+                .filter((exp)-> exp.getUser_uuid().equals(user.getUuid()))
+                .collect(Collectors.toList());
+    }
+
+    public UserProfileDTO getProfileDtoForUser(User user){
+        UserProfileDTO profileDTO = new UserProfileDTO();
+
+        for (UserProjectExp projectExp:getProjectExpForUser(user))
+            profileDTO
+                    .addSkill(projectExp.getSkills(),projectExp)
+                    .addTool(projectExp.getTools(), projectExp);
+
+        for(Project project:projectService.findProjectsByUser(user, false))
+            profileDTO
+                    .addIndustry(project.getIndustry(), project)
+                    .addCompany(project.getCompany(), project);
+
+        return profileDTO;
+    }
+
+    //#region mail-send
+    private void sendMemberVerificationMail(User user, String plainPassword) {
+        if(StringUtils.isEmpty(user.getEmail())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User email is null or empty");
+        String emailText = String.format(
+                "Hello, %s! \n" +
+                        "You are invited as a member of a project. \n" +
+                        "Your password is %s\n" +
+                        "Please, visit this link to verify your account: http://%s/activation/%s",
+                user.getEmail(),
+                plainPassword,
+                domain,
+                user.getActivationCode()
+        );
+        mailSender.send(user.getEmail(), "Activate your profile", emailText);
+    }
+
+    private void sendVerificationMail(User user){
+        if(StringUtils.isEmpty(user.getEmail())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User email is null or empty");
+        String emailText = String.format(
+                "Hello, %s! \n" +
+                        "Welcome to 6hands. Please, visit link: http://%s/activation/%s",
+                user.getEmail(),
+                domain,
+                user.getActivationCode()
+        );
+        mailSender.send(user.getEmail(), "Activate your profile", emailText);
+    }
+
+    public boolean sendRecoverMail(User user){
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String emailText = String.format(
+                    "Hello, %s! \n" +
+                            "You want to recover your password. Please, visit link: http://%s/recover_password",
+                    user.getEmail(),
+                    domain
+            );
+            mailSender.send(user.getEmail(), "Recover password", emailText);
+        }
+        return true;
+    }
+    //#endregion
 }

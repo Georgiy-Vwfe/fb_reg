@@ -1,4 +1,4 @@
-package com.sixhands.controller;
+package com.sixhands.controller.dtos;
 
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;

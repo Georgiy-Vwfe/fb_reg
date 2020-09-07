@@ -1,7 +1,9 @@
 package com.sixhands.controller;
 
+import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
+import com.sixhands.domain.UserProjectExp;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
@@ -31,7 +33,7 @@ public class ProjectController {
     @Autowired
     private UserProjectExpRepository userProjectExpRepo;
 
-    private Map<Long,ProjectDTO> editedProjects = new HashMap<>();
+    private Map<Long, ProjectDTO> editedProjects = new HashMap<>();
     private User getCurUser(){
         return userService.loadUserByUsername(UserService.getCurrentUsername()
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"User is unauthorized")));
@@ -40,7 +42,7 @@ public class ProjectController {
     public String getEditProject(Model model, @PathVariable int id){
         User curUser = getCurUser();
         //Get all projects that are created by current user
-        Project[] projects = projectService.findProjectsCreatedByUser(curUser);
+        Project[] projects = projectService.findProjectsByUser(curUser,true);
         //leave project that matches {id} from request path
         projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
         if(projects.length == 0)
@@ -70,7 +72,11 @@ public class ProjectController {
     @PutMapping(value = "/save", params = {"action=persist"})
     public String updateProject(@ModelAttribute ProjectDTO projectDTO){
         //FIXME: Error when adding/removing members
-        projectService.updateProject(projectDTO);
+        User curUser = getCurUser();
+        Project curProject = projectRepo.getOne(projectDTO.getProject().getUuid());
+        Optional<UserProjectExp> projectExp = projectService.projectExpByUser(curProject,curUser);
+        if(!projectExp.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project");
+        projectService.updateProject(projectDTO,projectExp.get().isProject_creator());
         return "redirect:/user/me";
     }
     @PostMapping(value = "/save", params = {"action=persist"})

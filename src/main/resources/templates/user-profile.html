@@ -49,11 +49,13 @@
             </section>
         </div>
         <div th:if="${user != null}" class="container box box_admin box_text_center">
+            <pre th:text="${userData}"></pre>
             <div>Projects</div>
             <ul th:if="${projects.length > 0}">
-                <li th:each="projExp : ${projects}">
-                    <div th:text="${projExp}"></div>
-                    <a th:href="'/project/'+${projExp.project_uuid}+'/edit'">Edit</a>
+                <li th:each="projAndExp : ${projects}">
+                    <div th:text="${projAndExp.project.name}"></div>
+                    <div th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>
+                    <a th:href="'/project/'+${projAndExp.project.uuid}+'/edit'">Edit</a>
                 </li>
             </ul>
             <span th:if="${projects.length == 0}">No projects found</span>

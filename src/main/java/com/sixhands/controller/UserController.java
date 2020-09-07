@@ -1,8 +1,12 @@
 package com.sixhands.controller;
 
+import com.sixhands.controller.dtos.UserProfileDTO;
+import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
+import com.sixhands.misc.GenericUtils;
 import com.sixhands.repository.UserRepository;
+import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,8 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
+    private ProjectService projectService;
+    @Autowired
     private UserRepository userRepo;
     @GetMapping("/me")
     public String getMeUser(Model model){
@@ -34,8 +40,11 @@ public class UserController {
             User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
             canEdit = curUser.getUuid().equals(user.getUuid());
         }catch (Exception ignored){}
-        UserProjectExp[] projectExps = userService.getProjectExpForUser(user).toArray(new UserProjectExp[0]);
+        ProjectAndExpDTO[] projectExps = userService.getProjectExpForUser(user).stream()
+                .map((ue)->new ProjectAndExpDTO(projectService.projectByProjectExp(ue),ue))
+                .toArray(ProjectAndExpDTO[]::new);
         model.addAttribute("user",user);
+        model.addAttribute("userData", userService.getProfileDtoForUser(user).toString() );
         model.addAttribute("canEdit",canEdit);
         model.addAttribute("projects",projectExps);
         return edit == 1 ? "edit-user-profile" : "user-profile";
@@ -46,9 +55,37 @@ public class UserController {
         User curUser = userService.loadUserByUsername( UserService.getCurrentUsername().orElseThrow(()->new RequestRejectedException("User is not logged in")) );
 
         curUser.safeAssignProperties(editUser);
-        System.out.println(new JSONObject(curUser));
         userRepo.save(curUser);
 
         return "redirect:/user/me";
     }
+
+    public static class ProjectAndExpDTO {
+        private Project project;
+        private UserProjectExp projectExp;
+        public ProjectAndExpDTO(){}
+        public ProjectAndExpDTO(Project project, UserProjectExp projectExp){
+            this.project = project;
+            this.projectExp = projectExp;
+        }
+        //#region getters/setters
+        public Project getProject() {
+            return project;
+        }
+
+        public void setProject(Project project) {
+            this.project = project;
+        }
+
+        public UserProjectExp getProjectExp() {
+            return projectExp;
+        }
+
+        public void setProjectExp(UserProjectExp projectExp) {
+            this.projectExp = projectExp;
+        }
+        //#endregion
+    }
+
+
 }

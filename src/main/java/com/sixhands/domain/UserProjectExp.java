@@ -17,19 +17,23 @@ public class UserProjectExp {
     private String role;
     private String skills;
     private String tools;
-    private String industry;
+    //Already in project
+    //private String industry;
 
+    private String custom_description;
     private boolean project_creator = false;
 
     public UserProjectExp safeAssignProperties(UserProjectExp unsafe){
         role = unsafe.getRole();
-        industry = unsafe.getIndustry();
+        //industry = unsafe.getIndustry();
         tools = unsafe.getTools();
         skills = unsafe.getSkills();
         position = unsafe.getPosition();
+        custom_description = unsafe.getCustom_description();
         return this;
     }
 
+    //#region getters/setters
     public Long getUser_uuid() {
         return user_uuid;
     }
@@ -78,13 +82,9 @@ public class UserProjectExp {
         this.tools = tools;
     }
 
-    public String getIndustry() {
-        return industry;
-    }
+    //public String getIndustry() { return industry; }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
+    //public void setIndustry(String industry) { this.industry = industry; }
 
     public Long getUser_project_exp_uuid() {
         return user_project_exp_uuid;
@@ -101,4 +101,13 @@ public class UserProjectExp {
     public void setProject_creator(boolean project_creator) {
         this.project_creator = project_creator;
     }
+
+    public String getCustom_description() {
+        return custom_description;
+    }
+
+    public void setCustom_description(String custom_description) {
+        this.custom_description = custom_description;
+    }
+    //#endregion
 }

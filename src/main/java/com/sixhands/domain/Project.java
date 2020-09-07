@@ -1,7 +1,5 @@
 package com.sixhands.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
