@@ -1,9 +1,9 @@
 package com.sixhands.controller;
 
 import com.sixhands.controller.dtos.ProjectDTO;
+import com.sixhands.controller.dtos.UserAndExpDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
-import com.sixhands.domain.UserProjectExp;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -38,8 +39,8 @@ public class ProjectController {
         return userService.loadUserByUsername(UserService.getCurrentUsername()
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"User is unauthorized")));
     }
-    @GetMapping("/{id}/edit")
-    public String getEditProject(Model model, @PathVariable int id){
+    @GetMapping(value = "/{id}/edit", params = {"as=creator"})
+    public String getEditProjectCreator(Model model, @PathVariable int id){
         User curUser = getCurUser();
         //Get all projects that are created by current user
         Project[] projects = projectService.findProjectsByUser(curUser,true);
@@ -47,25 +48,45 @@ public class ProjectController {
         projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
         if(projects.length == 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User did not create this project or project was not found");
+        ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0],curUser);
         model.addAttribute("isEditing",true);
-        model.addAttribute("projectDTO",projectService.updateProjectDTOFromProject(projects[0],curUser));
+        model.addAttribute("projectDTO",projectDTO);
+        return "save-project";
+    }
+    @GetMapping(value = "/{id}/edit", params = {"as=member"})
+    public String getEditProjectMember(Model model, @PathVariable int id){
+        User curUser = getCurUser();
+        //Get all projects that are created by current user
+        Project[] projects = projectService.findProjectsByUser(curUser,false);
+        //leave project that matches {id} from request path
+        projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
+        if(projects.length == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project or project was not found");
+        ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0],curUser);
+        if(projectDTO.getMember().getUserExp().isProject_creator())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User cannot edit this project as a member");
+        model.addAttribute("isEditing",true);
+        model.addAttribute("projectDTO",projectDTO);
         return "save-project";
     }
     @GetMapping("/create")
     public String createProject(Model model) {
         model.addAttribute("projectDTO",new ProjectDTO());
+        model.addAttribute("isEditing",false);
         return "save-project";
     }
-    @PostMapping(value = "/save", params = {"action=add-member"})
-    public String addMember(@ModelAttribute ProjectDTO projectDTO, Model model) {
+    @RequestMapping(value = "/save", params = {"action=add-member"}, method = {RequestMethod.PUT,RequestMethod.POST})
+    public String addMember(@ModelAttribute ProjectDTO projectDTO, Model model, HttpServletRequest request) {
         projectDTO.addNewMember();
         model.addAttribute("projectDTO",projectDTO);
+        model.addAttribute("isEditing",request.getMethod().equalsIgnoreCase("PUT"));
         return "save-project";
     }
-    @PostMapping(value = "/save", params = {"action=delete-member"})
-    public String deleteMember(@ModelAttribute ProjectDTO projectDTO, Model model, @RequestParam Integer index){
+    @RequestMapping(value = "/save", params = {"action=delete-member"}, method = {RequestMethod.PUT,RequestMethod.POST})
+    public String deleteMember(@ModelAttribute ProjectDTO projectDTO, Model model, @RequestParam Integer index, HttpServletRequest request){
         projectDTO.deleteMember(index);
         model.addAttribute("projectDTO",projectDTO);
+        model.addAttribute("isEditing",request.getMethod().equalsIgnoreCase("PUT"));
         return "save-project";
     }
     @Transactional
@@ -74,9 +95,10 @@ public class ProjectController {
         //FIXME: Error when adding/removing members
         User curUser = getCurUser();
         Project curProject = projectRepo.getOne(projectDTO.getProject().getUuid());
-        Optional<UserProjectExp> projectExp = projectService.projectExpByUser(curProject,curUser);
-        if(!projectExp.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project");
-        projectService.updateProject(projectDTO,projectExp.get().isProject_creator());
+        Optional<UserAndExpDTO> projectExp = projectService.userAndExpByUser(curProject,curUser);
+        if(!projectExp.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project");
+        projectService.updateProject(projectDTO,projectExp.get().getUserExp().isProject_creator());
         return "redirect:/user/me";
     }
     @PostMapping(value = "/save", params = {"action=persist"})

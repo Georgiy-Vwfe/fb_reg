@@ -2,10 +2,10 @@ package com.sixhands.misc;
 
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
-import org.json.JSONObject;
 
 import java.security.SecureRandom;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
 
 public class GenericUtils {
@@ -34,6 +34,30 @@ public class GenericUtils {
             sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
         return sb.toString();
     }
+    //https://stackoverflow.com/a/10650881
+    public static Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
 
+        long diffInMillies = date2.getTime() - date1.getTime();
 
+        //create the list
+        List<TimeUnit> units = new ArrayList<>(EnumSet.of(TimeUnit.DAYS,TimeUnit.HOURS));
+        Collections.reverse(units);
+
+        //create the result map of TimeUnit and difference
+        Map<TimeUnit,Long> result = new LinkedHashMap<>();
+        long milliesRest = diffInMillies;
+
+        for ( TimeUnit unit : units ) {
+
+            //calculate difference in millisecond
+            long diff = unit.convert(milliesRest,TimeUnit.MILLISECONDS);
+            long diffInMilliesForUnit = unit.toMillis(diff);
+            milliesRest = milliesRest - diffInMilliesForUnit;
+
+            //put the result in the map
+            result.put(unit,diff);
+        }
+
+        return result;
+    }
 }

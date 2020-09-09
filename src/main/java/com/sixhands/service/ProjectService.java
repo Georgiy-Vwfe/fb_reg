@@ -1,18 +1,18 @@
 package com.sixhands.service;
 
 import com.sixhands.controller.dtos.ProjectDTO;
+import com.sixhands.controller.dtos.UserAndExpDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
-import com.sixhands.exception.UserAlreadyExistsException;
 import com.sixhands.misc.GenericUtils;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
@@ -30,127 +30,148 @@ public class ProjectService {
     @Autowired
     private UserService userService;
 
+    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO member, Project project){ //Called for all project member on project creation/update
+        Optional<UserAndExpDTO> oUserAndExp = Optional.empty();
+        try {
+            Optional<User> oUser;
+            if( !StringUtils.isEmpty(member.getUser().getPassword()) && !StringUtils.isEmpty(member.getUser().getEmail()) && member.getUser().getUuid() != null )
+                oUser = Optional.of(member.getUser());
+            else
+                oUser = userService.findUserByUsername(member.getUser().getEmail());
+
+            User user = oUser.isPresent() ?
+                    oUser.get() :
+                    userService.registerUser(member.getUser().getEmail(),true);
+            member.setUser(user);
+            oUserAndExp = userAndExpByUser(project,user);
+        }
+        catch (Exception e) { e.printStackTrace(); return null; }
+
+        if(oUserAndExp.isPresent()){ //UserAndExp is persisted, update role and save
+            UserAndExpDTO userAndExp = oUserAndExp.get();
+            userAndExp.getUserExp().setRole(member.getUserExp().getRole());
+            userProjectExpRepo.save(userAndExp.getUserExp());
+        }else{ //UserAndExp is not persisted, set IDs and save
+            member.getUserExp().setProject_uuid(project.getUuid());
+            member.getUserExp().setUser_uuid(member.getUser().getUuid());
+            userProjectExpRepo.save(member.getUserExp());
+        }
+        userRepo.save(member.getUser());
+        return member;
+    }
+
     //TODO: Throw error if project creator specified himself as a member
     public void saveNewProject(ProjectDTO projectDTO, User curUser){
         Project project = projectDTO.getProject();
-        User[] members = projectDTO.getMembers();
-        UserProjectExp userProjectExp = projectDTO.getProjectExp();
+        UserAndExpDTO[] members = projectDTO.getMembers();
+        UserAndExpDTO creatorUserAndExp = projectDTO.getMember();
+        UserProjectExp creatorProjectExp = creatorUserAndExp.getUserExp();
 
         project = projectRepo.save(project);
         final long projectId = project.getUuid();
 
-        userProjectExp.setProject_uuid(projectId);
-        userProjectExp.setUser_uuid(curUser.getUuid());
-        userProjectExp.setProject_creator(true);
+        creatorProjectExp.setProject_uuid(projectId);
+        creatorProjectExp.setUser_uuid(curUser.getUuid());
+        creatorProjectExp.setProject_creator(true);
 
-        List<UserProjectExp> memberExp = Arrays.stream(members)
+        Project finalProject = project;
+        List<UserAndExpDTO> memberExp = Arrays.stream(members)
                 .filter(Objects::nonNull)
-                .map((member)->{
-                    UserProjectExp exp = new UserProjectExp();
-                    exp.setProject_uuid(projectId);
-                    exp.setRole(member.getAbout_user());
-                    long memberId = -1;
-                    try {
-                        memberId = userService.loadUserByUsername(member.getEmail()).getUuid();
-                    }catch (Exception e){
-                        try { member = userService.registerUser(member.getEmail(),true); memberId = member.getUuid();}
-                        catch (UserAlreadyExistsException ex) { ex.printStackTrace(); }
-                    }
-                    exp.setUser_uuid(memberId);
-                    return exp;
-                }).collect(Collectors.toList());
+                .map((member)-> createOrUpdateProjectExp(member, finalProject) )
+                .collect(Collectors.toList());
 
-        boolean invalidMembersArePresent = memberExp.stream().map(UserProjectExp::getUser_uuid).anyMatch((id)->id==-1);
-        if( invalidMembersArePresent ) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to register a project member");
-
-        memberExp.add(userProjectExp);
-        memberExp.forEach(userProjectExpRepo::save);
+        userProjectExpRepo.save(creatorProjectExp);
+        memberExp.forEach((ueDTO)->userProjectExpRepo.save(ueDTO.getUserExp()));
     }
 
-    public ProjectDTO updateProjectDTOFromProject(Project project, User projectExpUser){
+    public ProjectDTO projectDTOFromProject(Project project, User projectExpUser){
         ProjectDTO ret = new ProjectDTO();
         ret.setProject(project);
-        UserProjectExp exp = projectExpByUser(project,projectExpUser)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project"));
-        ret.setProjectExp( exp );
+        UserAndExpDTO exp = userAndExpByUser(project,projectExpUser)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not a member of this project"));
+        ret.setMember( exp );
         //map UserProjectExp[] to User[], exclude project creator
         ret.setMembers(Arrays.stream(projectExpByProject(project))
-                .filter((ue)-> !ue.getUser_project_exp_uuid().equals(exp.getUser_project_exp_uuid()))
-                .map(this::projectExpToUser)
-                .toArray(User[]::new));
+                .filter((ue)-> !ue.getUserExp().getUuid().equals(exp.getUserExp().getUuid()))
+                .toArray(UserAndExpDTO[]::new));
         return ret;
     }
-    public Project[] findProjectsByUser(User user, boolean onlyCreated){
-        for (Object obj:new Object[]{user, user.getUuid()})
-            Objects.requireNonNull(obj);
-        Stream<Project> projectStream = projectRepo.findAll().stream();
-        if(onlyCreated) projectStream = projectStream.filter( (p)-> projectExpByUser(p,user).map(UserProjectExp::isProject_creator).orElse(false) );
-        return projectStream.toArray(Project[]::new);
-    }
-    public Optional<UserProjectExp> projectExpByUser(Project project, User user){
-        for (Object obj:new Object[]{project, user, project.getUuid(), user.getUuid()})
-            Objects.requireNonNull(obj);
 
-        return Arrays.stream(projectExpByProject(project))
-                .filter((ue)-> ue.getUser_uuid().equals(user.getUuid()))
-                .findFirst();
-    }
-    public User projectExpToUser(UserProjectExp userProjectExp){
-        for (Object obj:new Object[]{userProjectExp,userProjectExp.getUser_project_exp_uuid(),userProjectExp.getUser_uuid(),userProjectExp.getProject_uuid()})
-            Objects.requireNonNull(obj);
-
-        return userRepo.findById(userProjectExp.getUser_uuid())
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to find project member"));
-    }
-    public UserProjectExp[] projectExpByProject(Project project){
-        for (Object obj:new Object[]{project, project.getUuid()})
-            Objects.requireNonNull(obj);
-
-        return userProjectExpRepo.findAll().stream()
-                .filter((pe)-> pe.getProject_uuid().equals(project.getUuid()))
-                .toArray(UserProjectExp[]::new);
-    }
-    public Project projectByProjectExp(UserProjectExp projectExp){
-        return projectRepo.getOne(projectExp.getProject_uuid());
-    }
     public ProjectDTO updateProject(ProjectDTO projectDTO, boolean byCreator) {
         //TODO:
-        // Check if project & projectExp is created by curUsers
+        // throw exception if user created two members with same mail/another member with his mail
         // Reuse createProject logic for members with updated emails
-        // Edit member roles
-        // Project creator can update all fields, members can only add new members and edit UserProjectExp custom_description
+        // Project creator can update all fields, members can only add new members and edit UserProjectExp
         Project reqProject = projectDTO.getProject();
         Project curProject = projectRepo.getOne(reqProject.getUuid());
         curProject = GenericUtils.initializeAndUnproxy(curProject);
 
-        if(byCreator) curProject.setDescription(reqProject.getDescription());
+        if(byCreator)
+            curProject.setDescription(reqProject.getDescription());
+        else
+            curProject.setConfirmed(true);
 
-        UserProjectExp reqUserProjectExp = projectDTO.getProjectExp();
-        UserProjectExp curUserProjectExp = userProjectExpRepo.getOne(reqUserProjectExp.getUser_project_exp_uuid());
+        UserAndExpDTO reqUserAndExp = projectDTO.getMember();
+        UserAndExpDTO curUserProjectExp = userAndExpByUser( curProject,
+            userRepo.getOne(
+                reqUserAndExp
+                    .getUser()
+                    .getUuid()
+            )
+        ).get();
         curUserProjectExp = GenericUtils.initializeAndUnproxy(curUserProjectExp);
 
-        if(!byCreator) curUserProjectExp.setCustom_description(reqProject.getDescription());
+        curUserProjectExp
+                .getUserExp()
+                .safeAssignProperties(reqUserAndExp.getUserExp());
+        if(!byCreator)
+            curUserProjectExp
+                    .getUserExp()
+                    .setCustom_description(reqProject.getDescription());
 
-        User[] reqMembers = Arrays.stream(projectDTO.getMembers())
+        UserAndExpDTO[] curMembers = Arrays.stream(projectDTO.getMembers())
                 .filter(Objects::nonNull)
-                .toArray(User[]::new);
-        User[] curMembers = Arrays.stream(reqMembers)
-                .map((ru)->userRepo.getOne(ru.getUuid()))
-                .toArray(User[]::new);
-        //for (int i = 0; i < curMembers.length; i++)
-        //    curMembers[i].safeAssignProperties(reqMembers[i]);
+                .map((memDTO)-> createOrUpdateProjectExp(memDTO,projectDTO.getProject()))
+                .toArray(UserAndExpDTO[]::new);
 
-        //projectRepo.save(curProject.safeAssignProperties(reqProject));
-        //userProjectExpRepo.save(curUserProjectExp.safeAssignProperties(reqUserProjectExp));
-
-        Arrays.stream(curMembers).forEach(userRepo::save);
-        userProjectExpRepo.save(curUserProjectExp);
+        userProjectExpRepo.save(curUserProjectExp.getUserExp());
         projectRepo.save(curProject);
 
         ProjectDTO ret = new ProjectDTO();
         ret.setProject(curProject);
         ret.setMembers(curMembers);
-        ret.setProjectExp(curUserProjectExp);
+        ret.setMember(curUserProjectExp);
         return ret;
     }
+
+    //#region methods for finding and filtering data
+    //FIXME: TWO CALLS TO userAndExpByUser()
+    public Project[] findProjectsByUser(User user, boolean onlyCreated){
+        for (Object obj:new Object[]{user, user.getUuid()})
+            Objects.requireNonNull(obj);
+        Stream<Project> projectStream = projectRepo.findAll().stream()
+                .filter((p)-> userAndExpByUser(p,user).isPresent());
+        if(onlyCreated) projectStream = projectStream.filter( (p)-> userAndExpByUser(p,user).map((pe)->pe.getUserExp().isProject_creator()).orElse(false) );
+        return projectStream.toArray(Project[]::new);
+    }
+    public Optional<UserAndExpDTO> userAndExpByUser(Project project, User user){
+        for (Object obj:new Object[]{project, user, project.getUuid(), user.getUuid()})
+            Objects.requireNonNull(obj);
+
+        return Arrays.stream(projectExpByProject(project))
+                .filter((ue)-> ue.getUser().getUuid().equals(user.getUuid()))
+                .findFirst();
+    }
+    public UserAndExpDTO[] projectExpByProject(Project project){
+        for (Object obj:new Object[]{project, project.getUuid()})
+            Objects.requireNonNull(obj);
+
+        return userProjectExpRepo
+                .findAll()
+                .stream()
+                .filter((pe) -> pe.getProject_uuid().equals(project.getUuid()))
+                .map((exp)->new UserAndExpDTO(userRepo.getOne(exp.getUser_uuid()),exp))
+                .toArray(UserAndExpDTO[]::new);
+    }
+    //#endregion
 }

@@ -21,6 +21,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uuid;
 
+    @NotNull
     private String email;
 
     @NotNull
@@ -44,8 +45,6 @@ public class User implements UserDetails {
     private String role;
 
     private String activationCode;
-
-    private String invited_project_role;
 
     public Long getUuid() {
         return uuid;
