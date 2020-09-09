@@ -101,38 +101,20 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Skills</div>
                         </div>
-                        <div class="box__inner">
+                        <div class="box__inner" th:each="projAndExp : ${projects}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
                                     <div class="bit__image">
                                         <div class="middle">
                                             <div>
-                                                <img src="images/bit/alpha/suitcase.svg" alt="alt"/>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
                                         <span class="bit__caption">1</span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title">UX User experiense design</h3>
-                                        <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- bit-->
-                                <div class="bit bit_alpha">
-                                    <div class="bit__image">
-                                        <div class="middle">
-                                            <div>
-                                                <img src="images/bit/alpha/suitcase.svg" alt="alt"/>
-                                            </div>
-                                        </div>
-                                        <span class="bit__caption">1</span>
-                                    </div>
-                                    <div class="bit__content">
-                                        <h3 class="bit__title">Product design</h3>
+                                        <h3 class="bit__title" th:text="${projAndExp.projectExp.skills}"></h3>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
@@ -147,23 +129,22 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Company</div>
                         </div>
-                        <div class="box__inner">
+                        <div class="box__inner" th:each="projAndExp : ${projects}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
                                     <div class="bit__image">
                                         <div class="middle">
                                             <div>
-                                                <img src="images/bit/alpha/suitcase.svg" alt="alt"/>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
                                         <span class="bit__caption">1</span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title">Google</h3>
-                                        <div class="bit__desc">Junior Designer
-                                            <br>Logistics of coffee and sandwiches in the office
-                                        </div>
+                                        <h3 class="bit__title" th:text="${projAndExp.project.company}"></h3>
+                                        <div class="bit__desc" th:text="${projAndExp.projectExp.role}"></div>
+                                            <br th:text="${projAndExp.projectExp.duties}">
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
@@ -178,20 +159,20 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Industry</div>
                         </div>
-                        <div class="box__inner">
+                        <div class="box__inner" th:each="projAndExp : ${projects}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
                                     <div class="bit__image">
                                         <div class="middle">
                                             <div>
-                                                <img src="images/bit/alpha/suitcase.svg" alt="alt"/>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
                                         <span class="bit__caption">1</span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title">App design</h3>
+                                        <h3 class="bit__title" th:text="${projAndExp.project.industry}">App design</h3>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
@@ -206,38 +187,20 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Tools</div>
                         </div>
-                        <div class="box__inner">
+                        <div class="box__inner" th:each="projAndExp : ${projects}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
                                     <div class="bit__image">
                                         <div class="middle">
                                             <div>
-                                                <img src="images/bit/alpha/suitcase.svg" alt="alt"/>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
                                         <span class="bit__caption">1</span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title">Adobe Photoshop</h3>
-                                        <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- bit-->
-                                <div class="bit bit_alpha">
-                                    <div class="bit__image">
-                                        <div class="middle">
-                                            <div>
-                                                <img src="images/bit/alpha/suitcase.svg" alt="alt"/>
-                                            </div>
-                                        </div>
-                                        <span class="bit__caption">1</span>
-                                    </div>
-                                    <div class="bit__content">
-                                        <h3 class="bit__title">Form (by relative waves)</h3>
+                                        <h3 class="bit__title" th:text="${projAndExp.projectExp.tools}"></h3>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
@@ -267,27 +230,28 @@
                         <div class="box__inner">
                             <div class="box__inner-widget">
                                 <!-- card-project-->
-                                <div class="card-project card-project_alpha card-project_admin">
+                                <div class="card-project card-project_alpha card-project_admin"
+                                     th:each="projAndExp : ${projects}" >
+
                                     <div class="d-flex">
-                                        <h2 class="card-project__title">Google glass<small>February 2017</small></h2>
+                                        <h2 class="card-project__title" th:text="${projAndExp.project.name}">
+                                            <small th:text="${project.end_date}"></small></h2>
+<!--                                        <button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
                                         <div class="card-project__image">
                                             <div class="middle">
                                                 <div>
-                                                    <img src="image" alt="Google glass"/>
+                                                    <img src="/image" alt="Google glass"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex">
-                                        <ul class="card-project__list list">
-                                            <li>UX User experiense design</li>
-                                            <li>UX/UI Designer</li>
+                                        <ul class="card-project__list list" >
+                                            <li th:text="${projAndExp.projectExp.position}"></li>
+                                            <li th:text="${projAndExp.projectExp.role}"></li>
                                         </ul>
                                     </div>
-                                    <div class="card-project__desc">I am extremely simple to use and works with the
-                                        devices you use every day. Easily pay with your debit cards and credit cards
-                                        with just a touch. And because your card details are never shared by Apple when
-                                        you use Apple Pay.
+                                    <div class="card-project__desc" th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}">
                                     </div>
                                     <div class="card-project__btn">
                                         <button type="button" class="btn btn_secondary btn_sm">Not approved yet</button>
