@@ -8,13 +8,14 @@ import java.util.Arrays;
 
 public class ProjectDTO {
     private Project project = new Project();
-    private UserProjectExp projectExp = new UserProjectExp();
-    private User[] members = new User[10];
+    private UserAndExpDTO member = new UserAndExpDTO();
+    private UserAndExpDTO[] members = new UserAndExpDTO[10];
 
     public void addNewMember(){
         int index = Arrays.asList(members).indexOf(null);
         if(index == -1) return;
-        members[index] = new User();
+        members[index] = new UserAndExpDTO(new User(), new UserProjectExp());
+        members[index].setAdded(true);
     }
 
     public void deleteMember(int index){
@@ -29,19 +30,19 @@ public class ProjectDTO {
         this.project = project;
     }
 
-    public User[] getMembers(){
+    public UserAndExpDTO[] getMembers(){
         return members;
     }
 
-    public void setMembers(User[] members){
+    public void setMembers(UserAndExpDTO[] members){
         this.members = members;
     }
 
-    public UserProjectExp getProjectExp() {
-        return projectExp;
+    public UserAndExpDTO getMember() {
+        return member;
     }
 
-    public void setProjectExp(UserProjectExp projectExp) {
-        this.projectExp = projectExp;
+    public void setMember(UserAndExpDTO projectExp) {
+        this.member = projectExp;
     }
 }

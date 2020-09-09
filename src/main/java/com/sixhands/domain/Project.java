@@ -1,6 +1,13 @@
 package com.sixhands.domain;
 
+import com.sixhands.misc.GenericUtils;
+
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Entity
 @Table(name = "project")
@@ -16,6 +23,7 @@ public class Project {
     private String start_date;
     private String end_date;
     private String link;
+    private boolean confirmed = false;
     public Project safeAssignProperties(Project reqProject){
         name = reqProject.getName();
         description = reqProject.getDescription();
@@ -27,6 +35,20 @@ public class Project {
         return this;
     }
 
+    public String getDuration(){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            Date start = dateFormat.parse(start_date);
+            Date end = dateFormat.parse(end_date);
+            if(start.getTime() > end.getTime())
+                return null;
+            Map<TimeUnit,Long> dif = GenericUtils.computeDiff(start,end);
+            Long days = dif.get(TimeUnit.DAYS);
+            return days+(days == 1 ? " day":" days");
+        }catch(ParseException e){ return null; }
+    }
+
+    //#region getters/setters
     public Long getUuid() {
         return uuid;
     }
@@ -90,4 +112,13 @@ public class Project {
     public void setLink(String link) {
         this.link = link;
     }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+    //#endregion
 }

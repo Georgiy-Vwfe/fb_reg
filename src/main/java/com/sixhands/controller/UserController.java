@@ -1,14 +1,12 @@
 package com.sixhands.controller;
 
-import com.sixhands.controller.dtos.UserProfileDTO;
+import com.sixhands.controller.dtos.ProjectAndUserExpDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
-import com.sixhands.domain.UserProjectExp;
-import com.sixhands.misc.GenericUtils;
+import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.firewall.RequestRejectedException;
@@ -26,6 +24,8 @@ public class UserController {
     private ProjectService projectService;
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private ProjectRepository projectRepo;
     @GetMapping("/me")
     public String getMeUser(Model model){
         User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
@@ -40,9 +40,9 @@ public class UserController {
             User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
             canEdit = curUser.getUuid().equals(user.getUuid());
         }catch (Exception ignored){}
-        ProjectAndExpDTO[] projectExps = userService.getProjectExpForUser(user).stream()
-                .map((ue)->new ProjectAndExpDTO(projectService.projectByProjectExp(ue),ue))
-                .toArray(ProjectAndExpDTO[]::new);
+        ProjectAndUserExpDTO[] projectExps = userService.getProjectExpForUser(user).stream()
+                .map((ue)->new ProjectAndUserExpDTO(projectRepo.getOne(ue.getProject_uuid()),ue))
+                .toArray(ProjectAndUserExpDTO[]::new);
         model.addAttribute("user",user);
         model.addAttribute("userData", userService.getProfileDtoForUser(user).toString() );
         model.addAttribute("canEdit",canEdit);
@@ -58,33 +58,6 @@ public class UserController {
         userRepo.save(curUser);
 
         return "redirect:/user/me";
-    }
-
-    public static class ProjectAndExpDTO {
-        private Project project;
-        private UserProjectExp projectExp;
-        public ProjectAndExpDTO(){}
-        public ProjectAndExpDTO(Project project, UserProjectExp projectExp){
-            this.project = project;
-            this.projectExp = projectExp;
-        }
-        //#region getters/setters
-        public Project getProject() {
-            return project;
-        }
-
-        public void setProject(Project project) {
-            this.project = project;
-        }
-
-        public UserProjectExp getProjectExp() {
-            return projectExp;
-        }
-
-        public void setProjectExp(UserProjectExp projectExp) {
-            this.projectExp = projectExp;
-        }
-        //#endregion
     }
 
 

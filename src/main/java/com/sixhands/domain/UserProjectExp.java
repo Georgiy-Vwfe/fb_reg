@@ -1,7 +1,5 @@
 package com.sixhands.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +7,7 @@ import javax.persistence.*;
 public class UserProjectExp {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long user_project_exp_uuid;
+    private Long uuid;
 
     private Long user_uuid;
     private Long project_uuid;
@@ -17,6 +15,7 @@ public class UserProjectExp {
     private String role;
     private String skills;
     private String tools;
+    private String duties;
     //Already in project
     //private String industry;
 
@@ -25,11 +24,10 @@ public class UserProjectExp {
 
     public UserProjectExp safeAssignProperties(UserProjectExp unsafe){
         role = unsafe.getRole();
-        //industry = unsafe.getIndustry();
+        duties = unsafe.getDuties();
         tools = unsafe.getTools();
         skills = unsafe.getSkills();
         position = unsafe.getPosition();
-        custom_description = unsafe.getCustom_description();
         return this;
     }
 
@@ -86,12 +84,12 @@ public class UserProjectExp {
 
     //public void setIndustry(String industry) { this.industry = industry; }
 
-    public Long getUser_project_exp_uuid() {
-        return user_project_exp_uuid;
+    public Long getUuid() {
+        return uuid;
     }
 
-    public void setUser_project_exp_uuid(Long user_project_exp_uuid) {
-        this.user_project_exp_uuid = user_project_exp_uuid;
+    public void setUuid(Long uuid) {
+        this.uuid = uuid;
     }
 
     public boolean isProject_creator() {
@@ -108,6 +106,14 @@ public class UserProjectExp {
 
     public void setCustom_description(String custom_description) {
         this.custom_description = custom_description;
+    }
+
+    public String getDuties() {
+        return duties;
+    }
+
+    public void setDuties(String duties) {
+        this.duties = duties;
     }
     //#endregion
 }

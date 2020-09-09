@@ -7,6 +7,7 @@ import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
 import com.sixhands.exception.UserAlreadyExistsException;
 import com.sixhands.misc.GenericUtils;
+import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepo;
     @Autowired
+    private ProjectRepository projectRepo;
+    @Autowired
     private ProjectService projectService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -43,6 +46,11 @@ public class UserService implements UserDetailsService {
         UsernameNotFoundException notFoundException = new UsernameNotFoundException("Unable to find user "+username);
         if(StringUtils.isEmpty(username)) throw notFoundException;
         return userRepo.findByEmail(username).orElseThrow(()->notFoundException);
+    }
+    public Optional<User> findUserByUsername(String username){
+        User ret = null;
+        try{ ret = loadUserByUsername(username); }catch (Exception ignored){}
+        return Optional.ofNullable(ret);
     }
     public User registerUser(String email) throws UserAlreadyExistsException {
         return registerUser(email, GenericUtils.randomAlphaNumString(8));
@@ -113,13 +121,16 @@ public class UserService implements UserDetailsService {
 
     public UserProfileDTO getProfileDtoForUser(User user){
         UserProfileDTO profileDTO = new UserProfileDTO();
-
-        for (UserProjectExp projectExp:getProjectExpForUser(user))
+        List<UserProjectExp> projectExps = getProjectExpForUser(user);
+        for (UserProjectExp projectExp:projectExps){
+            Project project = projectRepo.getOne(projectExp.getProject_uuid());
             profileDTO
-                    .addSkill(projectExp.getSkills(),projectExp)
-                    .addTool(projectExp.getTools(), projectExp);
-
-        for(Project project:projectService.findProjectsByUser(user, false))
+                    .addSkill(projectExp.getSkills(),projectExp, project)
+                    .addTool(projectExp.getTools(), projectExp, project);
+        }
+        //test 4 - LSqLBV7T
+        Project[] projects = projectService.findProjectsByUser(user, false);
+        for(Project project:projects)
             profileDTO
                     .addIndustry(project.getIndustry(), project)
                     .addCompany(project.getCompany(), project);

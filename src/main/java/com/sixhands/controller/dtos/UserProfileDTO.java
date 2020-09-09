@@ -8,16 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class UserProfileDTO {
     public UserProfileDTO(){}
 
-    // COMMA-SEPARATED
+    // ? COMMA-SEPARATED
     private List<UserProfilePropertyDTO> skills = new ArrayList<>();
-    // COMMA-SEPARATED
+    // ? COMMA-SEPARATED
     private List<UserProfilePropertyDTO> tools = new ArrayList<>();
 
     private List<UserProfilePropertyDTO> companies = new ArrayList<>();
@@ -32,16 +31,10 @@ public class UserProfileDTO {
                             .count() > 1
             ).collect(Collectors.toList());
     }
-    public UserProfileDTO addSkill(String property, UserProjectExp projectExp){ return addPropertyFromString(property,projectExp,skills); }
-    public UserProfileDTO addTool(String property, UserProjectExp projectExp){ return addPropertyFromString(property,projectExp,tools); }
-    public UserProfileDTO addCompany(String property, Project project){ return addPropertyFromString(property,project,companies); }
-    public UserProfileDTO addIndustry(String property, Project project){ return addPropertyFromString(property,project,industries); }
-    private UserProfileDTO addPropertyFromString(String property, UserProjectExp projectExp, List<UserProfilePropertyDTO> to){
-        return addPropertyFromString(property,projectExp,null,to);
-    }
-    private UserProfileDTO addPropertyFromString(String property, Project project, List<UserProfilePropertyDTO> to){
-        return addPropertyFromString(property,null,project,to);
-    }
+    public UserProfileDTO addSkill(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,skills); }
+    public UserProfileDTO addTool(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,tools); }
+    public UserProfileDTO addCompany(String property, Project project){ return addPropertyFromString(property,null,project,companies); }
+    public UserProfileDTO addIndustry(String property, Project project){ return addPropertyFromString(property,null,project,industries); }
     private UserProfileDTO addPropertyFromString(String property, UserProjectExp projectExp, Project project, List<UserProfilePropertyDTO> to){
         if(projectExp == null && project == null) Logger.getGlobal().warning("Both projectExp and project is null");
         if(StringUtils.isEmpty(property) || (projectExp == null && project == null)) return this;
@@ -69,17 +62,43 @@ public class UserProfileDTO {
                     .addAll(prop.getProjects());
         }else to.add(prop);
     }
-
-    @Override
-    public String toString() {
-        Function<List<UserProfilePropertyDTO>,String> propToString = (props)-> props.stream()
-                .map((prop)->String.format("%s(%d)", prop.property, prop.getProjectExps().size()+prop.getProjects().size()))
+    //FIXME: Better way of filtering confirmed projects?
+    private String propToString(List<UserProfilePropertyDTO> orig, boolean onlyConfirmed){
+        //Clone property lists
+        List<UserProfilePropertyDTO> propClone = new ArrayList<>(orig);
+        List<List<Project>> projClones = new ArrayList<>();
+        for (UserProfilePropertyDTO prop : propClone) {
+            //Add project list clones to clone list
+            projClones.add( new ArrayList<>(prop.getProjects()) );
+            prop.setProjects(
+                    prop.getProjects().stream()
+                    .filter((proj)->{
+                        System.out.println("proj name "+proj.getName()+" prop: "+prop.property+" is confirmed: "+proj.isConfirmed()+" onlyConfirmed: "+onlyConfirmed);
+                        return proj.isConfirmed() == onlyConfirmed;
+                    }).collect(Collectors.toList())
+            );
+        }
+        String ret = propClone
+                .stream()
+                .filter((prop)->prop.getProjects().size()!=0)
+                .map((prop)->String.format("%s(%d)", prop.property, prop.getProjects().size()))
                 .collect(Collectors.joining(", "))
                 .replaceAll(", $","")+"\n";
-        return  "Skills: "+propToString.apply(skills) +
-                "Tools: "+propToString.apply(tools) +
-                "Companies: "+propToString.apply(companies) +
-                "Industries: "+propToString.apply(industries)
+        //Reset prop projects
+        for (int i = 0; i < propClone.size(); i++) propClone.get(i).setProjects(projClones.get(i));
+        return ret;
+    }
+    @Override
+    public String toString() {
+        return  "Skills: "+propToString(skills,true) +
+                "Tools: "+propToString(tools,true) +
+                "Companies: "+propToString(companies,true) +
+                "Industries: "+propToString(industries,true) +
+                "==NOT CONFIRMED==\n" +
+                "Skills: "+propToString(skills,false) +
+                "Tools: "+propToString(tools,false) +
+                "Companies: "+propToString(companies,false) +
+                "Industries: "+propToString(industries,false)
                         .replace("\n","");
     }
 

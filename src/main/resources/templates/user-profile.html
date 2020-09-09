@@ -54,8 +54,12 @@
             <ul th:if="${projects.length > 0}">
                 <li th:each="projAndExp : ${projects}">
                     <div th:text="${projAndExp.project.name}"></div>
+                    <div th:text="${projAndExp.project.getDuration()}"></div>
                     <div th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>
-                    <a th:href="'/project/'+${projAndExp.project.uuid}+'/edit'">Edit</a>
+                    <div th:if="${canEdit}">
+                        <a th:if="${projAndExp.projectExp.project_creator}" th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'">Edit (Creator)</a>
+                        <a th:if="${projAndExp.projectExp.project_creator == false}" th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'">Edit (Member)</a>
+                    </div>
                 </li>
             </ul>
             <span th:if="${projects.length == 0}">No projects found</span>
