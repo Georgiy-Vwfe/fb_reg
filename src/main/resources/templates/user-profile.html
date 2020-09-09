@@ -53,6 +53,7 @@
             <div>Projects</div>
             <ul th:if="${projects.length > 0}">
                 <li th:each="projAndExp : ${projects}">
+                    <div th:text="${projAndExp.projectExp.role}"></div>
                     <div th:text="${projAndExp.project.name}"></div>
                     <div th:text="${projAndExp.project.getDuration()}"></div>
                     <div th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>

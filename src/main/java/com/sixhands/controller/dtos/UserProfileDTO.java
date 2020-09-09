@@ -73,7 +73,6 @@ public class UserProfileDTO {
             prop.setProjects(
                     prop.getProjects().stream()
                     .filter((proj)->{
-                        System.out.println("proj name "+proj.getName()+" prop: "+prop.property+" is confirmed: "+proj.isConfirmed()+" onlyConfirmed: "+onlyConfirmed);
                         return proj.isConfirmed() == onlyConfirmed;
                     }).collect(Collectors.toList())
             );
