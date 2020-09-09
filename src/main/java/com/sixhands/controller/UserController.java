@@ -47,7 +47,7 @@ public class UserController {
         model.addAttribute("userData", userService.getProfileDtoForUser(user).toString() );
         model.addAttribute("canEdit",canEdit);
         model.addAttribute("projects",projectExps);
-        return edit == 1 ? "edit-user-profile" : "user-profile";
+        return edit == 1 ? "edit-user-profile" : "project-not-aproved";
     }
     @PutMapping
     public String updateUserData(@ModelAttribute User editUser){
