@@ -19,10 +19,10 @@
     <title>Profile (owners mode) | 6hands</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <link href="css/fonts/fonts.css?t=1571117825218" rel="stylesheet" type="text/css">
-    <link href="css/vendor/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
-    <link href="css/vendor/bootstrap-grid.min.css" rel="stylesheet" type="text/css">
-    <link href="css/hands/app.css?t=1571117825218" rel="stylesheet" type="text/css">
+    <link href="/css/fonts/fonts.css?t=1571117825218" rel="stylesheet" type="text/css">
+    <link href="/css/vendor/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/vendor/bootstrap-grid.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/hands/app.css?t=1571117825218" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -38,54 +38,53 @@
                             <div class="card__image">
                                 <div class="middle">
                                     <div>
-                                        <img src="image" alt="John Branson"/>
+                                        <img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" />
                                     </div>
                                 </div>
-                                <span class="card__caption">Raiting 0</span>
+                                <span class="card__caption" th:text="${user == null} ? 'Error':'Rating:'+${user.rating}"></span>
                             </div>
                             <div class="card__content">
-                                <h2 class="card__title">John Branson</h2>
-                                <div class="card__short-desc">26 years old | Moscow, Russia</div>
+                                <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
+                                <a th:if="${canEdit}" href="?edit=1">Edit my profile</a>
+                                <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+' '+${user.country}"></div>
                                 <div class="card__chain chain d-flex align-items-center">
                                     <li class="chain__item">
                                         <div class="middle">
                                             <a href="#">
-                                                <img src="images/card/social/mail.svg">
+                                                <img src="/images/card/social/mail.svg">
                                             </a>
                                         </div>
                                     </li>
                                     <li class="chain__item">
                                         <div class="middle">
                                             <a href="#">
-                                                <img src="images/card/social/google-plus.svg">
+                                                <img src="/images/card/social/google-plus.svg">
                                             </a>
                                         </div>
                                     </li>
                                     <li class="chain__item">
                                         <div class="middle">
                                             <a href="#">
-                                                <img src="images/card/social/twitter.svg">
+                                                <img src="/images/card/social/twitter.svg">
                                             </a>
                                         </div>
                                     </li>
                                     <li class="chain__item">
                                         <div class="middle">
                                             <a href="#">
-                                                <img src="images/card/social/facebook.svg">
+                                                <img src="/images/card/social/facebook.svg">
                                             </a>
                                         </div>
                                     </li>
                                     <li class="chain__item">
                                         <div class="middle">
                                             <a href="#">
-                                                <img src="images/card/social/linkedin.svg">
+                                                <img src="/images/card/social/linkedin.svg">
                                             </a>
                                         </div>
                                     </li>
                                 </div>
-                                <div class="card__desc">I am extremely simple to use and works with the devices you use
-                                    every day. Easily pay with your debit cards and credit cards with just a touch. And
-                                    because your card details are never shared by Apple when you use Apple Pay.
+                                <div class="card__desc" th:text="${user == null} ? 'Error':${user.about_user}">
                                 </div>
                             </div>
                         </div>
