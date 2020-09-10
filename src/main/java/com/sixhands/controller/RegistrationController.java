@@ -51,7 +51,9 @@ public class RegistrationController {
         } catch (ServletException e) {
             // log.debug("Autologin fail", e);
         }
-        return "admin-profile-project";
+        return "redirect:/"
+                //"admin-profile-project"
+                ;
     }
     
     @GetMapping("/activation/{code}")

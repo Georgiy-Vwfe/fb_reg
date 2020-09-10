@@ -4,6 +4,8 @@ import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
@@ -59,5 +61,9 @@ public class GenericUtils {
         }
 
         return result;
+    }
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+    public static Date parseDateFromTHStr(String s) throws ParseException {
+        return dateFormat.parse(s);
     }
 }

@@ -96,12 +96,12 @@
             <div class="row">
                 <!-- left column-->
                 <div class="col-12 col-lg-5">
-                    <!-- Skils-->
+                    <!-- Skills-->
                     <section class="box box_admin box_widget_white py-0 mt-4">
                         <div class="box__outer">
                             <div class="box__outer-title">Skills</div>
                         </div>
-                        <div class="box__inner" th:each="projAndExp : ${projects}">
+                        <div class="box__inner" th:each="prop,iter : ${userData.getSkills(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -111,13 +111,35 @@
                                                 <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
-                                        <span class="bit__caption">1</span>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title" th:text="${projAndExp.projectExp.skills}"></h3>
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box__inner" th:each="prop,iter : ${userData.getSkills(true)}">
+                            <div class="box__inner-widget">
+                                <!-- bit-->
+                                <div class="bit bit_alpha">
+                                    <div class="bit__image">
+                                        <div class="middle">
+                                            <div>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
+                                            </div>
+                                        </div>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
+                                    </div>
+                                    <div class="bit__content">
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
+                                        <div class="bit__btn">
+                                            <!--<button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            </button>-->
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +151,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Company</div>
                         </div>
-                        <div class="box__inner" th:each="projAndExp : ${projects}">
+                        <div class="box__inner" th:each="prop,iter : ${userData.getCompanies(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -139,16 +161,44 @@
                                                 <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
-                                        <span class="bit__caption">1</span>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title" th:text="${projAndExp.project.company}"></h3>
-                                        <div class="bit__desc" th:text="${projAndExp.projectExp.role}"></div>
-                                            <br th:text="${projAndExp.projectExp.duties}">
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
+                                        <div class="bit__desc" th:each="exp : ${prop.projectExps}">
+                                            <div th:text="${exp.role}"></div>
+                                            <div th:text="${exp.duties}"></div>
+                                        </div>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box__inner" th:each="prop,iter : ${userData.getCompanies(true)}">
+                            <div class="box__inner-widget">
+                                <!-- bit-->
+                                <div class="bit bit_alpha">
+                                    <div class="bit__image">
+                                        <div class="middle">
+                                            <div>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
+                                            </div>
+                                        </div>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
+                                    </div>
+                                    <div class="bit__content">
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
+                                        <div class="bit__desc" th:each="exp : ${prop.projectExps}">
+                                            <div th:text="${exp.role}"></div>
+                                            <div th:text="${exp.duties}"></div>
+                                        </div>
+                                        <!--<div class="bit__btn">
+                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            </button>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +209,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Industry</div>
                         </div>
-                        <div class="box__inner" th:each="projAndExp : ${projects}">
+                        <div class="box__inner" th:each="prop,iter : ${userData.getIndustries(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -169,14 +219,36 @@
                                                 <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
-                                        <span class="bit__caption">1</span>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title" th:text="${projAndExp.project.industry}">App design</h3>
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box__inner" th:each="prop,iter : ${userData.getIndustries(true)}">
+                            <div class="box__inner-widget">
+                                <!-- bit-->
+                                <div class="bit bit_alpha">
+                                    <div class="bit__image">
+                                        <div class="middle">
+                                            <div>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
+                                            </div>
+                                        </div>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
+                                    </div>
+                                    <div class="bit__content">
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
+                                        <!--<div class="bit__btn">
+                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            </button>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +259,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title">Tools</div>
                         </div>
-                        <div class="box__inner" th:each="projAndExp : ${projects}">
+                        <div class="box__inner" th:each="prop,iter : ${userData.getTools(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -197,10 +269,10 @@
                                                 <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
                                             </div>
                                         </div>
-                                        <span class="bit__caption">1</span>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
                                     </div>
                                     <div class="bit__content">
-                                        <h3 class="bit__title" th:text="${projAndExp.projectExp.tools}"></h3>
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
                                             <button type="button" class="btn btn_secondary btn_sm">Not approved yet
                                             </button>
@@ -209,9 +281,31 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="box__inner" th:each="prop,iter : ${userData.getTools(true)}">
+                            <div class="box__inner-widget">
+                                <!-- bit-->
+                                <div class="bit bit_alpha">
+                                    <div class="bit__image">
+                                        <div class="middle">
+                                            <div>
+                                                <img src="/images/bit/alpha/suitcase.svg" alt="alt"/>
+                                            </div>
+                                        </div>
+                                        <span class="bit__caption" th:text="${prop.projects.size()}"></span>
+                                    </div>
+                                    <div class="bit__content">
+                                        <h3 class="bit__title" th:text="${prop.property}"></h3>
+                                        <!--<div class="bit__btn">
+                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            </button>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </section>
                 </div>
-                <!-- right columnt-->
+                <!-- right column-->
                 <div class="col-12 col-lg-7">
                     <!-- Projects-->
                     <section class="box box_admin box_widget_white py-0 mt-4 mod003">
@@ -220,7 +314,7 @@
                             <span class="mod__elem-1 ml-auto">Approved only</span>
                         </div>
                         <div class="box__inner">
-                            <div class="box__inner-widget"><a href="admin-project.html" class="link link_beta m-4">New
+                            <div class="box__inner-widget"><a href="/project/create" class="link link_beta m-4">New
                                 Project</a>
                             </div>
                         </div>
@@ -235,8 +329,8 @@
 
                                     <div class="d-flex">
                                         <h2 class="card-project__title" th:text="${projAndExp.project.name}">
-                                            <small th:text="${project.end_date}"></small></h2>
-<!--                                        <button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
+                                            <small th:text="${projAndExp.project.end_date}"></small></h2>
+                                            <!--<button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
                                         <div class="card-project__image">
                                             <div class="middle">
                                                 <div>
@@ -253,8 +347,18 @@
                                     </div>
                                     <div class="card-project__desc" th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}">
                                     </div>
-                                    <div class="card-project__btn">
+                                    <div class="card-project__btn" th:if="${projAndExp.project.confirmed == false}">
                                         <button type="button" class="btn btn_secondary btn_sm">Not approved yet</button>
+                                    </div>
+                                    <!--TODO: MOVE BUTTONS-->
+                                    <div class="card-project__btn" th:if="${canEdit}">
+                                        <a
+                                           th:if="${projAndExp.projectExp.project_creator}"
+                                           th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'"
+                                           class="btn btn_secondary btn_sm">Edit (Creator)</a>
+                                        <a th:if="${projAndExp.projectExp.project_creator == false}"
+                                           th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'"
+                                           class="btn btn_secondary btn_sm">Edit (Member)</a>
                                     </div>
                                 </div>
                             </div>

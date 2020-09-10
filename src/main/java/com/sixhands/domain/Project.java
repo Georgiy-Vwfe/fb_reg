@@ -1,6 +1,7 @@
 package com.sixhands.domain;
 
 import com.sixhands.misc.GenericUtils;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.text.ParseException;
@@ -23,6 +24,8 @@ public class Project {
     private String start_date;
     private String end_date;
     private String link;
+    @CreationTimestamp
+    private Date created;
     private boolean confirmed = false;
     public Project safeAssignProperties(Project reqProject){
         name = reqProject.getName();
@@ -37,9 +40,8 @@ public class Project {
 
     public String getDuration(){
         try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-            Date start = dateFormat.parse(start_date);
-            Date end = dateFormat.parse(end_date);
+            Date start = GenericUtils.parseDateFromTHStr(start_date);
+            Date end = GenericUtils.parseDateFromTHStr(end_date);
             if(start.getTime() > end.getTime())
                 return null;
             Map<TimeUnit,Long> dif = GenericUtils.computeDiff(start,end);
@@ -119,6 +121,14 @@ public class Project {
 
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
     //#endregion
 }

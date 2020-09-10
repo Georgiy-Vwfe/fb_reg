@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -29,24 +31,25 @@ public class UserController {
     @GetMapping("/me")
     public String getMeUser(Model model){
         User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
-        if(curUser == null) return "";
+        if(curUser == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not logged in");
         return "redirect:/user/"+curUser.getUuid();
     }
     @GetMapping("/{id}")
     public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0",required = false) Integer edit, Model model){
-        User user = userRepo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User with id "+id+" is not found"));
+        User user = userRepo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id "+id+" is not found"));
         boolean canEdit = false;
         try {
             User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
             canEdit = curUser.getUuid().equals(user.getUuid());
         }catch (Exception ignored){}
-        ProjectAndUserExpDTO[] projectExps = userService.getProjectExpForUser(user).stream()
+        ProjectAndUserExpDTO[] projectAndExps = userService.getProjectExpForUser(user).stream()
                 .map((ue)->new ProjectAndUserExpDTO(projectRepo.getOne(ue.getProject_uuid()),ue))
+                .sorted((a,b) -> (int)b.getProject().getCreated().getTime()-(int)a.getProject().getCreated().getTime() )
                 .toArray(ProjectAndUserExpDTO[]::new);
         model.addAttribute("user",user);
-        model.addAttribute("userData", userService.getProfileDtoForUser(user).toString() );
+        model.addAttribute("userData", userService.getProfileDtoForUser(user) );
         model.addAttribute("canEdit",canEdit);
-        model.addAttribute("projects",projectExps);
+        model.addAttribute("projects",projectAndExps);
         return edit == 1 ? "edit-user-profile" : "project-not-aproved";
     }
     @PutMapping

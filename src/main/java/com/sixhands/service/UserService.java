@@ -126,14 +126,15 @@ public class UserService implements UserDetailsService {
             Project project = projectRepo.getOne(projectExp.getProject_uuid());
             profileDTO
                     .addSkill(projectExp.getSkills(),projectExp, project)
-                    .addTool(projectExp.getTools(), projectExp, project);
+                    .addTool(projectExp.getTools(), projectExp, project)
+                    .addIndustry(project.getIndustry(),projectExp,project)
+                    .addCompany(project.getCompany(),projectExp,project);
         }
-        //test 4 - LSqLBV7T
-        Project[] projects = projectService.findProjectsByUser(user, false);
+        /*Project[] projects = projectService.findProjectsByUser(user, false);
         for(Project project:projects)
             profileDTO
                     .addIndustry(project.getIndustry(), project)
-                    .addCompany(project.getCompany(), project);
+                    .addCompany(project.getCompany(), project);*/
 
         return profileDTO;
     }

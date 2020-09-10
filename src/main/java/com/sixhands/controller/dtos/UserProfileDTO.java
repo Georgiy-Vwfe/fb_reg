@@ -33,8 +33,8 @@ public class UserProfileDTO {
     }
     public UserProfileDTO addSkill(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,skills); }
     public UserProfileDTO addTool(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,tools); }
-    public UserProfileDTO addCompany(String property, Project project){ return addPropertyFromString(property,null,project,companies); }
-    public UserProfileDTO addIndustry(String property, Project project){ return addPropertyFromString(property,null,project,industries); }
+    public UserProfileDTO addCompany(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,companies); }
+    public UserProfileDTO addIndustry(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,industries); }
     private UserProfileDTO addPropertyFromString(String property, UserProjectExp projectExp, Project project, List<UserProfilePropertyDTO> to){
         if(projectExp == null && project == null) Logger.getGlobal().warning("Both projectExp and project is null");
         if(StringUtils.isEmpty(property) || (projectExp == null && project == null)) return this;
@@ -46,9 +46,9 @@ public class UserProfileDTO {
                 .filter((s)->!StringUtils.isEmpty(s)&&s.length()>1)
                 .map((s)->s.substring(0,1).toUpperCase()+s.substring(1))
                 .forEach((s)->addProperty(
-                        project == null ?
-                            new UserProfilePropertyDTO(property,projectExp) :
-                            new UserProfilePropertyDTO(property,project),
+                        projectExp == null ?
+                            new UserProfilePropertyDTO(property,project) :
+                            new UserProfilePropertyDTO(property,projectExp,project),
                         to)
                 );
         return this;
@@ -63,7 +63,7 @@ public class UserProfileDTO {
         }else to.add(prop);
     }
     //FIXME: Better way of filtering confirmed projects?
-    private String propToString(List<UserProfilePropertyDTO> orig, boolean onlyConfirmed){
+    private List<UserProfilePropertyDTO> filterProps(List<UserProfilePropertyDTO> orig, boolean onlyConfirmed){
         //Clone property lists
         List<UserProfilePropertyDTO> propClone = new ArrayList<>(orig);
         List<List<Project>> projClones = new ArrayList<>();
@@ -72,35 +72,41 @@ public class UserProfileDTO {
             projClones.add( new ArrayList<>(prop.getProjects()) );
             prop.setProjects(
                     prop.getProjects().stream()
-                    .filter((proj)->{
-                        return proj.isConfirmed() == onlyConfirmed;
-                    }).collect(Collectors.toList())
+                    .filter((proj)-> proj.isConfirmed() == onlyConfirmed)
+                    .collect(Collectors.toList())
             );
         }
-        String ret = propClone
+        /*String ret = propClone
                 .stream()
                 .filter((prop)->prop.getProjects().size()!=0)
                 .map((prop)->String.format("%s(%d)", prop.property, prop.getProjects().size()))
                 .collect(Collectors.joining(", "))
-                .replaceAll(", $","")+"\n";
+                .replaceAll(", $","")+"\n";*/
         //Reset prop projects
-        for (int i = 0; i < propClone.size(); i++) propClone.get(i).setProjects(projClones.get(i));
-        return ret;
+        propClone = propClone.stream()
+                .filter((prop)->prop.getProjects().size()>0)
+                .collect(Collectors.toList());
+        for (int i = 0; i < orig.size(); i++) orig.get(i).setProjects(projClones.get(i));
+        return propClone;
     }
-    @Override
-    public String toString() {
-        return  "Skills: "+propToString(skills,true) +
-                "Tools: "+propToString(tools,true) +
-                "Companies: "+propToString(companies,true) +
-                "Industries: "+propToString(industries,true) +
-                "==NOT CONFIRMED==\n" +
-                "Skills: "+propToString(skills,false) +
-                "Tools: "+propToString(tools,false) +
-                "Companies: "+propToString(companies,false) +
-                "Industries: "+propToString(industries,false)
-                        .replace("\n","");
-    }
+    public List<UserProfilePropertyDTO> getSkills(boolean onlyConfirmed){ return filterProps(skills,onlyConfirmed); }
+    public List<UserProfilePropertyDTO> getTools(boolean onlyConfirmed){ return filterProps(tools,onlyConfirmed); }
+    public List<UserProfilePropertyDTO> getCompanies(boolean onlyConfirmed){ return filterProps(companies,onlyConfirmed); }
+    public List<UserProfilePropertyDTO> getIndustries(boolean onlyConfirmed){ return filterProps(industries,onlyConfirmed); }
 
+    /*@Override
+    public String toString() {
+        return  "Skills: "+ filterProps(skills,true) +
+                "Tools: "+ filterProps(tools,true) +
+                "Companies: "+ filterProps(companies,true) +
+                "Industries: "+ filterProps(industries,true) +
+                "==NOT CONFIRMED==\n" +
+                "Skills: "+ filterProps(skills,false) +
+                "Tools: "+ filterProps(tools,false) +
+                "Companies: "+ filterProps(companies,false) +
+                "Industries: "+ filterProps(industries,false)
+                        .replace("\n","");
+    }*/
     //#region getters/setters
     public List<UserProfilePropertyDTO> getSkills() {
         return skills;
@@ -141,12 +147,9 @@ public class UserProfileDTO {
             this.property = property;
             this.projectExps = new ArrayList<>( Arrays.asList(projectExps) );
         }
-        public UserProfilePropertyDTO(String property, Project projects){
+        public UserProfilePropertyDTO(String property, UserProjectExp projectExps, Project projects){
             this.property = property;
             this.projects = new ArrayList<>( Arrays.asList(projects) );
-        }
-        public UserProfilePropertyDTO(String property, UserProjectExp... projectExps){
-            this.property = property;
             this.projectExps = new ArrayList<>( Arrays.asList(projectExps) );
         }
         public UserProfilePropertyDTO(String property, Project... projects){
