@@ -52,8 +52,8 @@ public class RegistrationController {
             // log.debug("Autologin fail", e);
         }
         return "redirect:/"
-                //"admin-profile-project"
-                ;
+               //"admin-profile-project"
+               ;
     }
     
     @GetMapping("/activation/{code}")
@@ -65,6 +65,8 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "User is not activated");
         }
-        return "admin-profile-project";
+        return "redirect:/"
+               //"admin-profile-project"
+               ;
     }
 }
