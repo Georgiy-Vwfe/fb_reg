@@ -116,7 +116,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <!--<button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <!--<button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>-->
                                         </div>
                                     </div>
@@ -170,7 +170,7 @@
                                             <div th:text="${exp.duties}"></div>
                                         </div>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -196,7 +196,7 @@
                                             <div th:text="${exp.duties}"></div>
                                         </div>
                                         <!--<div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>-->
                                     </div>
@@ -224,7 +224,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -246,7 +246,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <!--<div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>-->
                                     </div>
@@ -274,7 +274,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -296,7 +296,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <!--<div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not approved yet
+                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
                                             </button>
                                         </div>-->
                                     </div>
@@ -324,18 +324,26 @@
                         <div class="box__inner">
                             <div class="box__inner-widget">
                                 <!-- card-project-->
-                                <div class="card-project card-project_alpha card-project_admin"
-                                     th:each="projAndExp : ${projects}" >
+                                <div class="card-project card-project_alpha card-project_admin" th:each="projAndExp : ${projects}" >
 
                                     <div class="d-flex">
                                         <h2 class="card-project__title" th:text="${projAndExp.project.name}">
                                             <small th:text="${projAndExp.project.end_date}"></small></h2>
                                             <!--<button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
                                         <div class="card-project__image">
-                                            <div class="middle">
-                                                <div>
-                                                    <img src="/image" alt="Google glass"/>
-                                                </div>
+                                            <div th:if="${canEdit}">
+                                                <a
+                                                        th:if="${projAndExp.projectExp.project_creator}"
+                                                        th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'"
+                                                        class="btn btn_secondary btn_sm">Edit (Creator)</a>
+                                                <a th:if="${projAndExp.projectExp.project_creator == false}"
+                                                   th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'"
+                                                   class="btn btn_secondary btn_sm">Edit (Member)</a>
+                                                <div class="middle">
+                                            </div>
+                                            <!--<div>
+                                                <img src="/image" alt="Google glass"/>
+                                            </div>-->
                                             </div>
                                         </div>
                                     </div>
@@ -348,17 +356,7 @@
                                     <div class="card-project__desc" th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}">
                                     </div>
                                     <div class="card-project__btn" th:if="${projAndExp.project.confirmed == false}">
-                                        <button type="button" class="btn btn_secondary btn_sm">Not approved yet</button>
-                                    </div>
-                                    <!--TODO: MOVE BUTTONS-->
-                                    <div class="card-project__btn" th:if="${canEdit}">
-                                        <a
-                                           th:if="${projAndExp.projectExp.project_creator}"
-                                           th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'"
-                                           class="btn btn_secondary btn_sm">Edit (Creator)</a>
-                                        <a th:if="${projAndExp.projectExp.project_creator == false}"
-                                           th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'"
-                                           class="btn btn_secondary btn_sm">Edit (Member)</a>
+                                        <button type="button" class="btn btn_secondary btn_sm">Not Confirmed</button>
                                     </div>
                                 </div>
                             </div>
