@@ -23,7 +23,7 @@ public class MailSender {
         mailMessage.setSubject(emailSubject);
         mailMessage.setText(emailText);
 
-        //mailSender.send(mailMessage);
+        mailSender.send(mailMessage);
         System.out.println("Sending out a message\n"+new JSONObject(mailMessage).toString(2));
     }
 

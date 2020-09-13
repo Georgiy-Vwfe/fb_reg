@@ -227,7 +227,7 @@ public class UserService implements UserDetailsService {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String emailText = String.format(
                     "Hello, %s! \n" +
-                            "You want to recover your password. Please, visit link: http://%s/recover_password",
+                            "You want to recover your password. Please, visit link: http://%s/recovery-password",
                     user.getEmail(),
                     domain
             );
