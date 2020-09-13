@@ -65,8 +65,6 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "User is not activated");
         }
-        return "redirect:/"
-               //"admin-profile-project"
-               ;
+        return "redirect:/";
     }
 }
