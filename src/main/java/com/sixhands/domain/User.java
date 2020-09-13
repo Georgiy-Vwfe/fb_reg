@@ -1,7 +1,5 @@
 package com.sixhands.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +41,10 @@ public class User implements UserDetails {
     private String social_networks;
     private String create_time;
     private String role;
+
+    //Set to true when user confirms a project for the first time
+    //Used when calculating user rating
+    private boolean confirmed_project;
 
     private String activationCode;
 
@@ -223,6 +225,13 @@ public class User implements UserDetails {
         this.confirmPassword = confirmPassword;
     }
 
+    public boolean getConfirmed_project() {
+        return confirmed_project;
+    }
+
+    public void setConfirmed_project(boolean confirmed_project) {
+        this.confirmed_project = confirmed_project;
+    }
     //#endregion
 
     public User safeAssignProperties(User editUser) {

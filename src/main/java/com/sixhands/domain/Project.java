@@ -5,8 +5,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +28,9 @@ public class Project {
     @CreationTimestamp
     private Date created;
     private boolean confirmed = false;
+    @ElementCollection
+    @OrderColumn
+    private List<Long> likedUserIDs = new ArrayList<>();
     public Project safeAssignProperties(Project reqProject){
         name = reqProject.getName();
         description = reqProject.getDescription();
@@ -48,6 +52,15 @@ public class Project {
             Long days = dif.get(TimeUnit.DAYS);
             return days+(days == 1 ? " day":" days");
         }catch(ParseException e){ return null; }
+    }
+
+    public Project likeByUser(User user){
+        long id = user.getUuid();
+        if(likedUserIDs.contains(id))
+            likedUserIDs.remove(id);
+        else
+            likedUserIDs.add(id);
+        return this;
     }
 
     //#region getters/setters
@@ -129,6 +142,14 @@ public class Project {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public List<Long> getLikedUserIDs() {
+        return likedUserIDs;
+    }
+
+    public void setLikedUserIDs(List<Long> likedUserIDs) {
+        this.likedUserIDs = likedUserIDs;
     }
     //#endregion
 }

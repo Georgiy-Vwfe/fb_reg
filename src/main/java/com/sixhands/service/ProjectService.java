@@ -124,10 +124,14 @@ public class ProjectService {
         curUserProjectExp
                 .getUserExp()
                 .safeAssignProperties(reqUserAndExp.getUserExp());
-        if(!byCreator)
+        if(!byCreator){
             curUserProjectExp
                     .getUserExp()
                     .setCustom_description(reqProject.getDescription());
+            curUserProjectExp
+                    .getUserExp()
+                    .setConfirmed(true);
+        }
 
         UserAndExpDTO[] curMembers = Arrays.stream(projectDTO.getMembers())
                 .filter(Objects::nonNull)

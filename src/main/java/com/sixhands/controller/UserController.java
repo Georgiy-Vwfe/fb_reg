@@ -38,18 +38,25 @@ public class UserController {
     public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0",required = false) Integer edit, Model model){
         User user = userRepo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id "+id+" is not found"));
         boolean canEdit = false;
+        User curUser = null;
         try {
-            User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
+            curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
             canEdit = curUser.getUuid().equals(user.getUuid());
         }catch (Exception ignored){}
+        User finalCurUser = curUser;
         ProjectAndUserExpDTO[] projectAndExps = userService.getProjectExpForUser(user).stream()
-                .map((ue)->new ProjectAndUserExpDTO(projectRepo.getOne(ue.getProject_uuid()),ue))
+                .map((ue)-> {
+                    Project proj = projectRepo.getOne(ue.getProject_uuid());
+                    int rating = userService.getRatingForProject(proj);
+                    boolean likedByUser = finalCurUser != null && proj.getLikedUserIDs().contains(finalCurUser.getUuid());
+                    return new ProjectAndUserExpDTO(proj, ue, rating, likedByUser);
+                })
                 .sorted((a,b) -> (int)b.getProject().getCreated().getTime()-(int)a.getProject().getCreated().getTime() )
                 .toArray(ProjectAndUserExpDTO[]::new);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         model.addAttribute("userData", userService.getProfileDtoForUser(user) );
-        model.addAttribute("canEdit",canEdit);
-        model.addAttribute("projects",projectAndExps);
+        model.addAttribute("canEdit", canEdit);
+        model.addAttribute("projects", projectAndExps);
         return edit == 1 ? "edit-user-profile" : "project-not-aproved";
     }
     @PutMapping

@@ -226,7 +226,7 @@
                                     <div class="col-12 text-center">
                                         <button
                                                 onclick="this.form.action+='?action=persist'"
-                                                th:text="*{member.userExp.project_creator == false && project.confirmed == false}?'Confirm & Save':'Done'"
+                                                th:text="*{member.userExp.project_creator == false && member.userExp.confirmed == false}?'Confirm & Save':'Done'"
                                                 type="submit" class="btn btn_primary btn_lg mt-4 mod__elem-1"></button>
                                     </div>
                                 </div>
