@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 @Controller
@@ -52,6 +54,19 @@ public class ProjectController {
         model.addAttribute("isEditing",true);
         model.addAttribute("projectDTO",projectDTO);
         return "save-project";
+    }
+    @GetMapping(value = "/{id}/like")
+    public String likeProject(@PathVariable int id, HttpServletRequest request){
+        User curUser = getCurUser();
+        //Get all projects that are created by current user
+        Project project = projectRepo.getOne((long)id);
+        project.likeByUser(curUser);
+        projectRepo.save(project);
+        try{
+            //https://stackoverflow.com/a/1525689
+            URL referer = new URL(request.getHeader("Referer"));
+            return "redirect:"+referer;
+        }catch (MalformedURLException e){return "redirect:/";}
     }
     @GetMapping(value = "/{id}/edit", params = {"as=member"})
     public String getEditProjectMember(Model model, @PathVariable int id){

@@ -1,6 +1,7 @@
 package com.sixhands.service;
 
 import com.sixhands.SixHandsApplication;
+import com.sixhands.controller.dtos.UserAndExpDTO;
 import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
@@ -25,10 +26,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -134,7 +134,8 @@ public class UserService implements UserDetailsService {
                     .addSkill(projectExp.getSkills(),projectExp, project)
                     .addTool(projectExp.getTools(), projectExp, project)
                     .addIndustry(project.getIndustry(),projectExp,project)
-                    .addCompany(project.getCompany(),projectExp,project);
+                    .addCompany(project.getCompany(),projectExp,project)
+                    .setRating(getRatingForUser(user));
         }
 
         return profileDTO;
@@ -159,6 +160,39 @@ public class UserService implements UserDetailsService {
                                 .stream()
                                 .anyMatch((p)->p.getProperty().equalsIgnoreCase(compareTo))
                         );
+    }
+    //#endregion
+    //#region user-rating
+    public int getRatingForUser(User user){
+        int rating = 0;
+
+        if(user.getConfirmed_project()) rating++;
+
+        List<UserProjectExp> projectExps = getProjectExpForUser(user);
+        List<Project> projects = projectExps.stream()
+                .map((ue)->projectRepo.getOne(ue.getProject_uuid()))
+                .filter(Project::isConfirmed)
+                .collect(Collectors.toList());
+        rating += projects.stream().mapToInt(this::getRatingForProject).sum();
+
+        return rating;
+    }
+    public int getRatingForProject(Project project){
+        int rating = 0;
+
+        UserAndExpDTO[] projectExps = projectService.projectExpByProject(project);
+
+        if(project.isConfirmed()) rating++;
+        //Add total amount of members that confirmed the project
+        rating += Arrays.stream(projectExps)
+                .mapToInt((exp)->exp.getUserExp().isConfirmed() ? 1 : 0)
+                .sum();
+        //Filter out duplicate likedUserIDs, add total likes length
+        rating += project.getLikedUserIDs().stream()
+                .filter((id)->project.getLikedUserIDs().indexOf(id)==project.getLikedUserIDs().lastIndexOf(id))
+                .count();
+
+        return rating;
     }
     //#endregion
     //#region mail-send

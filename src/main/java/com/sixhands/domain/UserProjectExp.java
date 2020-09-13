@@ -21,6 +21,7 @@ public class UserProjectExp {
 
     private String custom_description;
     private boolean project_creator = false;
+    private boolean confirmed = false;
 
     public UserProjectExp safeAssignProperties(UserProjectExp unsafe){
         role = unsafe.getRole();
@@ -114,6 +115,14 @@ public class UserProjectExp {
 
     public void setDuties(String duties) {
         this.duties = duties;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
     //#endregion
 }

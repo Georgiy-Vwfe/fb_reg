@@ -41,7 +41,7 @@
                                         <img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" />
                                     </div>
                                 </div>
-                                <span class="card__caption" th:text="${user == null} ? 'Error':'Rating:'+${user.rating}"></span>
+                                <span class="card__caption" th:text="${user == null} ? 'Error':'Rating:'+${userData.rating}"></span>
                             </div>
                             <div class="card__content">
                                 <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
@@ -314,8 +314,7 @@
                             <span class="mod__elem-1 ml-auto">Approved only</span>
                         </div>
                         <div class="box__inner">
-                            <div class="box__inner-widget"><a href="/project/create" class="link link_beta m-4">New
-                                Project</a>
+                            <div th:if="${canEdit}" class="box__inner-widget"><a href="/project/create" class="link link_beta m-4">New Project</a>
                             </div>
                         </div>
                     </section>
@@ -328,7 +327,8 @@
 
                                     <div class="d-flex">
                                         <h2 class="card-project__title" th:text="${projAndExp.project.name}">
-                                            <small th:text="${projAndExp.project.end_date}"></small></h2>
+                                            <small th:text="${projAndExp.project.end_date}"></small>
+                                        </h2>
                                             <!--<button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
                                         <div class="card-project__image">
                                             <div th:if="${canEdit}">
@@ -347,13 +347,37 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="card-project__desc" th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>
                                     <div class="d-flex">
+                                        <!--Project with labels-->
+                                        <!--<ul class="card-project__list list" >
+                                            <li>
+                                                <small class="d-block">Rating</small>
+                                                <span th:text="${projAndExp.rating}"></span>
+                                            </li>
+                                            <li>
+                                                <small class="d-block">Position</small>
+                                                <span th:text="${projAndExp.projectExp.position}"></span>
+                                            </li>
+                                            <li>
+                                                <small class="d-block">Role</small>
+                                                <span th:text="${projAndExp.projectExp.role}"></span>
+                                            </li>
+                                        </ul>-->
                                         <ul class="card-project__list list" >
-                                            <li th:text="${projAndExp.projectExp.position}"></li>
-                                            <li th:text="${projAndExp.projectExp.role}"></li>
+                                            <li>
+                                                <a th:href="'/project/'+${projAndExp.project.uuid}+'/like'" th:text="${projAndExp.liked_by_user}?'Unlike':'Like'"></a>
+                                                <!--<span th:text="${projAndExp.rating}"></span>-->
+                                                <span style="cursor: default;" th:text="${projAndExp.project.likedUserIDs.size()}"></span>
+                                            </li>
+                                            <li>
+                                                <span th:text="${projAndExp.projectExp.position}"></span>
+                                            </li>
+                                            <li>
+                                                <span th:text="${projAndExp.projectExp.role}"></span>
+                                            </li>
                                         </ul>
-                                    </div>
-                                    <div class="card-project__desc" th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}">
+                                        <!--TODO: Add expand button-->
                                     </div>
                                     <div class="card-project__btn" th:if="${projAndExp.project.confirmed == false}">
                                         <button type="button" class="btn btn_secondary btn_sm">Not Confirmed</button>

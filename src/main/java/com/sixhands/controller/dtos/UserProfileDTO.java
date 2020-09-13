@@ -22,6 +22,8 @@ public class UserProfileDTO {
     private List<UserProfilePropertyDTO> companies = new ArrayList<>();
     private List<UserProfilePropertyDTO> industries = new ArrayList<>();
 
+    private int rating = 0;
+
     //not used
     private List<UserProfilePropertyDTO> getDuplicateProps(List<UserProfilePropertyDTO> profilePropDTOS){
         List<String> properties = profilePropDTOS.stream().map(UserProfilePropertyDTO::getProperty).collect(Collectors.toList());
@@ -76,12 +78,6 @@ public class UserProfileDTO {
                     .collect(Collectors.toList())
             );
         }
-        /*String ret = propClone
-                .stream()
-                .filter((prop)->prop.getProjects().size()!=0)
-                .map((prop)->String.format("%s(%d)", prop.property, prop.getProjects().size()))
-                .collect(Collectors.joining(", "))
-                .replaceAll(", $","")+"\n";*/
         //Reset prop projects
         propClone = propClone.stream()
                 .filter((prop)->prop.getProjects().size()>0)
@@ -94,19 +90,6 @@ public class UserProfileDTO {
     public List<UserProfilePropertyDTO> getCompanies(boolean onlyConfirmed){ return filterProps(companies,onlyConfirmed); }
     public List<UserProfilePropertyDTO> getIndustries(boolean onlyConfirmed){ return filterProps(industries,onlyConfirmed); }
 
-    /*@Override
-    public String toString() {
-        return  "Skills: "+ filterProps(skills,true) +
-                "Tools: "+ filterProps(tools,true) +
-                "Companies: "+ filterProps(companies,true) +
-                "Industries: "+ filterProps(industries,true) +
-                "==NOT CONFIRMED==\n" +
-                "Skills: "+ filterProps(skills,false) +
-                "Tools: "+ filterProps(tools,false) +
-                "Companies: "+ filterProps(companies,false) +
-                "Industries: "+ filterProps(industries,false)
-                        .replace("\n","");
-    }*/
     //#region getters/setters
     public List<UserProfilePropertyDTO> getSkills() {
         return skills;
@@ -138,6 +121,14 @@ public class UserProfileDTO {
 
     public void setTools(List<UserProfilePropertyDTO> tools) {
         this.tools = tools;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
     //#endregion
 
