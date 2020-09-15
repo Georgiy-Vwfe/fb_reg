@@ -63,14 +63,15 @@
                                 <div class="row justify-content-center pt-4 pb-5">
                                     <div class="col-12 col-lg-2">
                                         <div class="upload">
-                                            <div class="upload__image">
+                                            <div class="card__image">
                                                 <div class="middle">
-                                                    <div>
-                                                        <img src="" alt="">
+                                                    <div class ="dropzone">
+                                                        <img th:src="${user.user_img}" style="width:304px;height:228px" >
+                                                        <input th:field="*{user_img}" style="display:none" id="UserImg" type="text" name="UserImg" placeholder="Link" class="form-group__field field" />;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="upload__content">Upload</div>
+                                            <div class="upload__content">Upload / Drag'n'Drop</div>
                                             <input type="file" name="file">
                                         </div>
                                     </div>
@@ -175,8 +176,10 @@
     <div th:replace="common/footer :: footer"></div>
 </div>
 <!--		<script src="/scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>-->
-        <script src="static/scripts/vendor/babelHelpers.js"></script>
+        <script src="/static/scripts/vendor/babelHelpers.js"></script>
 		<script src="/scripts/hands/app.js" type="text/javascript"></script>
+<script type="text/javascript" src="/scripts/imgur/imgur.js"></script>
+<script type="text/javascript" src="/scripts/imgur/upload.js"></script>
 </body>
 
 </html>
