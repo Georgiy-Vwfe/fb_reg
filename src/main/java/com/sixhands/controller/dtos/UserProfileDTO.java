@@ -26,7 +26,9 @@ public class UserProfileDTO {
 
     //not used
     private List<UserProfilePropertyDTO> getDuplicateProps(List<UserProfilePropertyDTO> profilePropDTOS){
-        List<String> properties = profilePropDTOS.stream().map(UserProfilePropertyDTO::getProperty).collect(Collectors.toList());
+        List<String> properties = profilePropDTOS.stream()
+                .map(UserProfilePropertyDTO::getProperty)
+                .collect(Collectors.toList());
         return profilePropDTOS.stream()
             .filter((profilePropDTO)->
                     properties.stream().filter((searchProp)->searchProp.equalsIgnoreCase(profilePropDTO.property))
@@ -56,7 +58,9 @@ public class UserProfileDTO {
         return this;
     }
     private void addProperty(UserProfilePropertyDTO prop, List<UserProfilePropertyDTO> to){
-        Optional<UserProfilePropertyDTO> duplicateProp = to.stream().filter((dupProp)->dupProp.property.equalsIgnoreCase(prop.property)).findFirst();
+        Optional<UserProfilePropertyDTO> duplicateProp = to.stream()
+                .filter((dupProp)->dupProp.property.equalsIgnoreCase(prop.property))
+                .findFirst();
         if(duplicateProp.isPresent()){
             duplicateProp.get().projectExps
                     .addAll(prop.getProjectExps());

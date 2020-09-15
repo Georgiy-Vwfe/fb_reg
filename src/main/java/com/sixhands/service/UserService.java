@@ -85,6 +85,14 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+    public Optional<User> getCurUser(){
+        Optional<String> username = getCurrentUsername();
+        if(!username.isPresent()) return Optional.empty();
+        return userRepo.findByEmail(getCurrentUsername().get());
+    }
+    public User getCurUserOrThrow(){
+        return getCurUser().orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"User is not authorized."));
+    }
 
     public static Optional<String> getCurrentUsername() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

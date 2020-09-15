@@ -68,4 +68,9 @@ public class InitialController {
     public String recoveryPassword(){
         return "recovery-password";
     }
+
+    @GetMapping("/test-import")
+    public String testImport(){
+        return "test-import";
+    }
 }

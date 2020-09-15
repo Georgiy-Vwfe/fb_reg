@@ -4,9 +4,9 @@ import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
 
 public class UserAndExpDTO {
-    private User user;
-    private boolean added =false;
-    private UserProjectExp userExp;
+    private boolean added = false;
+    private User user = new User();
+    private UserProjectExp userExp = new UserProjectExp();
     public UserAndExpDTO(){}
     public UserAndExpDTO(User user, UserProjectExp userExp){
         this.user = user;

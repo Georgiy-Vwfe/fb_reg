@@ -8,16 +8,23 @@ import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
+import com.sixhands.service.SheetService;
 import com.sixhands.service.UserService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -35,6 +42,8 @@ public class ProjectController {
     private UserRepository userRepo;
     @Autowired
     private UserProjectExpRepository userProjectExpRepo;
+    @Autowired
+    private SheetService sheetService;
 
     private Map<Long, ProjectDTO> editedProjects = new HashMap<>();
     private User getCurUser(){
@@ -119,6 +128,25 @@ public class ProjectController {
     @PostMapping(value = "/save", params = {"action=persist"})
     public String saveProject(@ModelAttribute ProjectDTO projectDTO){
         projectService.saveNewProject(projectDTO,getCurUser());
+        return "redirect:/user/me";
+    }
+
+    //TODO: Import all fields - https://imgur.com/1zenJ1p.jpg, assign first and surname to new users
+    @PostMapping("/import")
+    public String importProjects(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        if(multipartFile==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"File is null");
+
+        XSSFWorkbook xssfWorkbook = null;
+
+        try (InputStream input = multipartFile.getInputStream()) {
+            try { xssfWorkbook = new XSSFWorkbook(input); }
+            catch (Exception e) { throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid file type (xlsx is required)"); }
+        }
+
+        List<ProjectDTO> imported = sheetService.parseSheet(xssfWorkbook.getSheetAt(0));
+        imported.forEach(this::saveProject);
+        //System.out.println( new JSONArray( imported ).toString(2) );
+
         return "redirect:/user/me";
     }
 }
