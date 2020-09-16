@@ -1,10 +1,14 @@
 package com.sixhands.domain;
 
+import com.sixhands.misc.CSVMap;
+import com.sixhands.misc.CSVSerializable;
+
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Table(name = "user_project_exp")
-public class UserProjectExp {
+public class UserProjectExp implements CSVSerializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uuid;
@@ -30,6 +34,18 @@ public class UserProjectExp {
         skills = unsafe.getSkills();
         position = unsafe.getPosition();
         return this;
+    }
+
+    @Override
+    public Map<String, String> toCSV() {
+        return new CSVMap()
+                .putc("mem_creator",project_creator)
+                .putc("mem_confirmed",confirmed)
+                .putc("mem_position",position)
+                .putc("mem_role",role)
+                .putc("mem_skills",skills)
+                .putc("mem_tools",tools)
+                .putc("mem_duties",duties);
     }
 
     //#region getters/setters

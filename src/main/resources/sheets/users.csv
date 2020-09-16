@@ -1,0 +1,10 @@
+THIS DATA WAS MANUALLY COPIED FROM APP CONSOLE
+user_id,user_email,user_verified,user_first_name,user_last_name,user_sex,user_date_of_birth,user_about_me,user_registration_date,user_country,user_city
+1,test@sixhands.dev,true,Peter,Parker, ,null,null,null,null,null
+3,test2@sixhands.dev,true,null,null, ,null,null,null,null,null
+5,test3@sixhands.dev,true,null,null, ,null,null,null,null,null
+8,test4@sixhands.dev,false,null,null, ,null,null,null,null,null
+10,test5@sixhands.dev,true,null,null, ,null,null,null,null,null
+14,test6@sixhands.dev,false,null,null, ,null,null,null,null,null
+17,test7@sixhands.dev,true,null,null, ,null,null,null,null,null
+19,test8@sixhands.dev,true,null,null, ,null,null,2020-09-16,null,null

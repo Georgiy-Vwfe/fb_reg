@@ -82,6 +82,8 @@ public class UserService implements UserDetailsService {
         if(SixHandsApplication.requireVerification()) {
             if(isProjectMember) sendMemberVerificationMail(user, plainPassword);
             else sendVerificationMail(user);
+        }else {
+            System.out.println("Created user "+user.getUsername()+", password: "+plainPassword);
         }
         return user;
     }
