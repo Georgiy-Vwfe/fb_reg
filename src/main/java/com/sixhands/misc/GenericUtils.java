@@ -1,7 +1,11 @@
 package com.sixhands.misc;
 
 import org.hibernate.Hibernate;
+import org.hibernate.internal.util.collections.ArrayHelper;
 import org.hibernate.proxy.HibernateProxy;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.SecureRandom;
 import java.text.ParseException;
@@ -59,11 +63,14 @@ public class GenericUtils {
             //put the result in the map
             result.put(unit,diff);
         }
-
         return result;
     }
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     public static Date parseDateFromTHStr(String s) throws ParseException {
         return dateFormat.parse(s);
     }
+    public static String formatDateToTHStr(Date date){
+        return dateFormat.format(date);
+    }
+
 }

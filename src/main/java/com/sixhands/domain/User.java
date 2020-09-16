@@ -1,5 +1,9 @@
 package com.sixhands.domain;
 
+import com.sixhands.misc.CSVMap;
+import com.sixhands.misc.CSVSerializable;
+import com.sixhands.misc.GenericUtils;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +12,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 
 @Entity
 @Table(name = "user")
 //Ignore properties on deserialization
 //@JsonIgnoreProperties(value={ "uuid", "role", "activationCode", "create_time", "rating" }, allowGetters=true)
-public class User implements UserDetails {
+public class User implements UserDetails, CSVSerializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uuid;
@@ -39,7 +45,8 @@ public class User implements UserDetails {
     private String city;
     private String user_img;
     private String social_networks;
-    private String create_time;
+    @CreationTimestamp
+    private Date creation_timestamp;
     private String role;
 
     //Set to true when user confirms a project for the first time
@@ -48,30 +55,49 @@ public class User implements UserDetails {
 
     private String activationCode;
 
-    public Long getUuid() {
-        return uuid;
+    @Override
+    public Map<String, String> toCSV() {
+        return new CSVMap()
+                .putc("user_id",uuid)
+                .putc("user_email",email)
+                .putc("user_verified",activationCode==null)
+                .putc("user_first_name",first_name)
+                .putc("user_last_name",last_name)
+                .putc("user_sex",sex)
+                .putc("user_date_of_birth",date_of_birth)
+                .putc("user_about_me",about_user)
+                .putc("user_registration_date",creation_timestamp == null ? "null" : GenericUtils.formatDateToTHStr(creation_timestamp))
+                .putc("user_country",country)
+                .putc("user_city",city);
     }
 
-    public void setUuid(Long uuid) {
-        this.uuid = uuid;
-    }
+    public User safeAssignProperties(User editUser) {
+        country = editUser.getCountry();
+        city = editUser.getCity();
 
-    public String getEmail() {
-        return email;
-    }
+        date_of_birth = editUser.getDate_of_birth();
 
-    public void setEmail(String email) {
-        this.email = email;
+        first_name = editUser.getFirst_name();
+        last_name = editUser.getLast_name();
+
+        social_networks = editUser.getSocial_networks();
+        user_img = editUser.getUser_img();
+        about_user = editUser.getAbout_user();
+
+        email = editUser.getEmail();
+        phone_number = editUser.getPhone_number();
+        //TODO: Parse&validate date
+        date_of_birth = editUser.getDate_of_birth();
+
+        sex = editUser.getSex();
+
+        return this;
     }
 
     //TODO: Return stored authorities ?as list
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new HashSet<>(AuthorityUtils.createAuthorityList(role));
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     @Override
@@ -100,6 +126,26 @@ public class User implements UserDetails {
     }
 
     //#region getters/setters
+
+    public Long getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(Long uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -193,12 +239,12 @@ public class User implements UserDetails {
         this.social_networks = social_networks;
     }
 
-    public String getCreate_time() {
-        return create_time;
+    public Date getCreation_timestamp() {
+        return creation_timestamp;
     }
 
-    public void setCreate_time(String create_time) {
-        this.create_time = create_time;
+    public void setCreate_time(Date create_time) {
+        this.creation_timestamp = create_time;
     }
 
     public String getActivationCode() {
@@ -233,27 +279,4 @@ public class User implements UserDetails {
         this.confirmed_project = confirmed_project;
     }
     //#endregion
-
-    public User safeAssignProperties(User editUser) {
-        country = editUser.getCountry();
-        city = editUser.getCity();
-
-        date_of_birth = editUser.getDate_of_birth();
-
-        first_name = editUser.getFirst_name();
-        last_name = editUser.getLast_name();
-
-        social_networks = editUser.getSocial_networks();
-        user_img = editUser.getUser_img();
-        about_user = editUser.getAbout_user();
-
-        email = editUser.getEmail();
-        phone_number = editUser.getPhone_number();
-        //TODO: Parse&validate date
-        date_of_birth = editUser.getDate_of_birth();
-
-        sex = editUser.getSex();
-
-        return this;
-    }
 }

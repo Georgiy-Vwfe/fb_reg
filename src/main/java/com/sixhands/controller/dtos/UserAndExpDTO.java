@@ -2,8 +2,14 @@ package com.sixhands.controller.dtos;
 
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
+import com.sixhands.misc.CSVMap;
+import com.sixhands.misc.CSVSerializable;
+import org.apache.commons.collections4.map.LinkedMap;
 
-public class UserAndExpDTO {
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserAndExpDTO implements CSVSerializable {
     private boolean added = false;
     private User user = new User();
     private UserProjectExp userExp = new UserProjectExp();
@@ -12,6 +18,14 @@ public class UserAndExpDTO {
         this.user = user;
         this.userExp = userExp;
     }
+
+    @Override
+    public Map<String, String> toCSV() {
+        return new CSVMap()
+                .putcAll(user.toCSV())
+                .putcAll(userExp.toCSV());
+    }
+
     //#region getters/setters
     public User getUser() {
         return user;

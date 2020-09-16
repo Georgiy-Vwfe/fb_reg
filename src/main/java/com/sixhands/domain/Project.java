@@ -1,19 +1,18 @@
 package com.sixhands.domain;
 
+import com.sixhands.misc.CSVSerializable;
+import com.sixhands.misc.CSVMap;
 import com.sixhands.misc.GenericUtils;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Entity
 @Table(name = "project")
-public class Project {
+public class Project implements CSVSerializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uuid;
@@ -42,8 +41,9 @@ public class Project {
         return this;
     }
 
-    public String getDuration(){
+    public String getDisplayDate(){
         try{
+            //TODO: Check if only start is specified, else - ret nothing
             Date start = GenericUtils.parseDateFromTHStr(start_date);
             Date end = GenericUtils.parseDateFromTHStr(end_date);
             if(start.getTime() > end.getTime())
@@ -61,6 +61,19 @@ public class Project {
         else
             likedUserIDs.add(id);
         return this;
+    }
+
+    @Override
+    public Map<String, String> toCSV() {
+        return new CSVMap()
+                .putc("proj_id",uuid)
+                .putc("proj_name",name)
+                .putc("proj_desc",description)
+                .putc("proj_confirmed",confirmed)
+                .putc("proj_industry",industry)
+                .putc("proj_start_date",start_date)
+                .putc("proj_end_date",end_date)
+                .putc("proj_link",link);
     }
 
     //#region getters/setters
@@ -151,5 +164,6 @@ public class Project {
     public void setLikedUserIDs(List<Long> likedUserIDs) {
         this.likedUserIDs = likedUserIDs;
     }
+
     //#endregion
 }
