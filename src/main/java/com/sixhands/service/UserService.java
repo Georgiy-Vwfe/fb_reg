@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,7 +48,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private ProjectService projectService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    private Logger logger = Logger.getLogger(UserService.class.getName());
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         UsernameNotFoundException notFoundException = new UsernameNotFoundException("Unable to find user "+username);
         if(StringUtils.isEmpty(username)) throw notFoundException;
@@ -83,7 +84,7 @@ public class UserService implements UserDetailsService {
             if(isProjectMember) sendMemberVerificationMail(user, plainPassword);
             else sendVerificationMail(user);
         }else {
-            System.out.println("Created user "+user.getUsername()+", password: "+plainPassword);
+            logger.info("(disabled-mail-verification) Created user "+user.getUsername()+", password: "+plainPassword);
         }
         return user;
     }

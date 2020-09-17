@@ -156,6 +156,16 @@
                                                     <input th:field="*{members[__${iter.index}__].added}" type="checkbox">
                                                 </span>
                                                 <div class="col">
+                                                    <input id="projectTeamFName"
+                                                           th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                           th:field="*{members[__${iter.index}__].user.first_name}" type="text" name="projectTeamFName" placeholder="First name" class="field">
+                                                </div>
+                                                <div class="col">
+                                                    <input id="projectTeamLName"
+                                                           th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                           th:field="*{members[__${iter.index}__].user.last_name}" type="text" name="projectTeamLName" placeholder="Last name" class="field">
+                                                </div>
+                                                <div class="col">
                                                     <input id="projectTeamEmail"
                                                            th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
                                                            th:field="*{members[__${iter.index}__].user.email}" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">

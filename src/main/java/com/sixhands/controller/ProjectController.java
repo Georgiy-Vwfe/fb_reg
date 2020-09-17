@@ -133,6 +133,7 @@ public class ProjectController {
 
     //TODO: Import all fields - https://imgur.com/1zenJ1p.jpg, assign first and surname to new users
     @PostMapping("/import")
+    @Transactional
     public String importProjects(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         if(multipartFile==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"File is null");
 
@@ -144,6 +145,7 @@ public class ProjectController {
         }
 
         List<ProjectDTO> imported = sheetService.parseSheet(xssfWorkbook.getSheetAt(0));
+
         imported.forEach(this::saveProject);
         //System.out.println( new JSONArray( imported ).toString(2) );
 

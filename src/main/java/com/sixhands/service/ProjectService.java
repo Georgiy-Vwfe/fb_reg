@@ -30,34 +30,41 @@ public class ProjectService {
     @Autowired
     private UserService userService;
 
-    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO member, Project project){ //Called for all project member on project creation/update
+    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO reqUserAndExp, Project project){ //Called for all project member on project creation/update
         Optional<UserAndExpDTO> oUserAndExp = Optional.empty();
         try {
             Optional<User> oUser;
-            if( !StringUtils.isEmpty(member.getUser().getPassword()) && !StringUtils.isEmpty(member.getUser().getEmail()) && member.getUser().getUuid() != null )
-                oUser = Optional.of(member.getUser());
+            if( !StringUtils.isEmpty(reqUserAndExp.getUser().getPassword()) && !StringUtils.isEmpty(reqUserAndExp.getUser().getEmail()) && reqUserAndExp.getUser().getUuid() != null )
+                oUser = Optional.of(reqUserAndExp.getUser());
             else
-                oUser = userService.findUserByUsername(member.getUser().getEmail());
+                oUser = userService.findUserByUsername(reqUserAndExp.getUser().getEmail());
 
-            User user = oUser.isPresent() ?
-                    oUser.get() :
-                    userService.registerUser(member.getUser().getEmail(),true);
-            member.setUser(user);
+            User user;
+            if(oUser.isPresent()) user = oUser.get();
+            else{
+                User regUser = userService.registerUser(reqUserAndExp.getUser().getEmail(),true);
+                regUser.safeAssignProperties(reqUserAndExp.getUser());
+                user = regUser;
+            }
+
+
+            reqUserAndExp.setUser(user);
             oUserAndExp = userAndExpByUser(project,user);
         }
         catch (Exception e) { e.printStackTrace(); return null; }
 
+        UserProjectExp userExp;
         if(oUserAndExp.isPresent()){ //UserAndExp is persisted, update role and save
-            UserAndExpDTO userAndExp = oUserAndExp.get();
-            userAndExp.getUserExp().setRole(member.getUserExp().getRole());
-            userProjectExpRepo.save(userAndExp.getUserExp());
+            userExp = oUserAndExp.get().getUserExp();
+            userExp.setRole(reqUserAndExp.getUserExp().getRole());
         }else{ //UserAndExp is not persisted, set IDs and save
-            member.getUserExp().setProject_uuid(project.getUuid());
-            member.getUserExp().setUser_uuid(member.getUser().getUuid());
-            userProjectExpRepo.save(member.getUserExp());
+            userExp = reqUserAndExp.getUserExp();
+            userExp.setProject_uuid(project.getUuid());
+            userExp.setUser_uuid(reqUserAndExp.getUser().getUuid());
         }
-        userRepo.save(member.getUser());
-        return member;
+        userProjectExpRepo.save(userExp);
+        userRepo.save(reqUserAndExp.getUser());
+        return reqUserAndExp;
     }
 
     //TODO: Throw error if project creator specified himself as a member
