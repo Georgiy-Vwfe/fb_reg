@@ -33,11 +33,12 @@
     <script src="/scripts/vendor/babelHelpers.min.js" type="text/javascript" defer></script>
 </head>
 <body>
-    <div style="" class="root d-flex flex-column">
-        <div th:replace="common/header :: header">&nbsp;</div>
-        <div data-page="adminProfileProject" class="dataProvider"></div>
-        <main class="root__in pb-5">
-        <form id="formProject" th:object="${projectDTO}" th:action="@{/project/save}" th:method="${isEditing}?'put':'post'" novalidate="novalidate" autocomplete="off">
+<div style="" class="root d-flex flex-column">
+    <div th:replace="common/header :: header">&nbsp;</div>
+    <div data-page="adminProfileProject" class="dataProvider"></div>
+    <main class="root__in pb-5">
+        <form id="formProject" th:object="${projectDTO}" th:action="@{/project/save}"
+              th:method="${isEditing}?'put':'post'" novalidate="novalidate" autocomplete="off">
             <div class="container">
                 <section class="box box_admin box_widget_white pt-5 pb-0 mod002">
                     <div class="box__outer">
@@ -56,7 +57,8 @@
                                             <label for="projectName" class="form-group__label">Project name</label>
                                             <input id="projectName"
                                                    th:readonly="${isEditing}"
-                                                   th:field="*{project.name}" type="text" name="projectName" placeholder="Project name" class="form-group__field field">
+                                                   th:field="*{project.name}" type="text" name="projectName"
+                                                   placeholder="Project name" class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -64,49 +66,66 @@
                                             <label for="projectCompany" class="form-group__label">Company</label>
                                             <input id="projectCompany"
                                                    th:readonly="${isEditing}"
-                                                   th:field="*{project.company}" type="text" name="projectCompany" placeholder="Company" class="form-group__field field">
+                                                   th:field="*{project.company}" type="text" name="projectCompany"
+                                                   placeholder="Company" class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectPosition" class="form-group__label">Position</label>
-                                            <input id="projectPosition" th:field="*{member.userExp.position}" type="text" name="projectPosition" placeholder="Position" class="form-group__field field">
+                                            <input id="projectPosition" th:field="*{member.userExp.position}"
+                                                   type="text" name="projectPosition" placeholder="Position"
+                                                   class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectRole" class="form-group__label">Role</label>
-                                            <input id="projectRole" th:field="*{member.userExp.role}" type="text" name="projectRole" placeholder="Role" class="form-group__field field">
+                                            <input id="projectRole" th:field="*{member.userExp.role}" type="text"
+                                                   name="projectRole" placeholder="Role"
+                                                   class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectDuties" class="form-group__label">Duties</label>
-                                            <input th:field="*{member.userExp.duties}" id="projectDuties" type="text" name="projectDuties" placeholder="Duties" class="form-group__field field">
+                                            <input th:field="*{member.userExp.duties}" id="projectDuties" type="text"
+                                                   name="projectDuties" placeholder="Duties"
+                                                   class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
-                                            <label for="projectDescription" class="form-group__label">Project description</label>
+                                            <label for="projectDescription" class="form-group__label">Project
+                                                description</label>
                                             <input
-                                                    th:if="*{member.userExp.custom_description==null}" id="projectDescription"
-                                                    th:field="*{project.description}" type="text" name="projectDescription" placeholder="Project description" class="form-group__field field">
+                                                    th:if="*{member.userExp.custom_description==null}"
+                                                    id="projectDescription"
+                                                    th:field="*{project.description}" type="text"
+                                                    name="projectDescription" placeholder="Project description"
+                                                    class="form-group__field field">
                                             <input
-                                                    th:if="*{member.userExp.custom_description!=null}" id="customPojectDescription"
-                                                    th:field="*{member.userExp.custom_description}" type="text" name="projectDescription" placeholder="Project description" class="form-group__field field">
+                                                    th:if="*{member.userExp.custom_description!=null}"
+                                                    id="customPojectDescription"
+                                                    th:field="*{member.userExp.custom_description}" type="text"
+                                                    name="projectDescription" placeholder="Project description"
+                                                    class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectSkills" class="form-group__label">Skills</label>
-                                            <input id="projectSkills" th:field="*{member.userExp.skills}" type="text" name="projectSkills" placeholder="Skills" class="form-group__field field">
+                                            <input id="projectSkills" th:field="*{member.userExp.skills}" type="text"
+                                                   name="projectSkills" placeholder="Skills"
+                                                   class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectTools" class="form-group__label">Tools</label>
                                             <input id="projectTools"
-                                                   th:field="*{member.userExp.tools}" type="text" name="projectTools" placeholder="Tools" class="form-group__field field">
+                                                   th:field="*{member.userExp.tools}" type="text" name="projectTools"
+                                                   placeholder="Tools" class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -114,7 +133,8 @@
                                             <label for="projectIndustry" class="form-group__label">Industry</label>
                                             <input id="projectIndustry"
                                                    th:readonly="${isEditing}"
-                                                   th:field="*{project.industry}" type="text" name="projectIndustry" placeholder="Industry" class="form-group__field field">
+                                                   th:field="*{project.industry}" type="text" name="projectIndustry"
+                                                   placeholder="Industry" class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -122,7 +142,8 @@
                                             <label for="projectLink" class="form-group__label">Project Link</label>
                                             <input id="projectLink"
                                                    th:readonly="${isEditing}"
-                                                   th:field="*{project.link}" type="text" name="projectLink" placeholder="Project link " class="form-group__field field">
+                                                   th:field="*{project.link}" type="text" name="projectLink"
+                                                   placeholder="Project link " class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -137,7 +158,9 @@
                                             <button type="button" data-collapse="projectTeamLn" class="btn btn_bordered btn_sm mr-3 mb-3">ln</button>
                                             <button type="button" data-collapse="projectTeamContacts" class="btn btn_bordered btn_sm mr-3 mb-3">Pick in Contacts</button>-->
                                         </div>
-                                        <div data-collapse-target="projectTeamEmail" th:each="mem,iter : ${projectDTO.members}" th:object="${projectDTO}" class="bg-main px-3">
+                                        <div data-collapse-target="projectTeamEmail"
+                                             th:each="mem,iter : ${projectDTO.members}" th:object="${projectDTO}"
+                                             class="bg-main px-3">
                                             <!-- ?Disable inputs instead of hiding -->
                                             <!-- th:if="${
 
@@ -151,29 +174,50 @@
                                             <div th:if="${mem != null}"
                                                  class="row mb-3 py-3">
                                                 <span class="d-none">
-                                                    <input th:field="*{members[__${iter.index}__].user.uuid}" type="number">
-                                                    <input th:field="*{members[__${iter.index}__].userExp.uuid}" type="number">
-                                                    <input th:field="*{members[__${iter.index}__].added}" type="checkbox">
+                                                    <input th:field="*{members[__${iter.index}__].user.uuid}"
+                                                           type="number">
+                                                    <input th:field="*{members[__${iter.index}__].userExp.uuid}"
+                                                           type="number">
+                                                    <input th:field="*{members[__${iter.index}__].added}"
+                                                           type="checkbox">
                                                 </span>
-                                                <div class="col">
-                                                    <input id="projectTeamFName"
-                                                           th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
-                                                           th:field="*{members[__${iter.index}__].user.first_name}" type="text" name="projectTeamFName" placeholder="First name" class="field">
-                                                </div>
-                                                <div class="col">
-                                                    <input id="projectTeamLName"
-                                                           th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
-                                                           th:field="*{members[__${iter.index}__].user.last_name}" type="text" name="projectTeamLName" placeholder="Last name" class="field">
-                                                </div>
-                                                <div class="col">
-                                                    <input id="projectTeamEmail"
-                                                           th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
-                                                           th:field="*{members[__${iter.index}__].user.email}" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">
-                                                </div>
-                                                <div class="col">
-                                                    <input id="projectTeamEmailRole"
-                                                           th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
-                                                           th:field="*{members[__${iter.index}__].userExp.role}" type="text" name="projectTeamEmailRole" placeholder="Role" class="field">
+                                                <div class="row">
+                                                    <section>
+                                                        <div class="col-12 col-md-12">
+                                                            <div class="col">
+                                                                <input id="projectTeamEmail"
+                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                                       th:field="*{members[__${iter.index}__].user.email}"
+                                                                       type="email" name="projectTeamEmail"
+                                                                       placeholder="Email of a member" class="field">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input id="projectTeamEmailRole"
+                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                                       th:field="*{members[__${iter.index}__].userExp.role}"
+                                                                       type="text" name="projectTeamEmailRole"
+                                                                       placeholder="Role" class="field">
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                    <section>
+                                                        <div class="col-12 col-md-12">
+                                                            <div class="col">
+                                                                <input id="projectTeamEmailFirstName"
+                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                                       th:field="*{members[__${iter.index}__].user.first_name}"
+                                                                       type="text" name="projectTeamEmailFistName"
+                                                                       placeholder="First Name" class="field">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input id="projectTeamEmailLastName"
+                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                                       th:field="*{members[__${iter.index}__].user.last_name}"
+                                                                       type="text" name="projectTeamEmailLastName"
+                                                                       placeholder="Last Name" class="field">
+                                                            </div>
+                                                        </div>
+                                                    </section>
                                                 </div>
                                                 <!--th:if="${isEditing == false || isEditing == null}"-->
                                                 <div><input type="submit" class="btn btn_bordered btn_sm mr-3 mb-3"
@@ -217,18 +261,26 @@
                                         <div class="row">
                                             <div class="col-12 col-md-5 col-lg-4">
                                                 <div class="form-group">
-                                                    <label for="projectStartDate" class="form-group__label">Project start date</label>
+                                                    <label for="projectStartDate" class="form-group__label">Project
+                                                        start date</label>
                                                     <input
                                                             th:readonly="${isEditing}"
-                                                            th:field="*{project.start_date}" id="projectStartDate" type="date" name="projectStartDate" placeholder="Project start date" class="form-group__field field">
+                                                            th:field="*{project.start_date}" id="projectStartDate"
+                                                            type="date" name="projectStartDate"
+                                                            placeholder="Project start date"
+                                                            class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-5 col-lg-4">
                                                 <div class="form-group">
-                                                    <label for="projectFinishDate" class="form-group__label">Project finish date</label>
+                                                    <label for="projectFinishDate" class="form-group__label">Project
+                                                        finish date</label>
                                                     <input
                                                             th:readonly="${isEditing}"
-                                                            th:field="*{project.end_date}" id="projectFinishDate" type="date" name="projectFinishDate" placeholder="Project finish date" class="form-group__field field">
+                                                            th:field="*{project.end_date}" id="projectFinishDate"
+                                                            type="date" name="projectFinishDate"
+                                                            placeholder="Project finish date"
+                                                            class="form-group__field field">
                                                 </div>
                                             </div>
                                         </div>
@@ -246,8 +298,8 @@
                 </section>
             </div>
         </form>
-        </main>
-        <div th:replace="common/footer :: footer"></div>
-    </div>
+    </main>
+    <div th:replace="common/footer :: footer"></div>
+</div>
 </body>
 </html>

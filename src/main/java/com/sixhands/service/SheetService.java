@@ -97,7 +97,7 @@ public class SheetService {
 
         return sheetProjectDTOs;
     }
-
+    //TODO: Refactor afterTempUserAndExpChange
     private class ProjectDTOBuilder {
         private UserAndExpDTO tempUserAndExpDTO = new UserAndExpDTO();
 
@@ -191,7 +191,6 @@ public class SheetService {
         }
         //#endregion
 
-        //TODO: Rewrite this
         private ProjectDTOBuilder afterTempUserAndExpChange(){
             //System.out.printf("row: %d, prevRow: %d, user: %s\n", r, prevRow, (tempUserAndExpDTO.getUser().getFirst_name()+tempUserAndExpDTO.getUser().getLast_name()));
             //System.out.println(new JSONObject(projectDTO).toString(2));
