@@ -2,6 +2,7 @@ package com.sixhands.service;
 
 import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.controller.dtos.UserAndExpDTO;
+import com.sixhands.domain.Notification;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
@@ -9,13 +10,17 @@ import com.sixhands.misc.GenericUtils;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,40 +35,54 @@ public class ProjectService {
     @Autowired
     private UserService userService;
 
+    private static Logger logger = Logger.getLogger(ProjectService.class);
     private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO reqUserAndExp, Project project){ //Called for all project member on project creation/update
-        Optional<UserAndExpDTO> oUserAndExp = Optional.empty();
+        Optional<UserAndExpDTO> oPersistedUserAndExp = Optional.empty();
+        User reqCurUser = reqUserAndExp.getUser();
+        UserProjectExp reqCurProjectExp = reqUserAndExp.getUserExp();
         try {
             Optional<User> oUser;
-            if( !StringUtils.isEmpty(reqUserAndExp.getUser().getPassword()) && !StringUtils.isEmpty(reqUserAndExp.getUser().getEmail()) && reqUserAndExp.getUser().getUuid() != null )
-                oUser = Optional.of(reqUserAndExp.getUser());
+            if( !StringUtils.isEmpty(reqCurUser.getPassword()) && !StringUtils.isEmpty(reqCurUser.getEmail()) && reqCurUser.getUuid() != null )
+                oUser = Optional.of(reqCurUser);
             else
-                oUser = userService.findUserByUsername(reqUserAndExp.getUser().getEmail());
+                oUser = userService.findUserByUsername(reqCurUser.getEmail());
 
             User user;
-            if(oUser.isPresent()) user = oUser.get();
+            if(oUser.isPresent())
+                user = oUser.get();
             else{
-                User regUser = userService.registerUser(reqUserAndExp.getUser().getEmail(),true);
-                regUser.safeAssignProperties(reqUserAndExp.getUser());
+                User regUser = userService.registerUser(reqCurUser.getEmail(),true);
+                regUser.safeAssignProperties(reqCurUser);
                 user = regUser;
             }
 
-
             reqUserAndExp.setUser(user);
-            oUserAndExp = userAndExpByUser(project,user);
+            reqCurUser = user;
+            oPersistedUserAndExp = userAndExpByUser(project,user);
         }
         catch (Exception e) { e.printStackTrace(); return null; }
 
+        Optional<UserAndExpDTO> projectCreator = findProjectCreator(project);
+        if(!projectCreator.isPresent()) logger.warn("Unable to send out notifications, can't find the project creator");
+
         UserProjectExp userExp;
-        if(oUserAndExp.isPresent()){ //UserAndExp is persisted, update role and save
-            userExp = oUserAndExp.get().getUserExp();
-            userExp.setRole(reqUserAndExp.getUserExp().getRole());
+        if(oPersistedUserAndExp.isPresent()){ //UserAndExp is persisted, update role and save
+            userExp = oPersistedUserAndExp.get().getUserExp();
+            userExp.setRole(reqCurProjectExp.getRole());
         }else{ //UserAndExp is not persisted, set IDs and save
-            userExp = reqUserAndExp.getUserExp();
+            userExp = reqCurProjectExp;
             userExp.setProject_uuid(project.getUuid());
-            userExp.setUser_uuid(reqUserAndExp.getUser().getUuid());
+            userExp.setUser_uuid(reqCurUser.getUuid());
+
+            //Send out invite notifications
+            projectCreator.ifPresent(userAndExpDTO -> userService.sendUserNotification(
+                    new Notification.NotificationBuilder(userExp.getUser_uuid())
+                            .buildProjectInvite(project, userAndExpDTO.getUser())
+            ));
         }
+
         userProjectExpRepo.save(userExp);
-        userRepo.save(reqUserAndExp.getUser());
+        userRepo.save(reqCurUser);
         return reqUserAndExp;
     }
 
@@ -80,6 +99,7 @@ public class ProjectService {
         creatorProjectExp.setProject_uuid(projectId);
         creatorProjectExp.setUser_uuid(curUser.getUuid());
         creatorProjectExp.setProject_creator(true);
+        userProjectExpRepo.save(creatorProjectExp);
 
         Project finalProject = project;
         List<UserAndExpDTO> memberExp = Arrays.stream(members)
@@ -87,7 +107,6 @@ public class ProjectService {
                 .map((member)-> createOrUpdateProjectExp(member, finalProject) )
                 .collect(Collectors.toList());
 
-        userProjectExpRepo.save(creatorProjectExp);
         memberExp.forEach((ueDTO)->userProjectExpRepo.save(ueDTO.getUserExp()));
     }
 
@@ -132,20 +151,33 @@ public class ProjectService {
                 .getUserExp()
                 .safeAssignProperties(reqUserAndExp.getUserExp());
         if(!byCreator){
+            UserAndExpDTO creatorAndExp = findProjectCreator(reqProject).get();
+
             curUserProjectExp
                     .getUserExp()
                     .setCustom_description(reqProject.getDescription());
+            if(!curUserProjectExp.getUserExp().isConfirmed())
+            //Send out confirm notification
+            userService.sendUserNotification(
+                    new Notification.NotificationBuilder(creatorAndExp.getUser().getUuid())
+                            .buildProjectConfirm(reqProject,curUserProjectExp.getUser())
+            );
             curUserProjectExp
                     .getUserExp()
                     .setConfirmed(true);
+            //Send out change notification
+            userService.sendUserNotification(
+                    new Notification.NotificationBuilder(creatorAndExp.getUser().getUuid())
+                            .buildProjectChange(reqProject,curUserProjectExp.getUser())
+            );
         }
 
+        userProjectExpRepo.save(curUserProjectExp.getUserExp());
         UserAndExpDTO[] curMembers = Arrays.stream(projectDTO.getMembers())
                 .filter(Objects::nonNull)
                 .map((memDTO)-> createOrUpdateProjectExp(memDTO,projectDTO.getProject()))
                 .toArray(UserAndExpDTO[]::new);
 
-        userProjectExpRepo.save(curUserProjectExp.getUserExp());
         projectRepo.save(curProject);
 
         ProjectDTO ret = new ProjectDTO();
@@ -183,6 +215,18 @@ public class ProjectService {
                 .filter((pe) -> pe.getProject_uuid().equals(project.getUuid()))
                 .map((exp)->new UserAndExpDTO(userRepo.getOne(exp.getUser_uuid()),exp))
                 .toArray(UserAndExpDTO[]::new);
+    }
+    public Optional<UserAndExpDTO> findProjectCreator(Project project){
+        for (Object obj:new Object[]{project, project.getUuid()})
+            Objects.requireNonNull(obj);
+        Optional<UserProjectExp> exp = userProjectExpRepo
+                .findAll()
+                .stream()
+                .filter((pe) -> pe.getProject_uuid().equals(project.getUuid())&&pe.isProject_creator())
+                .findFirst();
+        if(!exp.isPresent()) return Optional.empty();
+        User user = userRepo.getOne(exp.get().getUser_uuid());
+        return Optional.of( new UserAndExpDTO(user,exp.get()) );
     }
     //#endregion
 }

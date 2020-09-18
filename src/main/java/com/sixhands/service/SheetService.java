@@ -160,8 +160,8 @@ public class SheetService {
         }
         public ProjectDTOBuilder setUserSex(String strSex){
             if(StringUtils.isEmpty(strSex)) return this;
-            char sex = strSex.toLowerCase().charAt(0);
-            if(sex!='m'&&sex!='f') return this;
+            char sex = strSex.toUpperCase().charAt(0);
+            if(sex!='M'&&sex!='F') return this;
             tempUserAndExpDTO.getUser().setSex(sex);
             return afterTempUserAndExpChange();
         }

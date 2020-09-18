@@ -23,11 +23,32 @@
                         </a>
                     </div>
                 </li>
-                <li class="chain__item">
+                <li class="chain__item" th:if="${notifications!=null}">
                     <div class="middle">
-                        <a href="#">
+                        <a href="#" onclick="notificationClick()">
                             <img src="/images/chain/alpha/bell.svg" />
                         </a>
+                        <!--TODO: ?Hide notificationList on blur-->
+                        <span id="notificationCount" th:text="${notifications.size()}"></span>
+                        <span id="collapsibleNotificationList"
+                        style="position: absolute; 
+                        width: 300px;
+                        overflow-y: auto;
+                        background-color: white;
+                        border: 2px solid gray;
+                        max-height: 120px;
+                        padding: 3px;
+                        display: none;">
+                            <a style="
+                            margin-bottom: 4px;
+                            border-top: 1px solid gray;
+                            display: block;
+                            font-size: 12px;
+                            width: 100%;" th:href="${notification.urlPath}" th:each="notification : ${notifications}">
+                                <div style="width: 100%; white-space: pre-wrap; padding: 10px;" th:text="${notification.messageEN}"></div>
+                                <!--<div style="height: 25px; margin-top: 15px;" th:text="${notification.formatTime()}"></div>-->
+                            </a>
+                        </span>
                     </div>
                 </li>
                 <li class="chain__item">
@@ -44,6 +65,18 @@
                 </div>
             </div>
         </div>
+        <script>
+/*<![CDATA[*/
+function notificationClick(){
+    const listEl = document.getElementById('collapsibleNotificationList');
+    listEl.style.display = listEl.style.display == 'none' ? 'block' : 'none';
+}
+// var notifications = /*[[${notifications}]]*/ undefined;
+// console.log({notifications});
+// document.getElementById('notificationCount').innerHTML = Math.round( Math.random()*50 );
+
+/*]]>*/
+</script>
     </header>
 </body>
 </html>

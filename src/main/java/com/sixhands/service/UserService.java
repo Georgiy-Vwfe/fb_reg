@@ -3,11 +3,13 @@ package com.sixhands.service;
 import com.sixhands.SixHandsApplication;
 import com.sixhands.controller.dtos.UserAndExpDTO;
 import com.sixhands.controller.dtos.UserProfileDTO;
+import com.sixhands.domain.Notification;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
 import com.sixhands.exception.UserAlreadyExistsException;
 import com.sixhands.misc.GenericUtils;
+import com.sixhands.repository.NotificationRepository;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
@@ -27,8 +29,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -47,6 +47,9 @@ public class UserService implements UserDetailsService {
     private ProjectRepository projectRepo;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private NotificationRepository notificationRepo;
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private Logger logger = Logger.getLogger(UserService.class.getName());
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -95,6 +98,19 @@ public class UserService implements UserDetailsService {
     }
     public User getCurUserOrThrow(){
         return getCurUser().orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"User is not authorized."));
+    }
+
+    public void sendUserNotification(Notification notification){
+        notificationRepo.save(notification);
+    }
+
+    public List<Notification> getUserNotifications(User user){
+        return notificationRepo
+                .findAll()
+                .stream()
+                .filter((n)->n.getUserUUID().equals(user.getUuid()))
+                .sorted(Comparator.comparingLong(a -> a.getTimestamp().getTime()))
+                .collect(Collectors.toList());
     }
 
     public static Optional<String> getCurrentUsername() {
@@ -150,6 +166,9 @@ public class UserService implements UserDetailsService {
         }
 
         return profileDTO;
+    }
+    public User safeAssignPersist(User from, User to){
+        return userRepo.save(to.safeAssignProperties(from));
     }
     //#region user-search
     public List<User> searchUsers(String skill, String company, String industry, String tool){
