@@ -123,6 +123,17 @@ public class ProjectService {
         return ret;
     }
 
+    public void deleteProject(Project project){
+        deleteProject(project.getUuid());
+    }
+    public void deleteProject(Long uuid){
+        UserAndExpDTO[] userAndExpDTOS = this.projectExpByProject(uuid);
+        for (UserAndExpDTO userAndExpDTO : userAndExpDTOS)
+            userProjectExpRepo.deleteById(userAndExpDTO.getUserExp().getUuid());
+
+        projectRepo.deleteById(uuid);
+    }
+
     public ProjectDTO updateProject(ProjectDTO projectDTO, boolean byCreator) {
         //TODO:
         // throw exception if user created two members with same mail/another member with his mail
@@ -205,16 +216,18 @@ public class ProjectService {
                 .filter((ue)-> ue.getUser().getUuid().equals(user.getUuid()))
                 .findFirst();
     }
-    public UserAndExpDTO[] projectExpByProject(Project project){
-        for (Object obj:new Object[]{project, project.getUuid()})
-            Objects.requireNonNull(obj);
+    public UserAndExpDTO[] projectExpByProject(Long uuid){
+        Objects.requireNonNull(uuid);
 
         return userProjectExpRepo
                 .findAll()
                 .stream()
-                .filter((pe) -> pe.getProject_uuid().equals(project.getUuid()))
+                .filter((pe) -> pe.getProject_uuid().equals(uuid))
                 .map((exp)->new UserAndExpDTO(userRepo.getOne(exp.getUser_uuid()),exp))
                 .toArray(UserAndExpDTO[]::new);
+    }
+    public UserAndExpDTO[] projectExpByProject(Project project){
+        return projectExpByProject(project.getUuid());
     }
     public Optional<UserAndExpDTO> findProjectCreator(Project project){
         for (Object obj:new Object[]{project, project.getUuid()})

@@ -2,7 +2,7 @@ package com.sixhands.controller;
 
 import com.sixhands.controller.dtos.EditUserSaveProjectDTO;
 import com.sixhands.controller.dtos.ProjectDTO;
-import com.sixhands.domain.Project;
+import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.User;
 import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
@@ -11,12 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class InitialController {
@@ -67,6 +70,18 @@ public class InitialController {
         return "test-import";
     }
 
+    @GetMapping("/search")
+    public String search(Model model,
+                         @RequestParam(required = false) String industry,
+                         @RequestParam(required = false) String role,
+                         @RequestParam(required = false) String name){
+        List<UserProfileDTO> users = userService.searchUsersByProps(null,null,industry,null,role);
+        users = userService.searchUsersByName(users, name);
+        model.addAttribute("profileDTOs",users);
+        return "search";
+    }
+
+    //#region edit-user/save-project
     @GetMapping("/edit-user-save-project")
     public String adminProfileProject(Model model) {
         model.addAttribute("editUserSaveProjectDTO",new EditUserSaveProjectDTO(userService.getCurUserOrThrow(),new ProjectDTO()));
@@ -90,8 +105,10 @@ public class InitialController {
     @PutMapping("/edit-user-save-project")
     public String persistEditUserSaveProjectForms(@ModelAttribute EditUserSaveProjectDTO dto){
         User curUser = userService.getCurUserOrThrow();
-        projectService.saveNewProject(dto.getProjectDTO(),curUser);
+        if(!StringUtils.isEmpty(dto.getProjectDTO().getProject().getName()))
+            projectService.saveNewProject(dto.getProjectDTO(),curUser);
         userService.safeAssignPersist(dto.getUser(),curUser);
         return "redirect:/user/me";
     }
+    //#endregion
 }

@@ -85,7 +85,7 @@ public class SheetService {
                     nextRowMemberCell!=null &&
                     !StringUtils.isEmpty(nextRowFirstCell.getStringCellValue()) &&
                     !StringUtils.isEmpty(nextRowMemberCell.getStringCellValue());
-            System.out.printf("r: %s total-1: %s, nextIsNewProject: %s\n", r, (sheet.getPhysicalNumberOfRows() - 1), nextIsNewProject);
+            //System.out.printf("r: %s total-1: %s, nextIsNewProject: %s\n", r, (sheet.getPhysicalNumberOfRows() - 1), nextIsNewProject);
             if( nextIsNewProject || r == sheet.getPhysicalNumberOfRows()-1 ){
                 ProjectDTO projectDTO = projectDTOBuilder.build();
                 r++;

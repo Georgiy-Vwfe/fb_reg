@@ -93,6 +93,26 @@ public class ProjectController {
         model.addAttribute("projectDTO",projectDTO);
         return "save-project";
     }
+    @DeleteMapping("/{id}/delete")
+    public String deleteProject(@PathVariable int id, HttpServletRequest request){
+        User curUser = getCurUser();
+        //Get all projects that are created by current user
+        Project[] projects = projectService.findProjectsByUser(curUser,true);
+        //leave project that matches {id} from request path
+        projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
+        if(projects.length == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User did not create this project or project was not found");
+
+        Project project = projects[0];
+        if(project.isConfirmed())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to delete confirmed project");
+        projectService.deleteProject(project);
+        try{
+            //https://stackoverflow.com/a/1525689
+            URL referer = new URL(request.getHeader("Referer"));
+            return "redirect:"+referer;
+        }catch (MalformedURLException e){return "redirect:/";}
+    }
     @GetMapping("/create")
     public String createProject(Model model) {
         model.addAttribute("projectDTO",new ProjectDTO());

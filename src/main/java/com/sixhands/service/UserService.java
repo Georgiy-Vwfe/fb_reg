@@ -13,7 +13,6 @@ import com.sixhands.repository.NotificationRepository;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -153,15 +153,16 @@ public class UserService implements UserDetailsService {
     }
 
     public UserProfileDTO getProfileDtoForUser(User user){
-        UserProfileDTO profileDTO = new UserProfileDTO();
+        UserProfileDTO profileDTO = new UserProfileDTO(user);
         List<UserProjectExp> projectExps = getProjectExpForUser(user);
         for (UserProjectExp projectExp:projectExps){
             Project project = projectRepo.getOne(projectExp.getProject_uuid());
             profileDTO
-                    .addSkill(projectExp.getSkills(),projectExp, project)
+                    .addSkill(projectExp.getSkills(), projectExp, project)
                     .addTool(projectExp.getTools(), projectExp, project)
-                    .addIndustry(project.getIndustry(),projectExp,project)
-                    .addCompany(project.getCompany(),projectExp,project)
+                    .addIndustry(project.getIndustry(), projectExp, project)
+                    .addCompany(project.getCompany(), projectExp, project)
+                    .addRole(projectExp.getRole(), projectExp, project)
                     .setRating(getRatingForUser(user));
         }
 
@@ -171,22 +172,33 @@ public class UserService implements UserDetailsService {
         return userRepo.save(to.safeAssignProperties(from));
     }
     //#region user-search
-    public List<User> searchUsers(String skill, String company, String industry, String tool){
-        List<User> users = userRepo.findAll();
-        if( StringUtils.isEmpty(skill) && StringUtils.isEmpty(company) && StringUtils.isEmpty(industry) && StringUtils.isEmpty(tool) )
-            return users;
-        Stream<Pair<User,UserProfileDTO>> stream = users.stream().map((u)-> new Pair<>(u, getProfileDtoForUser(u)));
-        stream = filterProp(stream, UserProfileDTO::getCompanies, skill);
+    public List<UserProfileDTO> searchUsersByName(List<UserProfileDTO> users, String name){
+        if(StringUtils.isEmpty(name)) return users;
+        Predicate<UserProfileDTO> nameSearch = (profileDTO) ->{
+                User u = profileDTO.getUser();
+                return !StringUtils.isEmpty( u.getFirst_name() ) &&
+                !StringUtils.isEmpty( u.getLast_name() ) &&
+                (u.getFirst_name()+" "+u.getLast_name()).toLowerCase().contains(name.toLowerCase());
+        };
+        return users.stream().filter(nameSearch).collect(Collectors.toList());
+    }
+    public List<UserProfileDTO> searchUsersByProps(String skill, String company, String industry, String tool, String role){
+        Stream<UserProfileDTO> stream = userRepo.findAll().stream().map(this::getProfileDtoForUser);
+        if( StringUtils.isEmpty(skill) && StringUtils.isEmpty(company) && StringUtils.isEmpty(industry) && StringUtils.isEmpty(tool) && StringUtils.isEmpty(role) ){
+            return stream.collect(Collectors.toList());
+        }
+        stream = filterProp(stream, UserProfileDTO::getSkills, skill);
         stream = filterProp(stream, UserProfileDTO::getCompanies, company);
         stream = filterProp(stream, UserProfileDTO::getIndustries, industry);
         stream = filterProp(stream, UserProfileDTO::getTools, tool);
-        return stream.map(Pair::getKey).collect(Collectors.toList());
+        stream = filterProp(stream, UserProfileDTO::getRoles, role);
+        return stream.collect(Collectors.toList());
     }
-    private Stream<Pair<User,UserProfileDTO>> filterProp(Stream<Pair<User,UserProfileDTO>> init, Function<UserProfileDTO,List<UserProfileDTO.UserProfilePropertyDTO>> propSupplier, String compareTo){
+    private Stream<UserProfileDTO> filterProp(Stream<UserProfileDTO> init, Function<UserProfileDTO,List<UserProfileDTO.UserProfilePropertyDTO>> propSupplier, String compareTo){
         if(StringUtils.isEmpty(compareTo)) return init;
 
-        return init.filter( (pair) ->
-                            propSupplier.apply(pair.getValue())
+        return init.filter( (profileDTO) ->
+                            propSupplier.apply(profileDTO)
                                 .stream()
                                 .anyMatch((p)->p.getProperty().equalsIgnoreCase(compareTo))
                         );

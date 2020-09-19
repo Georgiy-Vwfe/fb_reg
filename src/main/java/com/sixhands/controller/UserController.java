@@ -50,7 +50,6 @@ public class UserController {
         return "redirect:/user/"+curUser.getUuid();
     }
 
-
     @GetMapping("/{id}")
     public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0",required = false) Integer edit, Model model){
         User user = userRepo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id "+id+" is not found"));
@@ -70,7 +69,6 @@ public class UserController {
                 })
                 .sorted((a,b) -> (int)b.getProject().getCreated().getTime()-(int)a.getProject().getCreated().getTime() )
                 .toArray(ProjectAndUserExpDTO[]::new);
-
 
         model.addAttribute("user", user);
         model.addAttribute("userData", userService.getProfileDtoForUser(user) );
