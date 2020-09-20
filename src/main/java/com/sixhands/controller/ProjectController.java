@@ -150,7 +150,6 @@ public class ProjectController {
         projectService.saveNewProject(projectDTO,getCurUser());
         return "redirect:/user/me";
     }
-
     //TODO: Import all fields - https://imgur.com/1zenJ1p.jpg, assign first and surname to new users
     @PostMapping("/import")
     @Transactional

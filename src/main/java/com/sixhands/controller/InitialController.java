@@ -80,7 +80,10 @@ public class InitialController {
         model.addAttribute("profileDTOs",users);
         return "search";
     }
-
+    @GetMapping("/admin-token")
+    public String adminPanelByToken(){
+        return "admin-token-request";
+    }
     //#region edit-user/save-project
     @GetMapping("/edit-user-save-project")
     public String adminProfileProject(Model model) {

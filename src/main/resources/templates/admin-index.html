@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="lang-en country-en" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="imagetoolbar" content="no">
+    <meta name="msthemecompatible" content="no">
+    <meta name="cleartype" content="on">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="google" content="notranslate">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="Project (owners mode)">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Admin | 6hands</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    </head>
+
+<body>
+<h2>
+Hello, Admin!
+</h2>
+<div>
+    <a href="csv/projects">Export projects</a>
+</div>
+<div>
+    <a href="csv/users">Export users</a>
+</div>
+</body>
+<script>
+//Append / to the end of url
+const loc = location.href;
+if(loc.lastIndexOf('/')!=loc.length-1) location.href=loc+'/'
+</script>
+</html>
