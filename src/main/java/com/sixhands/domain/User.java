@@ -2,9 +2,6 @@ package com.sixhands.domain;
 
 import com.sixhands.misc.CSVMap;
 import com.sixhands.misc.CSVSerializable;
-import com.sixhands.misc.GenericUtils;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

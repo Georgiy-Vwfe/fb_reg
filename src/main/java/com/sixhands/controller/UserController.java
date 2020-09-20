@@ -1,35 +1,18 @@
 package com.sixhands.controller;
 
-import com.sixhands.controller.dtos.EditUserSaveProjectDTO;
 import com.sixhands.controller.dtos.ProjectAndUserExpDTO;
-import com.sixhands.controller.dtos.ProjectDTO;
-import com.sixhands.domain.Notification;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
-import com.sixhands.service.SheetService;
 import com.sixhands.service.UserService;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Comparator;
-import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -79,8 +62,8 @@ public class UserController {
     }
 
     @PutMapping
-    public String updateUserData(@ModelAttribute User editUser){
-        userService.safeAssignPersist(editUser,userService.getCurUserOrThrow());
+    public String updateUserData(@ModelAttribute User editUser) {
+        userService.safeAssignPersist(editUser, userService.getCurUserOrThrow());
         return "redirect:/user/me";
     }
 
