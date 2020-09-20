@@ -17,11 +17,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class InitialController {
@@ -30,11 +32,7 @@ public class InitialController {
     @Autowired
     private ProjectService projectService;
 
-    @Autowired
-    private UserRepository userRepo;
-
-    private User tmpUser;
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private String userEmail;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -44,7 +42,28 @@ public class InitialController {
 
     //TODO: ?Display error for unverified users
     @GetMapping("/login")
-    public String signIn() {
+    public String signIn(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String signIn(@ModelAttribute User user, Model model, BindingResult bindingResult, HttpServletRequest request) {
+        userEmail = user.getEmail();
+        if (bindingResult.hasErrors()) return "login";
+
+        Optional<User> tmp = userService.findUserByUsername(userEmail);
+        if (tmp.isPresent()) {
+            User tmpUser = tmp.get();
+            if (userService.isPasswordMatch(user.getPassword(), tmpUser.getPassword())){
+                try {
+                    request.login(user.getEmail(), user.getPassword());
+                } catch (ServletException e) {
+                    // log.debug("Autologin fail", e);
+                }
+                return "redirect:/edit-user-save-project";
+            }
+        }
         return "login";
     }
 
@@ -73,9 +92,8 @@ public class InitialController {
 
     @PostMapping("/forget-password")
     public String sendRecoverMail(@ModelAttribute User user) {
-        this.tmpUser = user;
+        userEmail = user.getEmail();
         userService.sendRecoverMail(user);
-        System.out.println(user.toString());
         return "redirect:/";
     }
 
@@ -93,16 +111,18 @@ public class InitialController {
     @PostMapping("/recovery-password")
     public String recoverPassword(@ModelAttribute User user, Model model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "recovery-password";
-        if (user.getPassword().equals(user.getConfirmPassword())) {
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
             model.addAttribute("passNotEquals", "passwords isn't equals");
             return "recovery-password";
         }
 
         String password = user.getPassword();
-        user = userService.loadUserByUsername(tmpUser.getUsername());
-        //user.safeAssignProperties(tmpUser);
-        user.setPassword(userService.encodePassword(password));
-        userRepo.save(user);
+        if (password == null) {
+            return "recovery-password";
+        } else {
+            user = userService.loadUserByUsername(userEmail);
+            userService.changeUserPassword(user, password);
+        }
         return "redirect:/login";
     }
 

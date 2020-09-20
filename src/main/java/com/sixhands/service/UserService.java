@@ -301,10 +301,14 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public String encodePassword(String password) {
-        String encodedPassword = passwordEncoder.encode(password);
-        System.out.println("LOG: ENCODE PASSWORD " + encodedPassword);
-        return encodedPassword;
+    public void changeUserPassword(User user, String rawPassword) {
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        userRepo.save(user);
     }
+
+    public boolean isPasswordMatch(String encodedPassword, String rawPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
     //#endregion
 }

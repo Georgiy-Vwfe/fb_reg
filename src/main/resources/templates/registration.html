@@ -49,7 +49,8 @@
             <section class="box box_widget_white box_widget_shadow box_widget_rounded py-5 mod001">
                 <div class="box__inner">
                     <div class="box__inner-widget">
-                        <form id="register" novalidate=novalidate th:action="@{/registration}" th:object="${user}" autocomplete="off" method="post" class="form py-5">
+                        <form id="register" novalidate=novalidate th:action="@{/registration}" th:object="${user}"
+                              autocomplete="off" method="post" class="form py-5">
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
@@ -87,7 +88,8 @@
                                                 check</label>
                                             <input id="passwordCorrect" required="required" type="password"
                                                    name="passwordCorrect"
-                                                   placeholder="Repeat password" class="form-group__field field " th:field="*{confirmPassword}"}>
+                                                   placeholder="Repeat password" class="form-group__field field "
+                                                   th:field="*{confirmPassword}" }>
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${passNotEquals}" th:text="${passNotEquals}">
                                             </div>
@@ -98,9 +100,7 @@
                                         <button id="submit" type="submit" class="btn btn_bordered">Register</button>
                                     </div>
                                     <div class=" col-11 col-sm-9 text-center"><a class="title title_h3"
-                                    >Sign
-                                        in
-                                        through Facebook</a>
+                                    >Sign in through Facebook</a>
                                     </div>
                                 </div>
                             </div>

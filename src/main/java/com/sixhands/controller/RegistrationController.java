@@ -40,8 +40,9 @@ public class RegistrationController {
 
         String email = user.getEmail();
         String password = user.getPassword();
-        try { userService.registerUser(email, password); }
-        catch(UserAlreadyExistsException e){
+        try {
+            userService.registerUser(email, password);
+        } catch (UserAlreadyExistsException e) {
             model.addAttribute("usernameError", "A user with the same name already exists.");
             return "redirect:/";
         }
@@ -53,7 +54,7 @@ public class RegistrationController {
         }
         return "redirect:/edit-user-save-project";
     }
-    
+
     @GetMapping("/activation/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
