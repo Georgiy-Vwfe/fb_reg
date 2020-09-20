@@ -39,45 +39,48 @@ public class UserController {
     private ProjectRepository projectRepo;
 
     @GetMapping("/me")
-    public String getMeUser(Model model){
+    public String getMeUser(Model model) {
         User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
-        if(curUser == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not logged in");
-        return "redirect:/user/"+curUser.getUuid();
+        if (curUser == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not logged in");
+        return "redirect:/user/" + curUser.getUuid();
     }
+
     @GetMapping("/{id}")
-    public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0",required = false) Integer edit, Model model){
-        User user = userRepo.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id "+id+" is not found"));
+    public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0", required = false) Integer edit, Model model) {
+        User user = userRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " is not found"));
         boolean canEdit = false;
         User curUser = null;
         try {
             curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
             canEdit = curUser.getUuid().equals(user.getUuid());
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
         User finalCurUser = curUser;
         ProjectAndUserExpDTO[] projectAndExps = userService.getProjectExpForUser(user).stream()
-                .map((ue)-> {
+                .map((ue) -> {
                     Project proj = projectRepo.getOne(ue.getProject_uuid());
                     int rating = userService.getRatingForProject(proj);
                     boolean likedByUser = finalCurUser != null && proj.getLikedUserIDs().contains(finalCurUser.getUuid());
                     return new ProjectAndUserExpDTO(proj, ue, rating, likedByUser);
                 })
-                .sorted((a,b) -> (int)b.getProject().getCreated().getTime()-(int)a.getProject().getCreated().getTime() )
+                .sorted((a, b) -> (int) b.getProject().getCreated().getTime() - (int) a.getProject().getCreated().getTime())
                 .toArray(ProjectAndUserExpDTO[]::new);
         model.addAttribute("user", user);
-        model.addAttribute("userData", userService.getProfileDtoForUser(user) );
+        model.addAttribute("userData", userService.getProfileDtoForUser(user));
         model.addAttribute("canEdit", canEdit);
         model.addAttribute("projects", projectAndExps);
         return edit == 1 ? "edit-user-profile" : "project-not-aproved";
     }
-    @PutMapping
-    public String updateUserData(@ModelAttribute User editUser){
 
-        User curUser = userService.loadUserByUsername( UserService.getCurrentUsername().orElseThrow(()->new RequestRejectedException("User is not logged in")) );
+    @PutMapping
+    public String updateUserData(@ModelAttribute User editUser) {
+
+        User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElseThrow(() -> new RequestRejectedException("User is not logged in")));
 
         curUser.safeAssignProperties(editUser);
         userRepo.save(curUser);
 
-        return "redirect:/user/me";
+        return "redirect:/login";
     }
 
 
