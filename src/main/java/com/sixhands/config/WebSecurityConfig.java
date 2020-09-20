@@ -1,11 +1,13 @@
 package com.sixhands.config;
 
+import com.sixhands.config.filter.AdminFilter;
 import com.sixhands.domain.User;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +17,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 //import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Collections;
 
 
 @Configuration
@@ -43,7 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserRepository userRepo;
     @Autowired
     private UserService userService;
-
     @Bean
     public DaoAuthenticationProvider myAuthProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

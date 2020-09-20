@@ -67,39 +67,11 @@ public class SixHandsApplication implements CommandLineRunner {
             User user = new User();
             user.setFirst_name("Peter");
             user.setLast_name("Parker");
-/*
-test@sixhands.dev
-
-*/
             user.setEmail("test@sixhands.dev");
             user.setRole("ROLE_USER");
             user.setPassword(encoder.encode("123"));
             userRepo.save(user);
             System.out.println("ADDED TEST USER");
-        }
-        if(projectRepo.count() > 0 && userRepo.count() > 0){
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < projectRepo.count(); i++) {
-                Project project = GenericUtils.initializeAndUnproxy( projectRepo.findAll().get(i) );
-                UserAndExpDTO[] userAndExpDTO = GenericUtils.initializeAndUnproxy( projectService.projectExpByProject(project) );
-                ProjectDTO projectDTO = new ProjectDTO();
-                projectDTO.setProject(project);
-                projectDTO.setMembers(userAndExpDTO);
-                stringBuilder.append(projectDTO.toCsvDto().toString(i == 0)).append(i==projectRepo.count()-1?"":"\n");
-            }
-            System.out.println("====PROJECTS START====");
-            System.out.println(stringBuilder);
-            System.out.println("=====PROJECTS END=====");
-
-            stringBuilder = new StringBuilder();
-            for (int i = 0; i < userRepo.count(); i++) {
-                User user = GenericUtils.initializeAndUnproxy( userRepo.findAll().get(i) );
-                if(i==0) stringBuilder.append( String.join(",", user.toCSV().keySet()) ).append("\n");
-                stringBuilder.append( String.join(",", user.toCSV().values()) ).append(i==userRepo.count()-1?"":"\n");
-            }
-            System.out.println("====USERS START====");
-            System.out.println(stringBuilder);
-            System.out.println("=====USERS END=====");
         }
     }
 }

@@ -72,5 +72,8 @@ public class GenericUtils {
     public static String formatDateToTHStr(Date date){
         return dateFormat.format(date);
     }
-
+    public static boolean isDateFormattedAsTHStr(String s) {
+        try{ dateFormat.parse(s); return true; }
+        catch (ParseException e){return false;}
+    }
 }

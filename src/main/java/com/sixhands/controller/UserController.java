@@ -1,6 +1,9 @@
 package com.sixhands.controller;
 
+import com.sixhands.controller.dtos.EditUserSaveProjectDTO;
 import com.sixhands.controller.dtos.ProjectAndUserExpDTO;
+import com.sixhands.controller.dtos.ProjectDTO;
+import com.sixhands.domain.Notification;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
 import com.sixhands.repository.ProjectRepository;
@@ -22,9 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -65,6 +70,7 @@ public class UserController {
                 })
                 .sorted((a, b) -> (int) b.getProject().getCreated().getTime() - (int) a.getProject().getCreated().getTime())
                 .toArray(ProjectAndUserExpDTO[]::new);
+
         model.addAttribute("user", user);
         model.addAttribute("userData", userService.getProfileDtoForUser(user));
         model.addAttribute("canEdit", canEdit);
@@ -73,14 +79,9 @@ public class UserController {
     }
 
     @PutMapping
-    public String updateUserData(@ModelAttribute User editUser) {
-
-        User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElseThrow(() -> new RequestRejectedException("User is not logged in")));
-
-        curUser.safeAssignProperties(editUser);
-        userRepo.save(curUser);
-
-        return "redirect:/login";
+    public String updateUserData(@ModelAttribute User editUser){
+        userService.safeAssignPersist(editUser,userService.getCurUserOrThrow());
+        return "redirect:/user/me";
     }
 
 

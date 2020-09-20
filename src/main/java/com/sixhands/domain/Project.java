@@ -30,6 +30,8 @@ public class Project implements CSVSerializable {
     @ElementCollection
     @OrderColumn
     private List<Long> likedUserIDs = new ArrayList<>();
+    @Column(unique = true)
+    private String importID;
     public Project safeAssignProperties(Project reqProject){
         name = reqProject.getName();
         description = reqProject.getDescription();
@@ -163,6 +165,14 @@ public class Project implements CSVSerializable {
 
     public void setLikedUserIDs(List<Long> likedUserIDs) {
         this.likedUserIDs = likedUserIDs;
+    }
+
+    public String getImportID() {
+        return importID;
+    }
+
+    public void setImportID(String importID) {
+        this.importID = importID;
     }
 
     //#endregion

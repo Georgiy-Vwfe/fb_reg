@@ -9,20 +9,24 @@
     <title>Главная</title>
 </head>
 <body>
-<img style="width: 300px; height: 300px;display: block; text-align: center;"
-     src="https://sun9-68.userapi.com/c543109/v543109873/18576/iEYn0W84Pfg.jpg" alt="mem">
+<!--<img style="width: 300px; height: 300px;display: block; text-align: center;"
+     src="https://sun9-68.userapi.com/c543109/v543109873/18576/iEYn0W84Pfg.jpg" alt="mem">-->
 <br>
 <h4 th:if="${isAuthenticated == null || isAuthenticated == false}">Вы не авторизованы</h4>
-<a th:href="@{/login}">Авторизация</a>
-<hr>
-<a th:href="@{/registration}">Регистрация</a>
-<hr>
+<div th:if="${isAuthenticated == null || isAuthenticated == false}">
+    <a th:href="@{/login}">Авторизация</a>
+    <hr>
+    <a th:href="@{/registration}">Регистрация</a>
+    <hr>
+</div>
 <div th:if="${isAuthenticated}">
     <a th:href="@{/user/me}">Открыть мой профиль</a>
     <hr>
-    <a th:href="@{/project/create}">Создать новый проект</a>
-    <hr>
     <a th:href="@{/test-import}">Тест импорт</a>
+    <hr>
+    <a th:href="@{/search}">Поиск</a>
+    <hr>
+    <a th:href="@{/admin-token}">Админ. панель</a>
     <hr>
     <a th:href="@{/forget-me}">Выйти из учетной записи</a>
 </div>

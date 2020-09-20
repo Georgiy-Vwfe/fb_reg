@@ -4,6 +4,7 @@ import com.sixhands.misc.CSVMap;
 import com.sixhands.misc.CSVSerializable;
 import com.sixhands.misc.GenericUtils;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,7 +46,7 @@ public class User implements UserDetails, CSVSerializable {
     private String city;
     private String user_img;
     private String social_networks;
-    @CreationTimestamp
+    //TODO: ?Set on registration/persist
     private Date creation_timestamp;
     private String role;
 
@@ -66,7 +67,7 @@ public class User implements UserDetails, CSVSerializable {
                 .putc("user_sex",sex)
                 .putc("user_date_of_birth",date_of_birth)
                 .putc("user_about_me",about_user)
-                .putc("user_registration_date",creation_timestamp == null ? "null" : GenericUtils.formatDateToTHStr(creation_timestamp))
+                //.putc("user_registration_date",creation_timestamp == null ? "null" : GenericUtils.formatDateToTHStr(creation_timestamp))
                 .putc("user_country",country)
                 .putc("user_city",city);
     }
@@ -243,8 +244,8 @@ public class User implements UserDetails, CSVSerializable {
         return creation_timestamp;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.creation_timestamp = create_time;
+    public void setCreation_timestamp(Date creation_timestamp){
+        this.creation_timestamp = creation_timestamp;
     }
 
     public String getActivationCode() {

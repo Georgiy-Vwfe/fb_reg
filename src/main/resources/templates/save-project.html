@@ -47,7 +47,7 @@
                     <div class="box__inner">
                         <div class="box__inner-widget">
                             <div class="container">
-                                <div th:object="${projectDTO}" class="row justify-content-center pt-4 pb-5">
+                                <div class="row justify-content-center pt-4 pb-5">
                                     <input th:field="*{project.uuid}" type="text" class="d-none">
                                     <input th:field="*{member.user.uuid}" type="text" class="d-none">
                                     <input th:field="*{member.userExp.uuid}" type="text" class="d-none">
@@ -159,69 +159,59 @@
                                             <button type="button" data-collapse="projectTeamContacts" class="btn btn_bordered btn_sm mr-3 mb-3">Pick in Contacts</button>-->
                                         </div>
                                         <div data-collapse-target="projectTeamEmail"
-                                             th:each="mem,iter : ${projectDTO.members}" th:object="${projectDTO}"
+                                             th:each="mem,iter : *{members}"
                                              class="bg-main px-3">
-                                            <!-- ?Disable inputs instead of hiding -->
-                                            <!-- th:if="${
-
-                                            (
-                                                isEditing == false ||
-                                                ( projectDTO.member.userExp.project_creator ||
-                                                    (projectDTO.members[__${iter.index}__].added)
-                                                )
-                                            )}"
-                                            -->
                                             <div th:if="${mem != null}"
                                                  class="row mb-3 py-3">
-                                                <span class="d-none">
-                                                    <input th:field="*{members[__${iter.index}__].user.uuid}"
-                                                           type="number">
-                                                    <input th:field="*{members[__${iter.index}__].userExp.uuid}"
-                                                           type="number">
-                                                    <input th:field="*{members[__${iter.index}__].added}"
-                                                           type="checkbox">
-                                                </span>
+											<span class="d-none">
+												<input th:field="*{members[__${iter.index}__].user.uuid}"
+                                                       type="number">
+												<input th:field="*{members[__${iter.index}__].userExp.uuid}"
+                                                       type="number">
+												<input th:field="*{members[__${iter.index}__].added}"
+                                                       type="checkbox">
+											</span>
                                                 <div class="row">
                                                     <section>
                                                         <div class="col-12 col-md-12">
                                                             <div class="col">
                                                                 <input id="projectTeamEmail"
-                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                                       th:readonly="*{members[__${iter.index}__].added == false}"
                                                                        th:field="*{members[__${iter.index}__].user.email}"
                                                                        type="email" name="projectTeamEmail"
                                                                        placeholder="Email of a member" class="field">
                                                             </div>
                                                             <div class="col">
                                                                 <input id="projectTeamEmailRole"
-                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"
+                                                                       th:readonly="*{members[__${iter.index}__].added == false}"
                                                                        th:field="*{members[__${iter.index}__].userExp.role}"
                                                                        type="text" name="projectTeamEmailRole"
                                                                        placeholder="Role" class="field">
                                                             </div>
                                                         </div>
                                                     </section>
-<!--                                                    <section>-->
-<!--                                                        <div class="col-12 col-md-12">-->
-<!--                                                            <div class="col">-->
-<!--                                                                <input id="projectTeamEmailFistName"-->
-<!--                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"-->
-<!--                                                                       th:field="*{members[__${iter.index}__].user.first_name}"-->
-<!--                                                                       type="text" name="projectTeamEmailFistName"-->
-<!--                                                                       placeholder="First Name" class="field">-->
-<!--                                                            </div>-->
-<!--                                                            <div class="col">-->
-<!--                                                                <input id="projectTeamEmailLastName"-->
-<!--                                                                       th:readonly="${projectDTO.members[__${iter.index}__].added == false}"-->
-<!--                                                                       th:field="*{members[__${iter.index}__].user.last_name}"-->
-<!--                                                                       type="text" name="projectTeamEmailLastName"-->
-<!--                                                                       placeholder="Last Name" class="field">-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </section>-->
+                                                    <section>
+                                                        <div class="col-12 col-md-12">
+                                                            <div class="col">
+                                                                <input id="projectTeamEmailFirstName"
+                                                                       th:readonly="*{members[__${iter.index}__].added == false}"
+                                                                       th:field="*{members[__${iter.index}__].user.first_name}"
+                                                                       type="text" name="projectTeamEmailFistName"
+                                                                       placeholder="First Name" class="field">
+                                                            </div>
+                                                            <div class="col">
+                                                                <input id="projectTeamEmailLastName"
+                                                                       th:readonly="*{members[__${iter.index}__].added == false}"
+                                                                       th:field="*{members[__${iter.index}__].user.last_name}"
+                                                                       type="text" name="projectTeamEmailLastName"
+                                                                       placeholder="Last Name" class="field">
+                                                            </div>
+                                                        </div>
+                                                    </section>
                                                 </div>
                                                 <!--th:if="${isEditing == false || isEditing == null}"-->
                                                 <div><input type="submit" class="btn btn_bordered btn_sm mr-3 mb-3"
-                                                            th:disabled="${projectDTO.members[__${iter.index}__].added == false}"
+                                                            th:disabled="*{members[__${iter.index}__].added == false}"
                                                             th:onclick="'this.form.action+=`?action=delete-member&index=`+'+${iter.index}"
                                                             value="X"></div>
                                             </div>

@@ -1,6 +1,7 @@
 package com.sixhands.controller.dtos;
 
 import com.sixhands.domain.Project;
+import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
 import org.springframework.util.StringUtils;
 
@@ -13,7 +14,11 @@ import java.util.stream.Collectors;
 
 public class UserProfileDTO {
     public UserProfileDTO(){}
+    public UserProfileDTO(User user) {
+        this.user = user;
+    }
 
+    private User user;
     // ? COMMA-SEPARATED
     private List<UserProfilePropertyDTO> skills = new ArrayList<>();
     // ? COMMA-SEPARATED
@@ -21,6 +26,8 @@ public class UserProfileDTO {
 
     private List<UserProfilePropertyDTO> companies = new ArrayList<>();
     private List<UserProfilePropertyDTO> industries = new ArrayList<>();
+
+    private List<UserProfilePropertyDTO> roles = new ArrayList<>();
 
     private int rating = 0;
 
@@ -39,6 +46,7 @@ public class UserProfileDTO {
     public UserProfileDTO addTool(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,tools); }
     public UserProfileDTO addCompany(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,companies); }
     public UserProfileDTO addIndustry(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,industries); }
+    public UserProfileDTO addRole(String property, UserProjectExp projectExp, Project project){ return addPropertyFromString(property,projectExp,project,roles); }
     private UserProfileDTO addPropertyFromString(String property, UserProjectExp projectExp, Project project, List<UserProfilePropertyDTO> to){
         if(projectExp == null && project == null) Logger.getGlobal().warning("Both projectExp and project is null");
         if(StringUtils.isEmpty(property) || (projectExp == null && project == null)) return this;
@@ -93,6 +101,7 @@ public class UserProfileDTO {
     public List<UserProfilePropertyDTO> getTools(boolean onlyConfirmed){ return filterProps(tools,onlyConfirmed); }
     public List<UserProfilePropertyDTO> getCompanies(boolean onlyConfirmed){ return filterProps(companies,onlyConfirmed); }
     public List<UserProfilePropertyDTO> getIndustries(boolean onlyConfirmed){ return filterProps(industries,onlyConfirmed); }
+    public List<UserProfilePropertyDTO> getRoles(boolean onlyConfirmed){ return filterProps(roles,onlyConfirmed); }
 
     //#region getters/setters
     public List<UserProfilePropertyDTO> getSkills() {
@@ -133,6 +142,22 @@ public class UserProfileDTO {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public List<UserProfilePropertyDTO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserProfilePropertyDTO> roles) {
+        this.roles = roles;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     //#endregion
 

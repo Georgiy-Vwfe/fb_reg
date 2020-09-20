@@ -99,7 +99,7 @@ public class UserProjectExp implements CSVSerializable {
 
     //public String getIndustry() { return industry; }
 
-    //public void setIndustry(String industry) { this.industry = industry; }
+    //public void setProjectIndustry(String industry) { this.industry = industry; }
 
     public Long getUuid() {
         return uuid;

@@ -339,6 +339,13 @@
                                                 <a th:if="${projAndExp.projectExp.project_creator == false}"
                                                    th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'"
                                                    class="btn btn_secondary btn_sm">Edit (Member)</a>
+                                                <form th:if="${projAndExp.project.confirmed == false && projAndExp.projectExp.project_creator && canEdit}"
+                                                      th:method="'delete'"
+                                                      th:action="'/project/'+${projAndExp.project.uuid}+'/delete'">
+                                                    <input
+                                                            class="btn btn_secondary btn_sm"
+                                                            value="Delete" type="submit">
+                                                </form>
                                                 <div class="middle">
                                             </div>
                                             <!--<div>
