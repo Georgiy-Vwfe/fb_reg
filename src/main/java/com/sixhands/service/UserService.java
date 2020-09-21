@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
@@ -292,16 +293,17 @@ public class UserService implements UserDetailsService {
         mailSender.sendEmail(user.getEmail(), "Activate your profile", emailText);
     }
 
-    public boolean sendRecoverMail(User user) {
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String emailText = String.format(
-                    "Hello, %s! \n" +
-                            "You want to recover your password. Please, visit link: http://%s/recovery-password",
-                    user.getEmail(),
-                    domain
-            );
-            mailSender.sendEmail(user.getEmail(), "Recover password", emailText);
-        }
+    public boolean sendRecoverMail(User user, HttpServletRequest request) {
+
+        String appUrl = request.getScheme() + "://" + request.getServerName();
+        String emailText = String.format(
+                "Hello, %s! \n" +
+                        "To reset your password, click the link below:\n" + appUrl + "/recovery-password?token=%s",
+                user.getEmail(),
+                user.getResetToken());
+//        domain
+//        http://%s/recovery-password
+        mailSender.sendEmail(user.getEmail(), "Password Reset Request", emailText);
         return true;
     }
 

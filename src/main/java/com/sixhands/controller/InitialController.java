@@ -4,9 +4,9 @@ import com.sixhands.controller.dtos.EditUserSaveProjectDTO;
 import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.User;
-import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
+import org.apache.poi.openxml4j.opc.PackagingURIHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -30,6 +32,7 @@ public class InitialController {
     private ProjectService projectService;
 
     private String userEmail;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -39,13 +42,9 @@ public class InitialController {
 
     //TODO: ?Display error for unverified users
     @GetMapping("/login")
-    public String signIn(Model model) {
-/*        model.addAttribute("user", new User());
-        userService.loadUserByUsername(userEmail);*/
+    public String signIn() {
         return "login";
     }
-
-
 
     @GetMapping("/forget-me")
     public ResponseEntity<Map<String, Object>> forgetMe(HttpServletRequest request) {
@@ -64,32 +63,85 @@ public class InitialController {
         return "project-not-aproved";
     }
 
-    @GetMapping("/forget-password")
-    public String forgetPassword(Model model) {
-        model.addAttribute("user", new User());
-        return "forget-password";
+    //@GetMapping("/forget-password")
+    @RequestMapping(value = "/forgot", method = RequestMethod.GET)
+    public ModelAndView forgetPassword() {
+        //model.addAttribute("user", new User());
+
+        return new ModelAndView("forget-password");
     }
 
-    @PostMapping("/forget-password")
-    public String sendRecoverMail(@ModelAttribute User user) {
-        //UUID.randomUUID();
-        userEmail = user.getEmail();
-        userService.sendRecoverMail(user);
-        return "redirect:/";
-    }
+    //@PostMapping("/forget-password")
+    @RequestMapping(value = "/forgot", method = RequestMethod.POST)
+    public ModelAndView sendRecoverMail(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request) {
+//        userEmail = user.getEmail();
+//        userService.sendRecoverMail(user, request);
 
-    @GetMapping("/admin-profile-project")
-    public String adminProfileProject() {
-        return "admin-profile-project";
+        Optional<User> optional = userService.findUserByUsername(userEmail);
+
+        if (!optional.isPresent()) {
+            modelAndView.addObject("errorMessage", "We didn't find an account for that e-mail address.");
+        } else {
+            User user = optional.get();
+            user.setResetToken(UUID.randomUUID().toString());
+
+            userService.saveUser(user);
+
+
+            if (userService.sendRecoverMail(user, request)) {
+                modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
+            }
+        }
+
+        modelAndView.setViewName("forget-password");
+        return modelAndView;
     }
 
     @GetMapping("/recovery-password")
-    public String recoveryPassword(Model model) {
-        model.addAttribute("user", new User());
-        return "recovery-password";
+    public ModelAndView recoveryPassword(ModelAndView modelAndView, @RequestParam("token") String token) {
+        //model.addAttribute("user", new User());
+
+        Optional<User> user = userService.findUserByResetToken(token);
+
+        if (user.isPresent()) {
+            modelAndView.addObject("resetToken", token);
+        } else {
+            modelAndView.addObject("errorMessage", "Oops! This is an invalid password reset link.");
+        }
+
+        modelAndView.setViewName("recovery-password");
+        return modelAndView;
     }
 
     @PostMapping("/recovery-password")
+    public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams, RedirectAttributes redir) {
+        Optional<User> user = userService.findUserByResetToken(requestParams.get("token"));
+
+        if (user.isPresent()) {
+
+            User resetUser = user.get();
+
+            resetUser.setPassword(bCryptPasswordEncoder.encode(requestParams.get("password")));
+            resetUser.setResetToken(null);
+            userService.saveUser(resetUser);
+
+            redir.addFlashAttribute("successMessage", "You have successfully reset your password. You may now login.");
+
+            modelAndView.setViewName("redirect:login");
+            return modelAndView;
+        } else {
+            modelAndView.addObject("errorMessage", "Oops! This is an invalid password reset link.");
+            modelAndView.setViewName("recovery-password");
+        }
+        return modelAndView;
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ModelAndView handleMissingParams(MissingServletRequestParameterException ex) {
+        return new ModelAndView("redirect:login");
+    }
+
+    /*@PostMapping("/recovery-password")
     public String recoverPassword(@ModelAttribute User user, Model model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "recovery-password";
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -105,6 +157,11 @@ public class InitialController {
             userService.changeUserPassword(user, password);
         }
         return "redirect:/login";
+    }*/
+
+    @GetMapping("/admin-profile-project")
+    public String adminProfileProject() {
+        return "admin-profile-project";
     }
 
     @GetMapping("/test-import")
