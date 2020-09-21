@@ -2,9 +2,6 @@ package com.sixhands.domain;
 
 import com.sixhands.misc.CSVMap;
 import com.sixhands.misc.CSVSerializable;
-import com.sixhands.misc.GenericUtils;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -280,4 +277,30 @@ public class User implements UserDetails, CSVSerializable {
         this.confirmed_project = confirmed_project;
     }
     //#endregion
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uuid=" + uuid +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", sex=" + sex +
+                ", country='" + country + '\'' +
+                ", about_user='" + about_user + '\'' +
+                ", rating=" + rating +
+                ", date_of_birth='" + date_of_birth + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", city='" + city + '\'' +
+                ", user_img='" + user_img + '\'' +
+                ", social_networks='" + social_networks + '\'' +
+                ", creation_timestamp=" + creation_timestamp +
+                ", role='" + role + '\'' +
+                ", confirmed_project=" + confirmed_project +
+                ", activationCode='" + activationCode + '\'' +
+                '}';
+    }
 }

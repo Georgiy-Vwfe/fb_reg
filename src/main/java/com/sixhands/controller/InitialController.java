@@ -4,22 +4,26 @@ import com.sixhands.controller.dtos.EditUserSaveProjectDTO;
 import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.User;
+import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Controller
 public class InitialController {
@@ -28,45 +32,102 @@ public class InitialController {
     @Autowired
     private ProjectService projectService;
 
+    private String userEmail;
+
     @GetMapping("/")
     public String index(Model model) {
-        if(UserService.getCurrentUsername().isPresent()) model.addAttribute("isAuthenticated",true);
+        if (UserService.getCurrentUsername().isPresent()) model.addAttribute("isAuthenticated", true);
         return "index";
     }
+
     //TODO: ?Display error for unverified users
     @GetMapping("/login")
-    public String signIn() {
+    public String signIn(Model model) {
+        model.addAttribute("user", new User());
         return "login";
     }
+
+    @PostMapping("/login")
+    public String signIn(@ModelAttribute User user, Model model, BindingResult bindingResult, HttpServletRequest request) {
+        userEmail = user.getEmail();
+        if (bindingResult.hasErrors()) return "login";
+
+        Optional<User> tmp = userService.findUserByUsername(userEmail);
+        if (tmp.isPresent()) {
+            User tmpUser = tmp.get();
+            if (userService.isPasswordMatch(user.getPassword(), tmpUser.getPassword())){
+                try {
+                    request.login(user.getEmail(), user.getPassword());
+                } catch (ServletException e) {
+                    // log.debug("Autologin fail", e);
+                }
+                return "redirect:/edit-user-save-project";
+            }
+        }
+        return "login";
+    }
+
     @GetMapping("/forget-me")
     public ResponseEntity<Map<String, Object>> forgetMe(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
         Map<String, Object> resp = new HashMap<>();
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
-            resp.put("message","success");
-        }else resp.put("error","user is already logged in");
+            resp.put("message", "success");
+        } else resp.put("error", "user is already logged in");
         return ResponseEntity.ok(resp);
     }
+
     @GetMapping("/project-not-aproved")
     public String projectNotAproved() {
         return "project-not-aproved";
     }
 
     @GetMapping("/forget-password")
-    public String forgetPassword() {
+    public String forgetPassword(Model model) {
+        model.addAttribute("user", new User());
         return "forget-password";
     }
 
+    @PostMapping("/forget-password")
+    public String sendRecoverMail(@ModelAttribute User user) {
+        userEmail = user.getEmail();
+        userService.sendRecoverMail(user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/admin-profile-project")
+    public String adminProfileProject() {
+        return "admin-profile-project";
+    }
+
     @GetMapping("/recovery-password")
-    public String recoveryPassword(Model model){
-        model.addAttribute("user",new User());
+    public String recoveryPassword(Model model) {
+        model.addAttribute("user", new User());
         return "recovery-password";
     }
 
+    @PostMapping("/recovery-password")
+    public String recoverPassword(@ModelAttribute User user, Model model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "recovery-password";
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            model.addAttribute("passNotEquals", "passwords isn't equals");
+            return "recovery-password";
+        }
+
+        String password = user.getPassword();
+        if (password == null) {
+            return "recovery-password";
+        } else {
+            user = userService.loadUserByUsername(userEmail);
+            userService.changeUserPassword(user, password);
+        }
+        return "redirect:/login";
+    }
+
     @GetMapping("/test-import")
-    public String testImport(){
+    public String testImport() {
         return "test-import";
     }
 
@@ -74,43 +135,48 @@ public class InitialController {
     public String search(Model model,
                          @RequestParam(required = false) String industry,
                          @RequestParam(required = false) String role,
-                         @RequestParam(required = false) String name){
-        List<UserProfileDTO> users = userService.searchUsersByProps(null,null,industry,null,role);
+                         @RequestParam(required = false) String name) {
+        List<UserProfileDTO> users = userService.searchUsersByProps(null, null, industry, null, role);
         users = userService.searchUsersByName(users, name);
-        model.addAttribute("profileDTOs",users);
+        model.addAttribute("profileDTOs", users);
         return "search";
     }
+
     @GetMapping("/admin-token")
-    public String adminPanelByToken(){
+    public String adminPanelByToken() {
         return "admin-token-request";
     }
+
     //#region edit-user/save-project
     @GetMapping("/edit-user-save-project")
     public String adminProfileProject(Model model) {
-        model.addAttribute("editUserSaveProjectDTO",new EditUserSaveProjectDTO(userService.getCurUserOrThrow(),new ProjectDTO()));
-        model.addAttribute("isEditing",false);
+        model.addAttribute("editUserSaveProjectDTO", new EditUserSaveProjectDTO(userService.getCurUserOrThrow(), new ProjectDTO()));
+        model.addAttribute("isEditing", false);
         return "edit-user-save-project";
     }
-    @RequestMapping(value = "/edit-user-save-project", params = {"action=add-member"}, method = {RequestMethod.PUT,RequestMethod.POST})
+
+    @RequestMapping(value = "/edit-user-save-project", params = {"action=add-member"}, method = {RequestMethod.PUT, RequestMethod.POST})
     public String addMember(@ModelAttribute EditUserSaveProjectDTO dto, Model model, HttpServletRequest request) {
         dto.getProjectDTO().addNewMember();
-        model.addAttribute("editUserSaveProjectDTO",dto);
-        model.addAttribute("isEditing",false);
+        model.addAttribute("editUserSaveProjectDTO", dto);
+        model.addAttribute("isEditing", false);
         return "edit-user-save-project";
     }
-    @RequestMapping(value = "/edit-user-save-project", params = {"action=delete-member"}, method = {RequestMethod.PUT,RequestMethod.POST})
-    public String deleteMember(@ModelAttribute EditUserSaveProjectDTO dto, Model model, @RequestParam Integer index, HttpServletRequest request){
+
+    @RequestMapping(value = "/edit-user-save-project", params = {"action=delete-member"}, method = {RequestMethod.PUT, RequestMethod.POST})
+    public String deleteMember(@ModelAttribute EditUserSaveProjectDTO dto, Model model, @RequestParam Integer index, HttpServletRequest request) {
         dto.getProjectDTO().deleteMember(index);
-        model.addAttribute("editUserSaveProjectDTO",dto);
-        model.addAttribute("isEditing",false);
+        model.addAttribute("editUserSaveProjectDTO", dto);
+        model.addAttribute("isEditing", false);
         return "edit-user-save-project";
     }
+
     @PutMapping("/edit-user-save-project")
-    public String persistEditUserSaveProjectForms(@ModelAttribute EditUserSaveProjectDTO dto){
+    public String persistEditUserSaveProjectForms(@ModelAttribute EditUserSaveProjectDTO dto) {
         User curUser = userService.getCurUserOrThrow();
-        if(!StringUtils.isEmpty(dto.getProjectDTO().getProject().getName()))
-            projectService.saveNewProject(dto.getProjectDTO(),curUser);
-        userService.safeAssignPersist(dto.getUser(),curUser);
+        if (!StringUtils.isEmpty(dto.getProjectDTO().getProject().getName()))
+            projectService.saveNewProject(dto.getProjectDTO(), curUser);
+        userService.safeAssignPersist(dto.getUser(), curUser);
         return "redirect:/user/me";
     }
     //#endregion
