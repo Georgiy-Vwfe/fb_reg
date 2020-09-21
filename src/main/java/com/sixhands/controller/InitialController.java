@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class InitialController {
@@ -43,29 +40,12 @@ public class InitialController {
     //TODO: ?Display error for unverified users
     @GetMapping("/login")
     public String signIn(Model model) {
-        model.addAttribute("user", new User());
+/*        model.addAttribute("user", new User());
+        userService.loadUserByUsername(userEmail);*/
         return "login";
     }
 
-    @PostMapping("/login")
-    public String signIn(@ModelAttribute User user, Model model, BindingResult bindingResult, HttpServletRequest request) {
-        userEmail = user.getEmail();
-        if (bindingResult.hasErrors()) return "login";
 
-        Optional<User> tmp = userService.findUserByUsername(userEmail);
-        if (tmp.isPresent()) {
-            User tmpUser = tmp.get();
-            if (userService.isPasswordMatch(user.getPassword(), tmpUser.getPassword())){
-                try {
-                    request.login(user.getEmail(), user.getPassword());
-                } catch (ServletException e) {
-                    // log.debug("Autologin fail", e);
-                }
-                return "redirect:/edit-user-save-project";
-            }
-        }
-        return "login";
-    }
 
     @GetMapping("/forget-me")
     public ResponseEntity<Map<String, Object>> forgetMe(HttpServletRequest request) {
@@ -92,6 +72,7 @@ public class InitialController {
 
     @PostMapping("/forget-password")
     public String sendRecoverMail(@ModelAttribute User user) {
+        //UUID.randomUUID();
         userEmail = user.getEmail();
         userService.sendRecoverMail(user);
         return "redirect:/";

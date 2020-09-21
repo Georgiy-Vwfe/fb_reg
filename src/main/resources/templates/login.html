@@ -47,10 +47,7 @@
             <section class="box box_widget_white box_widget_shadow box_widget_rounded py-5 mod001">
                 <div class="box__inner">
                     <div class="box__inner-widget" th:classappend="${isActivated}? 'is active'">
-                        <form id="signIn" method="post" novalidate="novalidate" autocomplete="off"
-                              th:action="@{/login}"
-                              th:object="${user}"
-                              class="form py-5">
+                        <form th:action="@{/login}" method="post" id="signIn" novalidate="novalidate" autocomplete="off" class="form py-5" >
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
@@ -58,31 +55,23 @@
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="email" class="form-group__label">E-mail</label>
-                                            <input id="email" name="email" required="required" type="email"
-                                                   placeholder="email@email.com"
-                                                   class="form-group__field field" th:field="*{email}">
-                                            <div class="alert alert-danger mt-2" role="alert"
-                                                 th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
-                                            </div>
+                                            <label for="username" class="form-group__label">E-mail</label>
+                                            <input id="username" name="username" type="email" placeholder="email@email.com"
+                                                   class="form-group__field field">
                                         </div>
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
                                             <label for="password" class="form-group__label">Password</label>
                                             <input id="password" type="password" name="password"
-                                                   placeholder="Enter password" class="form-group__field field"
-                                                   th:field="*{password}">
-                                            <a th:href="@{/forget-password}" class="form-group__desc">
-                                                Forgot password?</a>
+                                                   placeholder="Enter password" class="form-group__field field"><a
+                                                th:href="@{/forget-password}" class="form-group__desc">Forgot
+                                            password?</a>
                                         </div>
                                     </div>
-                                    <div th:if="${param.error != null}" style="color:red;">Login or password is not
-                                        correct. Please try again.
-                                    </div>
-
+                                    <div th:if="${param.error != null}" style="color:red;">Login or password is not correct. Please try again.</div>
                                     <div class="col-11 col-sm-9 text-center mb-3">
-                                        <button id="submit" type="submit" class="btn btn_bordered">Sign in</button>
+                                        <button type="submit" class="btn btn_bordered">Sign in</button>
                                     </div>
                                     <div class="col-11 col-sm-9 text-center"><a href="#" class="title title_h3">Sign in
                                         through Facebook</a>

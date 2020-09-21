@@ -46,6 +46,7 @@ public class User implements UserDetails, CSVSerializable {
     //TODO: ?Set on registration/persist
     private Date creation_timestamp;
     private String role;
+    private String resetToken;
 
     //Set to true when user confirms a project for the first time
     //Used when calculating user rating
@@ -273,34 +274,21 @@ public class User implements UserDetails, CSVSerializable {
         return confirmed_project;
     }
 
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
     public void setConfirmed_project(boolean confirmed_project) {
         this.confirmed_project = confirmed_project;
     }
-    //#endregion
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "uuid=" + uuid +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", sex=" + sex +
-                ", country='" + country + '\'' +
-                ", about_user='" + about_user + '\'' +
-                ", rating=" + rating +
-                ", date_of_birth='" + date_of_birth + '\'' +
-                ", phone_number='" + phone_number + '\'' +
-                ", city='" + city + '\'' +
-                ", user_img='" + user_img + '\'' +
-                ", social_networks='" + social_networks + '\'' +
-                ", creation_timestamp=" + creation_timestamp +
-                ", role='" + role + '\'' +
-                ", confirmed_project=" + confirmed_project +
-                ", activationCode='" + activationCode + '\'' +
-                '}';
+    public boolean isConfirmed_project() {
+        return confirmed_project;
     }
+
+    //#endregion
 }

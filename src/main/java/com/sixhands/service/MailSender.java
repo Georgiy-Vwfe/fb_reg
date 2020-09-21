@@ -15,7 +15,7 @@ public class MailSender {
     @Value("${spring.mail.username}")
     private String username;
 
-    public void send(String emailTo, String emailSubject, String emailText) {
+    public void sendEmail(String emailTo, String emailSubject, String emailText) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(username);
@@ -24,7 +24,7 @@ public class MailSender {
         mailMessage.setText(emailText);
 
         mailSender.send(mailMessage);
-        System.out.println("Sending out a message\n"+new JSONObject(mailMessage).toString(2));
+        System.out.println("Sending out a message\n" + new JSONObject(mailMessage).toString(2));
     }
 
 }
