@@ -31,8 +31,8 @@ public class InitialController {
     @Autowired
     private ProjectService projectService;
 
-    private String userEmail;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private String tmpToken;
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/")
     public String index(Model model) {
@@ -63,20 +63,13 @@ public class InitialController {
         return "project-not-aproved";
     }
 
-    //@GetMapping("/forget-password")
-    @RequestMapping(value = "/forgot", method = RequestMethod.GET)
+    @GetMapping("/forget-password")
     public ModelAndView forgetPassword() {
-        //model.addAttribute("user", new User());
-
         return new ModelAndView("forget-password");
     }
 
-    //@PostMapping("/forget-password")
-    @RequestMapping(value = "/forgot", method = RequestMethod.POST)
+    @PostMapping("/forget-password")
     public ModelAndView sendRecoverMail(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request) {
-//        userEmail = user.getEmail();
-//        userService.sendRecoverMail(user, request);
-
         Optional<User> optional = userService.findUserByUsername(userEmail);
 
         if (!optional.isPresent()) {
@@ -86,7 +79,6 @@ public class InitialController {
             user.setResetToken(UUID.randomUUID().toString());
 
             userService.saveUser(user);
-
 
             if (userService.sendRecoverMail(user, request)) {
                 modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
@@ -99,10 +91,9 @@ public class InitialController {
 
     @GetMapping("/recovery-password")
     public ModelAndView recoveryPassword(ModelAndView modelAndView, @RequestParam("token") String token) {
-        //model.addAttribute("user", new User());
 
         Optional<User> user = userService.findUserByResetToken(token);
-
+//        modelAndView.addObject("user", new User());
         if (user.isPresent()) {
             modelAndView.addObject("resetToken", token);
         } else {
@@ -115,10 +106,10 @@ public class InitialController {
 
     @PostMapping("/recovery-password")
     public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams, RedirectAttributes redir) {
-        Optional<User> user = userService.findUserByResetToken(requestParams.get("token"));
+        Optional<User> user = userService.findFirstUserByResetToken(requestParams.get("resetToken"));
+        //List<Optional<User>> user = userService.findUserByResetToken(requestParams.get("token"));
 
         if (user.isPresent()) {
-
             User resetUser = user.get();
 
             resetUser.setPassword(bCryptPasswordEncoder.encode(requestParams.get("password")));

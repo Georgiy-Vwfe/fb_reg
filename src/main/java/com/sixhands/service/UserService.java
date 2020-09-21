@@ -73,6 +73,10 @@ public class UserService implements UserDetailsService {
         return userRepo.findByResetToken(resetToken);
     }
 
+    public Optional<User> findFirstUserByResetToken(String resetToken) {
+        return userRepo.findFirstByResetToken(resetToken);
+    }
+
     public User registerUser(String email) throws UserAlreadyExistsException {
         return registerUser(email, GenericUtils.randomAlphaNumString(8));
     }
@@ -295,7 +299,7 @@ public class UserService implements UserDetailsService {
 
     public boolean sendRecoverMail(User user, HttpServletRequest request) {
 
-        String appUrl = request.getScheme() + "://" + request.getServerName();
+        String appUrl = request.getScheme() + "://" + request.getServerName() + ":8081";
         String emailText = String.format(
                 "Hello, %s! \n" +
                         "To reset your password, click the link below:\n" + appUrl + "/recovery-password?token=%s",
