@@ -68,6 +68,10 @@ public class UserService implements UserDetailsService {
         return Optional.ofNullable(ret);
     }
 
+    public Optional<User> findUserByResetToken(String resetToken) {
+        return userRepo.findByResetToken(resetToken);
+    }
+
     public User registerUser(String email) throws UserAlreadyExistsException {
         return registerUser(email, GenericUtils.randomAlphaNumString(8));
     }
@@ -273,7 +277,7 @@ public class UserService implements UserDetailsService {
                 domain,
                 user.getActivationCode()
         );
-        mailSender.send(user.getEmail(), "Activate your profile", emailText);
+        mailSender.sendEmail(user.getEmail(), "Activate your profile", emailText);
     }
 
     private void sendVerificationMail(User user) {
@@ -286,7 +290,7 @@ public class UserService implements UserDetailsService {
                 domain,
                 user.getActivationCode()
         );
-        mailSender.send(user.getEmail(), "Activate your profile", emailText);
+        mailSender.sendEmail(user.getEmail(), "Activate your profile", emailText);
     }
 
     public boolean sendRecoverMail(User user) {
@@ -297,7 +301,7 @@ public class UserService implements UserDetailsService {
                     user.getEmail(),
                     domain
             );
-            mailSender.send(user.getEmail(), "Recover password", emailText);
+            mailSender.sendEmail(user.getEmail(), "Recover password", emailText);
         }
         return true;
     }
@@ -309,6 +313,10 @@ public class UserService implements UserDetailsService {
 
     public boolean isPasswordMatch(String encodedPassword, String rawPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public void saveUser(User user) {
+        userRepo.save(user);
     }
 
     //#endregion

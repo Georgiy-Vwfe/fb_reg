@@ -40,27 +40,8 @@ public class InitialController {
     //TODO: ?Display error for unverified users
     @GetMapping("/login")
     public String signIn(Model model) {
-        model.addAttribute("user", new User());
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String signIn(@ModelAttribute User user, Model model, BindingResult bindingResult, HttpServletRequest request) {
-        userEmail = user.getEmail();
-        if (bindingResult.hasErrors()) return "login";
-
-        Optional<User> tmp = userService.findUserByUsername(userEmail);
-        if (tmp.isPresent()) {
-            User tmpUser = tmp.get();
-            if (userService.isPasswordMatch(tmpUser.getPassword(),user.getPassword())){
-                try {
-                    request.login(user.getEmail(), user.getPassword());
-                } catch (ServletException e) {
-                    // log.debug("Autologin fail", e);
-                }
-                return "redirect:/edit-user-save-project";
-            }
-        }
+/*        model.addAttribute("user", new User());
+        userService.loadUserByUsername(userEmail);*/
         return "login";
     }
 
@@ -89,6 +70,7 @@ public class InitialController {
 
     @PostMapping("/forget-password")
     public String sendRecoverMail(@ModelAttribute User user) {
+        //UUID.randomUUID();
         userEmail = user.getEmail();
         userService.sendRecoverMail(user);
         return "redirect:/";
