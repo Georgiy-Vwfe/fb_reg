@@ -1,5 +1,6 @@
 package com.sixhands.service;
 
+import com.sixhands.SixHandsApplication;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,8 +24,8 @@ public class MailSender {
         mailMessage.setSubject(emailSubject);
         mailMessage.setText(emailText);
 
-        mailSender.send(mailMessage);
-        System.out.println("Sending out a message\n"+new JSONObject(mailMessage).toString(2));
+        if(SixHandsApplication.isSendingMail()) mailSender.send(mailMessage);
+        else System.out.println("Sending out a message\n"+new JSONObject(mailMessage).toString(2));
     }
 
 }

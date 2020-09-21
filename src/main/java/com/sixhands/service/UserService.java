@@ -89,13 +89,14 @@ public class UserService implements UserDetailsService {
         }
         if (user != null) throw new UserAlreadyExistsException(email);
         user = new User();
-        if (SixHandsApplication.requireVerification())
+        if (SixHandsApplication.isSendingMail())
             user.setActivationCode(UUID.randomUUID().toString());
         user.setRole("ROLE_USER");
         user.setPassword(passwordEncoder.encode(plainPassword));
         user.setEmail(email);
         user = userRepo.save(user);
-        if (SixHandsApplication.requireVerification()) {
+
+        if (SixHandsApplication.isSendingMail()) {
             if (isProjectMember) sendMemberVerificationMail(user, plainPassword);
             else sendVerificationMail(user);
         } else {

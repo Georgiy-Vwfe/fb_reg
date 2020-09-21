@@ -58,10 +58,10 @@
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="email" class="form-group__label">E-mail</label>
-                                            <input id="email" name="email" required="required" type="email"
+                                            <label for="username" class="form-group__label">E-mail</label>
+                                            <input id="username" name="username" required="required" type="email"
                                                    placeholder="email@email.com"
-                                                   class="form-group__field field" th:field="*{email}">
+                                                   class="form-group__field field">
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                                             </div>

@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class InitialController {
@@ -55,7 +52,7 @@ public class InitialController {
         Optional<User> tmp = userService.findUserByUsername(userEmail);
         if (tmp.isPresent()) {
             User tmpUser = tmp.get();
-            if (userService.isPasswordMatch(user.getPassword(), tmpUser.getPassword())){
+            if (userService.isPasswordMatch(tmpUser.getPassword(),user.getPassword())){
                 try {
                     request.login(user.getEmail(), user.getPassword());
                 } catch (ServletException e) {
@@ -111,7 +108,7 @@ public class InitialController {
     @PostMapping("/recovery-password")
     public String recoverPassword(@ModelAttribute User user, Model model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "recovery-password";
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
+        if (userService.isPasswordMatch(user.getPassword(),user.getConfirmPassword())) {
             model.addAttribute("passNotEquals", "passwords isn't equals");
             return "recovery-password";
         }

@@ -1,10 +1,6 @@
 package com.sixhands;
 
-import com.sixhands.controller.dtos.ProjectDTO;
-import com.sixhands.controller.dtos.UserAndExpDTO;
-import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
-import com.sixhands.misc.GenericUtils;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
@@ -44,11 +40,11 @@ public class SixHandsApplication implements CommandLineRunner {
         resolver.setCacheable(properties.isCache());
         return resolver;
     }
-    @Value("${6hands.require-verification}")
-    public void setsRequireVerificationStatic(String require){ sRequireVerification = require; }
-    private static String sRequireVerification;
+    @Value("${6hands.send-mail}")
+    public void setsSendMailStatic(String require){ sSendMail = require; }
+    private static String sSendMail;
 
-    public static boolean requireVerification(){ return !StringUtils.isEmpty(sRequireVerification) && sRequireVerification.equalsIgnoreCase("true"); }
+    public static boolean isSendingMail(){ return !StringUtils.isEmpty(sSendMail) && sSendMail.equalsIgnoreCase("true"); }
 
     @Value("${6hands.create-test-user}")
     private String createTestUser;
