@@ -2,6 +2,7 @@ package com.sixhands.domain;
 
 import com.sixhands.misc.CSVMap;
 import com.sixhands.misc.CSVSerializable;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,6 +47,7 @@ public class User implements UserDetails, CSVSerializable {
     //TODO: ?Set on registration/persist
     private Date creation_timestamp;
     private String role;
+
     private String resetToken;
 
     //Set to true when user confirms a project for the first time
