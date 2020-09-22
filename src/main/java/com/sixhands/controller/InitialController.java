@@ -68,6 +68,7 @@ public class InitialController {
         return new ModelAndView("forget-password");
     }
 
+    //FIXME: Messages are not displayed
     @PostMapping("/forget-password")
     public ModelAndView sendRecoverMail(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request) {
         Optional<User> optional = userService.findUserByUsername(userEmail);
@@ -90,9 +91,10 @@ public class InitialController {
     }
 
     @GetMapping("/recovery-password")
-    public ModelAndView recoveryPassword(ModelAndView modelAndView, @RequestParam("token") String token) {
+    public ModelAndView recoveryPassword(ModelAndView modelAndView, @RequestParam String token) {
 
         Optional<User> user = userService.findUserByResetToken(token);
+        System.out.println(user.isPresent());
 //        modelAndView.addObject("user", new User());
         if (user.isPresent()) {
             modelAndView.addObject("resetToken", token);
@@ -105,10 +107,12 @@ public class InitialController {
     }
 
     @PostMapping("/recovery-password")
-    public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams, RedirectAttributes redir) {
-        Optional<User> user = userService.findFirstUserByResetToken(requestParams.get("resetToken"));
+    public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams,  RedirectAttributes redir) {
+        System.out.println("recover password call");
+        Optional<User> user = userService.findFirstUserByResetToken(requestParams.get("token"));
         //List<Optional<User>> user = userService.findUserByResetToken(requestParams.get("token"));
-
+        System.out.println(user.isPresent());
+        System.out.println(requestParams);
         if (user.isPresent()) {
             User resetUser = user.get();
 
