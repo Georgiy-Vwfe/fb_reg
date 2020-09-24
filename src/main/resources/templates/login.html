@@ -56,21 +56,16 @@
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
                                             <label for="username" class="form-group__label">E-mail</label>
-                                            <input id="username" name="username" required="required" type="email"
-                                                   placeholder="email@email.com"
+                                            <input id="username" name="username" type="email" placeholder="email@email.com"
                                                    class="form-group__field field">
-                                            <div class="alert alert-danger mt-2" role="alert"
-                                                 th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                                             </div>
                                         </div>
-                                    </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
                                             <label for="password" class="form-group__label">Password</label>
                                             <input id="password" type="password" name="password"
-                                                   placeholder="Enter password" class="form-group__field field"><a
-                                                th:href="@{/forget-password}" class="form-group__desc">Forgot
-                                            password?</a>
+                                                   placeholder="Enter password" class="form-group__field field">
+                                            <a th:href="@{/forget-password}" class="form-group__desc">Forgot password?</a>
                                         </div>
                                     </div>
                                     <div th:if="${param.error != null}" style="color:red;">Login or password is not correct. Please try again.</div>
