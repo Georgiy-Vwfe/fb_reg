@@ -28,17 +28,26 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+/*configurations {
+    all*.exclude group: 'javassist', module: 'javassist' // get rid of hibernate-incompatible javassist
+}*/
+
 dependencies {
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
     compile('org.springframework.boot:spring-boot-starter-web')
+    //https://stackoverflow.com/a/14365438
+    //compile group: 'javassist', name: 'javassist', version: '2.5.1'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.0.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.3.0.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.0.RELEASE'
     compile group: 'mysql', name: 'mysql-connector-java'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.4.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.2.RELEASE'
     compile group: 'org.json', name: 'json', version: '20200518'
     compile group: 'org.apache.poi', name: 'poi', version: '3.17'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+    compile ('org.apache.commons:commons-text:1.6')
     runtime('org.springframework.boot:spring-boot-devtools')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('org.springframework.boot:spring-boot-starter-security')

@@ -45,7 +45,8 @@ public class UserProjectExp implements CSVSerializable {
                 .putc("mem_role",role)
                 .putc("mem_skills",skills)
                 .putc("mem_tools",tools)
-                .putc("mem_duties",duties);
+                .putc("mem_duties",duties)
+                .getMap();
     }
 
     //#region getters/setters

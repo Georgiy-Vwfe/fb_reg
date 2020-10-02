@@ -69,7 +69,8 @@ public class User implements UserDetails, CSVSerializable {
                 .putc("user_about_me",about_user)
                 //.putc("user_registration_date",creation_timestamp == null ? "null" : GenericUtils.formatDateToTHStr(creation_timestamp))
                 .putc("user_country",country)
-                .putc("user_city",city);
+                .putc("user_city",city)
+                .getMap();
     }
 
     public User safeAssignProperties(User editUser) {

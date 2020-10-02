@@ -75,7 +75,8 @@ public class Project implements CSVSerializable {
                 .putc("proj_industry",industry)
                 .putc("proj_start_date",start_date)
                 .putc("proj_end_date",end_date)
-                .putc("proj_link",link);
+                .putc("proj_link",link)
+                .getMap();
     }
 
     //#region getters/setters

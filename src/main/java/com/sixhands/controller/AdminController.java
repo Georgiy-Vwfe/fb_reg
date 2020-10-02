@@ -52,7 +52,7 @@ public class AdminController {
             projectDTO.setMembers(userAndExpDTO);
             stringBuilder.append(projectDTO.toCsvDto().toString(i == 0)).append(i==projectRepo.count()-1?"":"\n");
         }
-        return stringBuilder+"";
+        return "sep=,\n"+stringBuilder;
     }
     private String getUsersCSV(){
         StringBuilder stringBuilder = new StringBuilder();
@@ -61,7 +61,7 @@ public class AdminController {
             if(i==0) stringBuilder.append( String.join(",", user.toCSV().keySet()) ).append("\n");
             stringBuilder.append( String.join(",", user.toCSV().values()) ).append(i==userRepo.count()-1?"":"\n");
         }
-        return stringBuilder+"";
+        return "sep=,\n"+stringBuilder;
     }
     private File exportedDir = new File("6hands-exported");
     //TODO: Refactor, too much code

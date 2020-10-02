@@ -22,8 +22,9 @@ public class UserAndExpDTO implements CSVSerializable {
     @Override
     public Map<String, String> toCSV() {
         return new CSVMap()
-                .putcAll(user.toCSV())
-                .putcAll(userExp.toCSV());
+                .putcAll(user.toCSV(),false)
+                .putcAll(userExp.toCSV(),false)
+                .getMap();
     }
 
     //#region getters/setters
