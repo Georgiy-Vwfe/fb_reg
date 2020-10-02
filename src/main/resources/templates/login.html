@@ -35,9 +35,12 @@
 <div style="" class="root d-flex flex-column">
     <header class="header header_small">
         <div class="container d-flex align-items-center">
-            <div class="header__link ml-auto mr-5"><a href="#" class="nav__link">Switch to Russian</a>
+            <div class="header__link ml-auto mr-5">
+                <a class="nav__link" th:href="@{?locale=en}" th:text="#{lang.en}"></a>
+                <span>|</span>
+                <a class="nav__link" th:href="@{?locale=ru}" th:text="#{lang.ru}"></a>
             </div>
-            <div class="header__link ml-5"><a th:href="@{/registration}" class="nav__link">Register</a>
+            <div class="header__link ml-5"><a th:href="@{/registration}" class="nav__link"th:text="#{registrationS.text}">Register</a>
             </div>
         </div>
     </header>
@@ -51,28 +54,28 @@
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
-                                        <h1 class="title title_h1 text-center mb-2">Sign in</h1>
+                                        <h1 class="title title_h1 text-center mb-2" th:text="#{signIn.text}">Sign in</h1>
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="username" class="form-group__label">E-mail</label>
-                                            <input id="username" name="username" type="email" placeholder="email@email.com"
+                                            <label for="username" class="form-group__label" th:text="#{e-mailS.text}">E-mail</label>
+                                            <input id="username" name="username" type="email" th:placeholder="#{e-mailS.hint}"
                                                    class="form-group__field field">
                                             </div>
                                         </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="password" class="form-group__label">Password</label>
+                                            <label for="password" class="form-group__label" th:text="#{passwordS.text}">Password</label>
                                             <input id="password" type="password" name="password"
-                                                   placeholder="Enter password" class="form-group__field field">
-                                            <a th:href="@{/forget-password}" class="form-group__desc">Forgot password?</a>
+                                                   th:placeholder="#{passwordS.hint}" class="form-group__field field">
+                                            <a th:href="@{/forget-password}" class="form-group__desc" th:text="#{forgotPassword.button}">Forgot password?</a>
                                         </div>
                                     </div>
-                                    <div th:if="${param.error != null}" style="color:red;">Login or password is not correct. Please try again.</div>
+                                    <div th:if="${param.error != null}" style="color:red;" th:text="#{passwordError.text}">Login or password is not correct. Please try again.</div>
                                     <div class="col-11 col-sm-9 text-center mb-3">
-                                        <button type="submit" class="btn btn_bordered">Sign in</button>
+                                        <button type="submit" class="btn btn_bordered" th:text="#{signInS.button}">Sign in</button>
                                     </div>
-                                    <div class="col-11 col-sm-9 text-center"><a href="#" class="title title_h3">Sign in
+                                    <div class="col-11 col-sm-9 text-center"><a href="#" class="title title_h3" th:text="#{facebookS.button}">Sign in
                                         through Facebook</a>
                                     </div>
                                 </div>

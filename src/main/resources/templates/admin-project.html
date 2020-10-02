@@ -31,14 +31,14 @@
 			<div data-page="adminProject" class="dataProvider"></div>
 			<main class="root__in pb-5">
 				<div class="bg-main-light py-4">
-					<div class="container"><a href="../../../../../6hands%20исходники/dist/dist/admin-profile-project.html" class="link link_alpha">New Project</a>
+					<div class="container"><a href="../../../../../6hands%20исходники/dist/dist/admin-profile-project.html" class="link link_alpha" th:text="#{newProject.text}">New Project</a>
 					</div>
 				</div>
 				<form id="formProject" novalidate="novalidate" autocomplete="off">
 					<div class="container">
 						<section class="box box_admin box_widget_white pt-5 pb-0 mod002">
 							<div class="box__outer">
-								<div class="box__outer-title">Project details</div>
+								<div class="box__outer-title" th:text="#{projectDetails}">Project details</div>
 							</div>
 							<div class="box__inner">
 								<div class="box__inner-widget">
@@ -46,80 +46,80 @@
 										<div class="row justify-content-center pt-4 pb-5">
 											<div class="col-12 col-md-9">
 												<div class="form-group form-group_large">
-													<label for="projectName" class="form-group__label">Project name</label>
-													<input id="projectName" type="text" name="projectName" placeholder="Project name" class="form-group__field field">
+													<label for="projectName" class="form-group__label"th:text="#{projectName.text}">Project name</label>
+													<input id="projectName" type="text" name="projectName" th:placeholder="#{projectName.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectCompany" class="form-group__label">Company</label>
-													<input id="projectCompany" type="text" name="projectCompany" placeholder="Company" class="form-group__field field">
+													<label for="projectCompany" class="form-group__label" th:text="#{company.text}">Company</label>
+													<input id="projectCompany" type="text" name="projectCompany" th:placeholder="#{company.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectPosition" class="form-group__label">Position</label>
-													<input id="projectPosition" type="text" name="projectPosition" placeholder="Position" class="form-group__field field">
+													<label for="projectPosition" class="form-group__label" th:text="#{position.text}">Position</label>
+													<input id="projectPosition" type="text" name="projectPosition" th:placeholder="#{position.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectRole" class="form-group__label">Role</label>
-													<input id="projectRole" type="text" name="projectRole" placeholder="Role" class="form-group__field field">
+													<label for="projectRole" class="form-group__label" th:text="#{role.text}">Role</label>
+													<input id="projectRole" type="text" name="projectRole" th:placeholder="#{role.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectDuties" class="form-group__label">Duties</label>
-													<input id="projectDuties" type="text" name="projectDuties" placeholder="Duties" class="form-group__field field">
+													<label for="projectDuties" class="form-group__label" th:text="#{duties.text}">Duties</label>
+													<input id="projectDuties" type="text" name="projectDuties" th:placeholder="#{duties.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectDescription" class="form-group__label">Project description</label>
-													<input id="projectDescription" type="text" name="projectDescription" placeholder="Project description" class="form-group__field field">
+													<label for="projectDescription" class="form-group__label" th:text="#{projectDesc.text}">Project description</label>
+													<input id="projectDescription" type="text" name="projectDescription" th:placeholder="#{projectDesc.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectSkills" class="form-group__label">Skills</label>
-													<input id="projectSkills" type="text" name="projectSkills" placeholder="Skills" class="form-group__field field">
+													<label for="projectSkills" class="form-group__label" th:text="#{skills.text}">Skills</label>
+													<input id="projectSkills" type="text" name="projectSkills" th:placeholder="#{skills.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectTools" class="form-group__label">Tools</label>
-													<input id="projectTools" type="text" name="projectTools" placeholder="Tools" class="form-group__field field">
+													<label for="projectTools" class="form-group__label" th:text="#{tools.text}">Tools</label>
+													<input id="projectTools" type="text" name="projectTools" th:placeholder="#{tools.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectIndustry" class="form-group__label">Industry</label>
-													<input id="projectIndustry" type="text" name="projectIndustry" placeholder="Industry" class="form-group__field field">
+													<label for="projectIndustry" class="form-group__label" th:text="#{industry.text}">Industry</label>
+													<input id="projectIndustry" type="text" name="projectIndustry" th:placeholder="#{industry.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectLink" class="form-group__label">Project Link</label>
-													<input id="projectLink" type="text" name="projectLink" placeholder="Project link " class="form-group__field field">
+													<label for="projectLink" class="form-group__label" th:text="#{projectLink.text}">Project Link</label>
+													<input id="projectLink" type="text" name="projectLink" th:placeholder="#{projectLink.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
-												<p class="title title_h3 mt-5 mb-4">Project team</p>
+												<p class="title title_h3 mt-5 mb-4" th:text="#{projectTeam.text}">Project team</p>
 												<div class="d-flex flex-wrap">
-													<button type="button" data-collapse="projectTeamEmail" class="btn btn_bordered btn_sm mr-3 mb-3">Invite by email</button>
-													<button type="button" data-collapse="projectTeamFb" class="btn btn_bordered btn_sm mr-3 mb-3">fb</button>
+													<button type="button" data-collapse="projectTeamEmail" class="btn btn_bordered btn_sm mr-3 mb-3" th:text="#{inviteEmail.button}">Invite by email</button>
+													<!--- <button type="button" data-collapse="projectTeamFb" class="btn btn_bordered btn_sm mr-3 mb-3">FB</button>
 													<button type="button" data-collapse="projectTeamVk" class="btn btn_bordered btn_sm mr-3 mb-3">VK</button>
-													<button type="button" data-collapse="projectTeamLn" class="btn btn_bordered btn_sm mr-3 mb-3">ln</button>
-													<button type="button" data-collapse="projectTeamContacts" class="btn btn_bordered btn_sm mr-3 mb-3">Pick in Contacts</button>
+													<button type="button" data-collapse="projectTeamLn" class="btn btn_bordered btn_sm mr-3 mb-3">LN</button>
+													<button type="button" data-collapse="projectTeamContacts" class="btn btn_bordered btn_sm mr-3 mb-3">Pick in Contacts</button> --->
 												</div>
 												<div data-collapse-target="projectTeamEmail" class="collapse bg-main px-3">
 													<div class="row mb-3 py-3">
 														<div class="col">
-															<input id="projectTeamEmail" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">
+															<input id="projectTeamEmail" type="email" name="projectTeamEmail" th:placeholder="#{emailOAMember.hint}" class="field">
 														</div>
 														<div class="col">
-															<input id="projectTeamEmailRole" type="text" name="projectTeamEmailRole" placeholder="Role" class="field">
+															<input id="projectTeamEmailRole" type="text" name="projectTeamEmailRole" th:placeholder="#{roleOAMember.hint}" class="field">
 														</div>
 													</div>
 												</div>
@@ -129,7 +129,7 @@
 															<input id="projectTeamFb" type="url" name="projectTeamFb" placeholder="Facebook user account" class="field">
 														</div>
 														<div class="col">
-															<input id="projectTeamFbRole" type="text" name="projectTeamFbRole" placeholder="Role" class="field">
+															<input id="projectTeamFbRole" type="text" name="projectTeamFbRole" th:placeholder="#{roleOAMember.hint}" class="field">
 														</div>
 													</div>
 												</div>
@@ -139,7 +139,7 @@
 															<input id="projectTeamVk" type="url" name="projectTeamVk" placeholder="Vkontakte user account" class="field">
 														</div>
 														<div class="col">
-															<input id="projectTeamVkRole" type="text" name="projectTeamVkRole" placeholder="Role" class="field">
+															<input id="projectTeamVkRole" type="text" name="projectTeamVkRole" th:placeholder="#{roleOAMember.hint}" class="field">
 														</div>
 													</div>
 												</div>
@@ -149,7 +149,7 @@
 															<input id="projectTeamLn" type="url" name="projectTeamLn" placeholder="Linkedin user account" class="field">
 														</div>
 														<div class="col">
-															<input id="projectTeamLnRole" type="text" name="projectTeamLnRole" placeholder="Role" class="field">
+															<input id="projectTeamLnRole" type="text" name="projectTeamLnRole" th:placeholder="#{roleOAMember.hint}" class="field">
 														</div>
 													</div>
 												</div>
@@ -159,7 +159,7 @@
 															<input id="projectTeamEmail" type="email" name="projectTeamEmail" placeholder="Email of a member" class="field">
 														</div>
 														<div class="col">
-															<input id="projectTeamEmailRole" type="text" name="projectTeamEmailRole" placeholder="Role" class="field">
+															<input id="projectTeamEmailRole" type="text" name="projectTeamEmailRole" th:placeholder="#{emailOAMember.hint}" class="field">
 														</div>
 													</div>
 												</div>
@@ -168,20 +168,20 @@
 												<div class="row">
 													<div class="col-12 col-md-5 col-lg-4">
 														<div class="form-group">
-															<label for="projectStartDate" class="form-group__label">Project start date</label>
-															<input id="projectStartDate" type="text" name="projectStartDate" placeholder="Project start date" class="form-group__field field">
+															<label for="projectStartDate" class="form-group__label" th:text="#{projectSDate.text}">Project start date</label>
+															<input id="projectStartDate" type="text" name="projectStartDate" th:placeholder="#{projectSDate.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-5 col-lg-4">
 														<div class="form-group">
-															<label for="projectFinishDate" class="form-group__label">Project finish date</label>
-															<input id="projectFinishDate" type="text" name="projectFinishDate" placeholder="Project finish date" class="form-group__field field">
+															<label for="projectFinishDate" class="form-group__label" th:text="#{projectFDate.text}">Project finish date</label>
+															<input id="projectFinishDate" type="text" name="projectFinishDate" th:placeholder="#{projectFDate.hint}" class="form-group__field field">
 														</div>
 													</div>
 												</div>
 											</div>
 											<div class="col-12 text-center">
-												<button type="submit" disabled="disabled" class="btn btn_primary btn_lg mt-4 mod__elem-1">Done</button>
+												<button type="submit" disabled="disabled" class="btn btn_primary btn_lg mt-4 mod__elem-1" th:text="#{done.button}">Done</button>
 											</div>
 										</div>
 									</div>

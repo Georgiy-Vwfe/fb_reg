@@ -8,12 +8,15 @@
     <header class="header" th:fragment="header">
         <div class="container d-flex align-items-center">
             <nav class="header__nav nav nav_inline nav_alpha">
-                <li class="nav__item"><a th:href="@{/user/me}" class="nav__link">My network</a>
+                <li class="nav__item"><a th:href="@{/user/me}" class="nav__link" th:text="#{myNetwork.button}">My network</a>
                 </li>
-                <li class="nav__item"><a th:href="@{/search}" class="nav__link">Search professional</a>
+                <li class="nav__item"><a th:href="@{/search}" class="nav__link" th:text="#{searchProf.button}">Search professional</a>
                 </li>
             </nav>
-            <div class="header__link ml-auto"><a href="#" class="nav__link">Switch to Russian</a>
+            <div class="header__link ml-auto">
+                    <a class="nav__link" th:href="@{?locale=en}" th:text="#{lang.en}"></a>
+                    <span>|</span>
+                    <a class="nav__link" th:href="@{?locale=ru}" th:text="#{lang.ru}"></a>
             </div>
             <ul class="chain chain_alpha header__chain d-flex align-items-center">
                 <li class="chain__item">

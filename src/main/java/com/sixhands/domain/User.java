@@ -42,7 +42,7 @@ public class User implements UserDetails, CSVSerializable {
     private String date_of_birth;
     private String phone_number;
     private String city;
-    private String user_img;
+    private String user_img = "https://i.imgur.com/ahcplHm.png";
     private String social_networks;
     //TODO: ?Set on registration/persist
     private Date creation_timestamp;

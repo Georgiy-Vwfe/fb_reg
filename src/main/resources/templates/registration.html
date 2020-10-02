@@ -31,15 +31,19 @@
     <script src="/scripts/vendor/babelHelpers.min.js" type="text/javascript" defer></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js" defer></script>
     <script src="/scipts/validation/validate.js"></script>
+
 </head>
 
 <body>
 <div style="" class="root d-flex flex-column">
     <header class="header header_small">
         <div class="container d-flex align-items-center">
-            <div class="header__link ml-auto mr-5"><a href="#" class="nav__link">Switch to Russian</a>
+           <div class="header__link ml-auto mr-5">
+                <a class="nav__link" th:href="@{?locale=en}" th:text="#{lang.en}"></a>
+                <span>|</span>
+                <a class="nav__link" th:href="@{?locale=ru}" th:text="#{lang.ru}"></a>
             </div>
-            <div class="header__link ml-5"><a th:href="@{/login}" class="nav__link">Sign in</a>
+            <div class="header__link ml-5"><a th:href="@{/login}" class="nav__link" th:text="#{signIn.button}">Sign in</a>
             </div>
         </div>
     </header>
@@ -54,13 +58,13 @@
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
-                                        <h1 class="title title_h1 text-center mb-2">Register</h1>
+                                        <h1 class="title title_h1 text-center mb-2" th:text="#{registration.text}">Registration</h1>
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="email" class="form-group__label">E-mail</label>
+                                            <label for="email" class="form-group__label" th:text="#{e-mail.text}">E-mail</label>
                                             <input id="email" required="required" type="email"
-                                                   placeholder="email@email.com" name="email"
+                                                   th:placeholder="#{e-mail.hint}" name="email"
                                                    class="form-group__field field" th:field="*{email}"/>
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
@@ -73,9 +77,9 @@
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="password" class="form-group__label">Password</label>
+                                            <label for="password" class="form-group__label" th:text="#{password.text}">Password</label>
                                             <input id="password" required="required" type="password" name="password"
-                                                   placeholder="Enter password" class="form-group__field field"
+                                                   th:placeholder="#{password.hint}" class="form-group__field field"
                                                    th:field="*{password}"/>
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
@@ -84,23 +88,22 @@
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="passwordCorrect" class="form-group__label">Password
-                                                check</label>
+                                            <label for="passwordCorrect" class="form-group__label" th:text="#{passwordCheck.text}">Password check</label>
                                             <input id="passwordCorrect" required="required" type="password"
                                                    name="passwordCorrect"
-                                                   placeholder="Repeat password" class="form-group__field field "
+                                                   th:placeholder="#{passwordCheck.hint}" class="form-group__field field "
                                                    th:field="*{confirmPassword}" }>
                                             <div class="alert alert-danger mt-2" role="alert"
-                                                 th:if="${passNotEquals}" th:text="${passNotEquals}">
+                                                 th:if="${passNotEquals}" style="color:red;" th:text="#{passNotEquals.text}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-11 col-sm-9 text-center mb-3">
-                                        <button id="submit" type="submit" class="btn btn_bordered">Register</button>
+                                        <button id="submit" type="submit" class="btn btn_bordered" th:text="#{registration.button}">Register</button>
                                     </div>
-                                    <div class=" col-11 col-sm-9 text-center"><a class="title title_h3"
-                                    >Sign in through Facebook</a>
+                                    <div class=" col-11 col-sm-9 text-center">
+                                        <a class="title title_h3" th:text="#{facebook.button}">Sign in through Facebook</a>
                                     </div>
                                 </div>
                             </div>

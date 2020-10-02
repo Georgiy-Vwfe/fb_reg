@@ -41,8 +41,8 @@
 				<div class="container">
 					<section class="box box_admin box_text_center">
 						<div class="box__inner">
-							<h2 class="box__inner-title title title_h2">Add your project</h2>
-							<div class="box__inner-desc">Expertise, tools, companies and other details about this project will fill up your resume.</div>
+							<h2 class="box__inner-title title title_h2" th:text="#{addUProject.text}">Add your project</h2>
+							<div class="box__inner-desc" th:text="#{addUProjectInfo.text}">Expertise, tools, companies and other details about this project will fill up your resume.</div>
 						</div>
 					</section>
 				</div>
@@ -50,7 +50,7 @@
 					<div th:object="${editUserSaveProjectDTO.user}" class="container">
 						<section class="box box_admin box_widget_white py-0">
 							<div class="box__outer">
-								<div class="box__outer-title">Main details</div>
+								<div class="box__outer-title" th:text="#{mainDetails.text}">Main details</div>
 							</div>
 							<div class="box__inner">
 								<div class="box__inner-widget">
@@ -66,7 +66,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="upload__content">Upload / Drag'n'Drop</div>
+													<div class="upload__content" th:text="#{imgUpload.text}">Upload / Drag'n'Drop</div>
 													<input type="file" name="file">
 												</div>
 											</div>
@@ -74,56 +74,56 @@
 												<div class="row">
 													<div class="col-12 col-md-6 mb-md-5 pb-md-5">
 														<div class="form-group form-group_large">
-															<label for="profileSurname" class="form-group__label">Surname</label>
-															<input minlength="2" maxlength="24" pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" placeholder="Surname" class="form-group__field field">
+															<label for="profileSurname" class="form-group__label" th:text="#{surname.text}">Surname</label>
+															<input minlength="2" maxlength="24" pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" th:placeholder="#{surname.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6 mb-md-5 pb-md-5">
 														<div class="form-group form-group_large">
-															<label for="profileName" class="form-group__label">Name</label>
-															<input minlength="2" maxlength="20" th:field="*{first_name}" id="profileName" type="text" name="profileName" placeholder="Name" class="form-group__field field">
+															<label for="profileName" class="form-group__label" th:text="#{surname.text}">Name</label>
+															<input minlength="2" maxlength="20" th:field="*{first_name}" id="profileName" type="text" name="profileName" th:placeholder="#{surname.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
-															<label for="dateOfBirth" class="form-group__label">Date of birth</label>
-															<input id="dateOfBirth" th:field="*{date_of_birth}" type="date" name="dateOfBirth" placeholder="Date of birth" class="form-group__field field">
+															<label for="dateOfBirth" class="form-group__label" th:text="#{bDay.text}">Date of birth</label>
+															<input id="dateOfBirth" th:field="*{date_of_birth}" type="date" name="dateOfBirth" th:placeholder="#{bDay.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
-															<label for="sex" class="form-group__label">Sex</label>
-															<p><input id="sex" required th:field="*{sex}" type="radio" name="sex" value="M" class="form-group__field"> Male</p>
-															<p><input id="sexW" required th:field="*{sex}" type="radio" name="sex" value="W" class="form-group__field"> Female</p>
+															<label for="sex" class="form-group__label" th:text="#{sex.text}">Sex</label>
+															<p><input id="sex" required th:field="*{sex}" type="radio" name="sex" value="M" class="form-group__field" th:text="#{sexM.button}"> Male</p>
+															<p><input id="sexW" required th:field="*{sex}" type="radio" name="sex" value="W" class="form-group__field" th:text="#{sexF.button}"> Female</p>
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
-															<label for="phone" class="form-group__label">Phone</label>
-															<input th:field="*{phone_number}" id="phone" type="tel" name="profilePhone" placeholder="Phone" class="form-group__field field">
+															<label for="phone" class="form-group__label" th:text="#{phone.text}">Phone</label>
+															<input th:field="*{phone_number}" id="phone" type="tel" name="profilePhone" th:placeholder="#{phone.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
-															<label for="profileCountry" class="form-group__label">Country</label>
-															<input th:field="*{country}" id="profileCountry" type="text" name="profileCountry" placeholder="Country" class="form-group__field field">
+															<label for="profileCountry" class="form-group__label" th:text="#{country.text}">Country</label>
+															<input th:field="*{country}" id="profileCountry" type="text" name="profileCountry" th:placeholder="#{country.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
-															<label for="profileEmail" class="form-group__label">E-Mail</label>
-															<input th:field="*{email}"  id="profileEmail" type="email" name="profileEmail" placeholder="E-Mail" class="form-group__field field">
+															<label for="profileEmail" class="form-group__label" th:text="#{e-mailE.text}">E-Mail</label>
+															<input th:field="*{email}"  id="profileEmail" type="email" name="profileEmail"  th:placeholder="#{e-mailE.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
-															<label for="profileCity" class="form-group__label">City</label>
-															<input th:field="*{city}" id="profileCity" type="text" name="profileCity" placeholder="City" class="form-group__field field">
+															<label for="profileCity" class="form-group__label" th:text="#{city.text}">City</label>
+															<input th:field="*{city}" id="profileCity" type="text" name="profileCity" th:placeholder="#{city.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="d-flex mt-3 mb-3">
-															<p class="title title_h3 mr-4">Social Networks</p>
+															<p class="title title_h3 mr-4" th:text="#{socialN.text}">Social Networks</p>
 															<ul class="chain chain_beta d-flex align-items-center">
 																<li class="chain__item">
 																	<div class="middle">
@@ -151,8 +151,8 @@
 													</div>
 													<div class="col-12 mt-5 pt-md-5">
 														<div class="form-group">
-															<label for="profileAboutMe" class="form-group__label">About me</label>
-															<textarea th:field="*{about_user}" id="profileAboutMe" name="profileAboutMe" placeholder="About me" rows="4" class="form-group__field field"></textarea>
+															<label for="profileAboutMe" class="form-group__label" th:text="#{aboutMe.text}">About me</label>
+															<textarea th:field="*{about_user}" id="profileAboutMe" name="profileAboutMe" th:placeholder="#{aboutMe.hint}" rows="4" class="form-group__field field"></textarea>
 														</div>
 													</div>
 													<!--<div class="col-12 text-center">
@@ -181,105 +181,105 @@
 											<input th:field="*{member.userExp.project_creator}" class="d-none">
 											<div class="col-12 col-md-9">
 												<div class="form-group form-group_large">
-													<label for="projectName" class="form-group__label">Project name</label>
+													<label for="projectName" class="form-group__label" th:text="#{projectName.text}">Project name</label>
 													<input id="projectName"
 														   th:readonly="${isEditing}"
 														   th:field="*{project.name}" type="text" name="projectName"
-														   placeholder="Project name" class="form-group__field field">
+														   th:placeholder="#{projectName.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectCompany" class="form-group__label">Company</label>
+													<label for="projectCompany" class="form-group__label" th:text="#{company.text}">Company</label>
 													<input id="projectCompany"
 														   th:readonly="${isEditing}"
 														   th:field="*{project.company}" type="text" name="projectCompany"
-														   placeholder="Company" class="form-group__field field">
+														   th:placeholder="#{company.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectPosition" class="form-group__label">Position</label>
+													<label for="projectPosition" class="form-group__label" th:text="#{position.text}">Position</label>
 													<input id="projectPosition" th:field="*{member.userExp.position}"
-														   type="text" name="projectPosition" placeholder="Position"
+														   type="text" name="projectPosition" th:placeholder="#{position.hint}"
 														   class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectRole" class="form-group__label">Role</label>
+													<label for="projectRole" class="form-group__label" th:text="#{role.text}">Role</label>
 													<input id="projectRole" th:field="*{member.userExp.role}" type="text"
-														   name="projectRole" placeholder="Role"
+														   name="projectRole" th:placeholder="#{role.hint}"
 														   class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectDuties" class="form-group__label">Duties</label>
+													<label for="projectDuties" class="form-group__label" th:text="#{duties.text}">Duties</label>
 													<input th:field="*{member.userExp.duties}" id="projectDuties" type="text"
-														   name="projectDuties" placeholder="Duties"
+														   name="projectDuties" th:placeholder="#{duties.hint}"
 														   class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectDescription" class="form-group__label">Project
+													<label for="projectDescription" class="form-group__label" th:text="#{projectDesc.text}">Project
 														description</label>
 													<input
 															th:if="*{member.userExp.custom_description==null}"
 															id="projectDescription"
 															th:field="*{project.description}" type="text"
-															name="projectDescription" placeholder="Project description"
+															name="projectDescription" th:placeholder="#{projectDesc.hint}"
 															class="form-group__field field">
 													<input
 															th:if="*{member.userExp.custom_description!=null}"
 															id="customPojectDescription"
 															th:field="*{member.userExp.custom_description}" type="text"
-															name="projectDescription" placeholder="Project description"
+															name="projectDescription" th:placeholder="#{projectDesc.hint}"
 															class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectSkills" class="form-group__label">Skills</label>
+													<label for="projectSkills" class="form-group__label" th:text="#{skills.text}">Skills</label>
 													<input id="projectSkills" th:field="*{member.userExp.skills}" type="text"
-														   name="projectSkills" placeholder="Skills"
+														   name="projectSkills" th:placeholder="#{skills.hint}"
 														   class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectTools" class="form-group__label">Tools</label>
+													<label for="projectTools" class="form-group__label" th:text="#{tools.text}">Tools</label>
 													<input id="projectTools"
 														   th:field="*{member.userExp.tools}" type="text" name="projectTools"
-														   placeholder="Tools" class="form-group__field field">
+														   th:placeholder="#{tools.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectIndustry" class="form-group__label">Industry</label>
+													<label for="projectIndustry" class="form-group__label" th:text="#{industry.text}">Industry</label>
 													<input id="projectIndustry"
 														   th:readonly="${isEditing}"
 														   th:field="*{project.industry}" type="text" name="projectIndustry"
-														   placeholder="Industry" class="form-group__field field">
+														   th:placeholder="#{industry.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
 												<div class="form-group">
-													<label for="projectLink" class="form-group__label">Project Link</label>
+													<label for="projectLink" class="form-group__label" th:text="#{projectLink.text}">Project Link</label>
 													<input id="projectLink"
 														   th:readonly="${isEditing}"
 														   th:field="*{project.link}" type="text" name="projectLink"
-														   placeholder="Project link " class="form-group__field field">
+														   th:placeholder="#{projectLink.hint}" class="form-group__field field">
 												</div>
 											</div>
 											<div class="col-12 col-md-9">
-												<p class="title title_h3 mt-5 mb-4">Project team</p>
+												<p class="title title_h3 mt-5 mb-4" th:text="#{projectTeam.text}">Project team</p>
 												<div class="d-flex flex-wrap">
 													<input type="submit"
 														   onclick="this.form.action+='?action=add-member'"
 														   data-collapse="projectTeamEmail"
-														   class="btn btn_bordered btn_sm mr-3 mb-3" value="Invite by email"/>
+														   class="btn btn_bordered btn_sm mr-3 mb-3" th:value="#{inviteEmail.button}"/>
 													<!--<button type="button" data-collapse="projectTeamFb" class="btn btn_bordered btn_sm mr-3 mb-3">fb</button>
 													<button type="button" data-collapse="projectTeamVk" class="btn btn_bordered btn_sm mr-3 mb-3">VK</button>
 													<button type="button" data-collapse="projectTeamLn" class="btn btn_bordered btn_sm mr-3 mb-3">ln</button>
@@ -306,14 +306,14 @@
 																			   th:readonly="*{members[__${iter.index}__].added == false}"
 																			   th:field="*{members[__${iter.index}__].user.email}"
 																			   type="email" name="projectTeamEmail"
-																			   placeholder="Email of a member" class="field">
+																			   th:placeholder="#{emailOAMember.hint}" class="field">
 																	</div>
 																	<div class="col">
 																		<input id="projectTeamEmailRole"
 																			   th:readonly="*{members[__${iter.index}__].added == false}"
 																			   th:field="*{members[__${iter.index}__].userExp.role}"
 																			   type="text" name="projectTeamEmailRole"
-																			   placeholder="Role" class="field">
+																			   th:placeholder="#{roleOAMember.hint}" class="field">
 																	</div>
 																</div>
 															</section>
@@ -324,14 +324,14 @@
 																			   th:readonly="*{members[__${iter.index}__].added == false}"
 																			   th:field="*{members[__${iter.index}__].user.first_name}"
 																			   type="text" name="projectTeamEmailFistName"
-																			   placeholder="First Name" class="field">
+																			   th:placeholder="#{firstName.hint}" class="field">
 																	</div>
 																	<div class="col">
 																		<input id="projectTeamEmailLastName"
 																			   th:readonly="*{members[__${iter.index}__].added == false}"
 																			   th:field="*{members[__${iter.index}__].user.last_name}"
 																			   type="text" name="projectTeamEmailLastName"
-																			   placeholder="Last Name" class="field">
+																			   th:placeholder="#{lastName.hint}" class="field">
 																	</div>
 																</div>
 															</section>
@@ -378,32 +378,32 @@
 												<div class="row">
 													<div class="col-12 col-md-5 col-lg-4">
 														<div class="form-group">
-															<label for="projectStartDate" class="form-group__label">Project
+															<label for="projectStartDate" class="form-group__label" th:text="#{projectSDate.text}">Project
 																start date</label>
 															<input
 																	th:readonly="${isEditing}"
 																	th:field="*{project.start_date}" id="projectStartDate"
 																	type="date" name="projectStartDate"
-																	placeholder="Project start date"
+																	th:placeholder="#{projectSDate.hint}"
 																	class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-5 col-lg-4">
 														<div class="form-group">
-															<label for="projectFinishDate" class="form-group__label">Project
+															<label for="projectFinishDate" class="form-group__label" th:text="#{projectFDate.text}">Project
 																finish date</label>
 															<input
 																	th:readonly="${isEditing}"
 																	th:field="*{project.end_date}" id="projectFinishDate"
 																	type="date" name="projectFinishDate"
-																	placeholder="Project finish date"
+																	th:placeholder="#{projectFDate.hint}"
 																	class="form-group__field field">
 														</div>
 													</div>
 												</div>
 											</div>
 											<div class="col-12 text-center">
-												<button type="submit" class="btn btn_primary btn_lg mt-4 mod__elem-1">Save and continue</button>
+												<button type="submit" class="btn btn_primary btn_lg mt-4 mod__elem-1" th:text="#{save&continue.button}">Save and continue</button>
 											</div>
 										</div>
 									</div>

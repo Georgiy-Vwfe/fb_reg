@@ -45,7 +45,7 @@
                             </div>
                             <div class="card__content">
                                 <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
-                                <a th:if="${canEdit}" href="?edit=1">Edit my profile</a>
+                                <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my profile</a>
                                 <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+' '+${user.country}"></div>
                                 <div class="card__chain chain d-flex align-items-center">
                                     <li class="chain__item">
@@ -99,7 +99,7 @@
                     <!-- Skills-->
                     <section class="box box_admin box_widget_white py-0 mt-4">
                         <div class="box__outer">
-                            <div class="box__outer-title">Skills</div>
+                            <div class="box__outer-title" th:text="#{skillsU.text}">Skills</div>
                         </div>
                         <div class="box__inner" th:each="prop,iter : ${userData.getSkills(false)}">
                             <div class="box__inner-widget">
@@ -116,7 +116,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                     <!-- Company-->
                     <section class="box box_admin box_widget_white py-0 mt-4">
                         <div class="box__outer">
-                            <div class="box__outer-title">Company</div>
+                            <div class="box__outer-title" th:text="#{companyU.text}">Company</div>
                         </div>
                         <div class="box__inner" th:each="prop,iter : ${userData.getCompanies(false)}">
                             <div class="box__inner-widget">
@@ -170,7 +170,7 @@
                                             <div th:text="${exp.duties}"></div>
                                         </div>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@
                     <!-- Industry-->
                     <section class="box box_admin box_widget_white py-0 mt-4">
                         <div class="box__outer">
-                            <div class="box__outer-title">Industry</div>
+                            <div class="box__outer-title" th:text="#{industryU.text}">Industry</div>
                         </div>
                         <div class="box__inner" th:each="prop,iter : ${userData.getIndustries(false)}">
                             <div class="box__inner-widget">
@@ -224,7 +224,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -257,7 +257,7 @@
                     <!-- Tools-->
                     <section class="box box_admin box_widget_white py-0 mt-4">
                         <div class="box__outer">
-                            <div class="box__outer-title">Tools</div>
+                            <div class="box__outer-title" th:text="#{toolsU.text}">Tools</div>
                         </div>
                         <div class="box__inner" th:each="prop,iter : ${userData.getTools(false)}">
                             <div class="box__inner-widget">
@@ -274,7 +274,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -310,11 +310,11 @@
                     <!-- Projects-->
                     <section class="box box_admin box_widget_white py-0 mt-4 mod003">
                         <div class="box__outer d-flex justify-content-center">
-                            <div class="box__outer-title">Projects</div>
-                            <span class="mod__elem-1 ml-auto">Approved only</span>
+                            <div class="box__outer-title" th:text="#{projects.text}">Projects</div>
+                            <span class="mod__elem-1 ml-auto" th:text="#{approvedOnly.text}">Approved only</span>
                         </div>
                         <div class="box__inner">
-                            <div th:if="${canEdit}" class="box__inner-widget"><a href="/project/create" class="link link_beta m-4">New Project</a>
+                            <div th:if="${canEdit}" class="box__inner-widget"><a href="/project/create" class="link link_beta m-4" th:text="#{newProjectU.button}">New Project</a>
                             </div>
                         </div>
                     </section>
@@ -335,10 +335,10 @@
                                                 <a
                                                         th:if="${projAndExp.projectExp.project_creator}"
                                                         th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'"
-                                                        class="btn btn_secondary btn_sm">Edit (Creator)</a>
+                                                        class="btn btn_secondary btn_sm" th:text="#{editCreator.button}">Edit (Creator)</a>
                                                 <a th:if="${projAndExp.projectExp.project_creator == false}"
                                                    th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'"
-                                                   class="btn btn_secondary btn_sm">Edit (Member)</a>
+                                                   class="btn btn_secondary btn_sm" th:text="#{editMember.button}">Edit (Member)</a>
                                                 <form th:if="${projAndExp.project.confirmed == false && projAndExp.projectExp.project_creator && canEdit}"
                                                       th:method="'delete'"
                                                       th:action="'/project/'+${projAndExp.project.uuid}+'/delete'">
@@ -387,7 +387,7 @@
                                         <!--TODO: Add expand button-->
                                     </div>
                                     <div class="card-project__btn" th:if="${projAndExp.project.confirmed == false}">
-                                        <button type="button" class="btn btn_secondary btn_sm">Not Confirmed</button>
+                                        <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed</button>
                                     </div>
                                 </div>
                             </div>

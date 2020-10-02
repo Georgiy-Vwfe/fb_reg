@@ -39,21 +39,21 @@
     <div data-page="adminProfileProject" class="dataProvider"></div>
     <main class="root__in pb-5" style="display: flex;">
         <form method="GET" style="margin: 5px;">
-            <input class="d-block" name="industry" placeholder="industry"/>
-            <input class="d-block" name="role" placeholder="role" />
-            <input class="d-block" name="name" placeholder="name" />
+            <input class="d-block" name="industry" th:placeholder="#{industryS.hint}" />
+            <input class="d-block" name="role" th:placeholder="#{roleS.hint}" />
+            <input class="d-block" name="name" th:placeholder="#{nameS.hint}" />
             <input style="width: 153.5px;" class="d-block" type="submit" />
         </form>
         <div style="flex: 1; font-size: 16px; margin: 2px;">
             <a style="margin: 0 12px;" th:href="'/user/'+*{user.uuid}" th:object="${profileDTO}" th:each="profileDTO :${profileDTOs}">
                 <div th:text="*{user.first_name+' '+user.last_name}"></div>
-                <div th:if="*{industries.size() > 0}" style="border: 1px solid gray; margin: 6px;">Industries:
+                <div th:if="*{industries.size() > 0}" style="border: 1px solid gray; margin: 6px;" th:text="#{industriesS.text}">Industries:
                     <div th:each="industry:*{industries}">
                         <span style="font-weight: bold;" th:text="${industry.projects.size()}+' '"></span>
                         <span th:text="${industry.property}"></span>
                     </div>
                 </div>
-                <div th:if="*{roles.size() > 0}" style="border: 1px solid gray; margin: 6px;">Roles:
+                <div th:if="*{roles.size() > 0}" style="border: 1px solid gray; margin: 6px;" th:text="#{rolesS.text}">Roles:
                     <div th:each="role:*{roles}">
                         <span style="font-weight: bold;" th:text="${role.projects.size()}+' '"></span>
                         <span th:text="${role.property}"></span>

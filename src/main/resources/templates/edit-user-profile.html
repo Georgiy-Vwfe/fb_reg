@@ -44,7 +44,7 @@
                     <h2 class="box__inner-title title title_h2" th:text="${canEdit} ? ${user.first_name}+' '+${user.last_name}:'Error'"></h2>
                     <div class="box__inner-desc">
                         <div th:text="${canEdit} ? 'Edit my profile':'You are not allowed to edit this profile'"></div>
-                        <a th:if="${canEdit}" href="?edit=0">Go back</a>
+                        <a th:if="${canEdit}" href="?edit=0" th:text="#{goBack.button}">Go back</a>
                     </div>
                 </div>
             </section>
@@ -55,7 +55,7 @@
             <div class="container">
                 <section class="box box_admin box_widget_white py-0">
                     <div class="box__outer">
-                        <div class="box__outer-title">Main details</div>
+                        <div class="box__outer-title" th:text="#{mainDetails.text}">Main details</div>
                     </div>
                     <div class="box__inner">
                         <div class="box__inner-widget">
@@ -71,7 +71,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="upload__content">Upload / Drag'n'Drop</div>
+                                            <div class="upload__content" th:text="#{imgUpload.text}">Upload / Drag'n'Drop</div>
                                             <input type="file" name="file">
                                         </div>
                                     </div>
@@ -79,56 +79,56 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-md-5 pb-md-5">
                                                 <div class="form-group form-group_large">
-                                                    <label for="profileSurname" class="form-group__label">Surname</label>
-                                                    <input minlength="2" maxlength="24" pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" placeholder="Surname" class="form-group__field field">
+                                                    <label for="profileSurname" class="form-group__label" th:text="#{surname.text}">Surname</label>
+                                                    <input minlength="2" maxlength="24" pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" th:placeholder="#{surname.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6 mb-md-5 pb-md-5">
                                                 <div class="form-group form-group_large">
-                                                    <label for="profileName" class="form-group__label">Name</label>
-                                                    <input minlength="2" maxlength="20" th:field="*{first_name}" id="profileName" type="text" name="profileName" placeholder="Name" class="form-group__field field">
+                                                    <label for="profileName" class="form-group__label" th:text="#{name.text}">Name</label>
+                                                    <input minlength="2" maxlength="20" th:field="*{first_name}" id="profileName" type="text" name="profileName" th:placeholder="#{name.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="dateOfBirth" class="form-group__label">Date of birth</label>
-                                                    <input id="dateOfBirth" th:field="*{date_of_birth}" type="date" name="dateOfBirth" placeholder="Date of birth" class="form-group__field field">
+                                                    <label for="dateOfBirth" class="form-group__label" th:text="#{bDay.text}">Date of birth</label>
+                                                    <input id="dateOfBirth" th:field="*{date_of_birth}" type="date" name="dateOfBirth" th:placeholder="#{bDay.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="sex" class="form-group__label">Sex</label>
-                                                    <p><input id="sex" required th:field="*{sex}" type="radio" name="sex" value="M" class="form-group__field"> Male</p>
-                                                    <p><input id="sexW" required th:field="*{sex}" type="radio" name="sex" value="F" class="form-group__field"> Female</p>
+                                                    <label for="sex" class="form-group__label" th:text="#{sex.text}">Sex</label>
+                                                    <p><input id="sex" required th:field="*{sex}" type="radio" name="sex" value="M" class="form-group__field" th:text="#{sexM.button}"> Male</p>
+                                                    <p><input id="sexW" required th:field="*{sex}" type="radio" name="sex" value="F" class="form-group__field" th:text="#{sexF.button}"> Female</p>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="phone" class="form-group__label">Phone</label>
-                                                    <input th:field="*{phone_number}" id="phone" type="tel" name="profilePhone" placeholder="Phone" class="form-group__field field">
+                                                    <label for="phone" class="form-group__label" th:text="#{phone.text}">Phone</label>
+                                                    <input th:field="*{phone_number}" id="phone" type="tel" name="profilePhone" th:placeholder="#{phone.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="profileCountry" class="form-group__label">Country</label>
-                                                    <input th:field="*{country}" id="profileCountry" type="text" name="profileCountry" placeholder="Country" class="form-group__field field">
+                                                    <label for="profileCountry" class="form-group__label" th:text="#{country.text}">Country</label>
+                                                    <input th:field="*{country}" id="profileCountry" type="text" name="profileCountry" th:placeholder="#{country.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="profileEmail" class="form-group__label">E-Mail</label>
-                                                    <input th:field="*{email}"  id="profileEmail" type="email" name="profileEmail" placeholder="E-Mail" class="form-group__field field">
+                                                    <label for="profileEmail" class="form-group__label" th:text="#{e-mailE.text}">E-Mail</label>
+                                                    <input th:field="*{email}"  id="profileEmail" type="email" name="profileEmail" th:placeholder="#{e-mailE.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="profileCity" class="form-group__label">City</label>
-                                                    <input th:field="*{city}" id="profileCity" type="text" name="profileCity" placeholder="City" class="form-group__field field">
+                                                    <label for="profileCity" class="form-group__label" th:text="#{city.text}">City</label>
+                                                    <input th:field="*{city}" id="profileCity" type="text" name="profileCity" th:placeholder="#{city.hint}" class="form-group__field field">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="d-flex mt-3 mb-3">
-                                                    <p class="title title_h3 mr-4">Social Networks</p>
+                                                    <p class="title title_h3 mr-4" th:text="#{socialN.text}">Social Networks</p>
                                                     <ul class="chain chain_beta d-flex align-items-center">
                                                         <li class="chain__item">
                                                             <div class="middle">
@@ -156,12 +156,12 @@
                                             </div>
                                             <div class="col-12 mt-5 pt-md-5">
                                                 <div class="form-group">
-                                                    <label for="profileAboutMe" class="form-group__label">About me</label>
-                                                    <textarea th:field="*{about_user}" id="profileAboutMe" name="profileAboutMe" placeholder="About me" rows="4" class="form-group__field field"></textarea>
+                                                    <label for="profileAboutMe" class="form-group__label" th:text="#{aboutMe.text}">About me</label>
+                                                    <textarea th:field="*{about_user}" id="profileAboutMe" name="profileAboutMe" th:placeholder="#{aboutMe.hint}" rows="4" class="form-group__field field"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12 text-center">
-                                                <button type="submit" class="btn btn_primary btn_lg mt-4 mod__elem-1">Save changes</button>
+                                                <button type="submit" class="btn btn_primary btn_lg mt-4 mod__elem-1" th:text="#{save.button}">Save changes</button>
                                             </div>
                                         </div>
                                     </div>

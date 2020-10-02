@@ -43,14 +43,14 @@
                     <h2 class="box__inner-title title title_h2" th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
                     <div class="box__inner-desc">
                         <div th:text="${user == null} ? 'User is not found':'User profile'"></div>
-                        <a th:if="${canEdit}" href="?edit=1">Edit my profile</a>
+                        <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my profile</a>
                     </div>
                 </div>
             </section>
         </div>
         <div th:if="${user != null}" class="container box box_admin box_text_center">
             <pre th:text="${userData}"></pre>
-            <div>Projects</div>
+            <div th:text="#{projects.text}">Projects</div>
             <ul th:if="${projects.length > 0}">
                 <li th:each="projAndExp : ${projects}">
                     <div th:text="${projAndExp.projectExp.role}"></div>
@@ -58,12 +58,12 @@
                     <div th:text="${projAndExp.project.getDuration()}"></div>
                     <div th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>
                     <div th:if="${canEdit}">
-                        <a th:if="${projAndExp.projectExp.project_creator}" th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'">Edit (Creator)</a>
-                        <a th:if="${projAndExp.projectExp.project_creator == false}" th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'">Edit (Member)</a>
+                        <a th:if="${projAndExp.projectExp.project_creator}" th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'" th:text="#{editCreator.button}">Edit (Creator)</a>
+                        <a th:if="${projAndExp.projectExp.project_creator == false}" th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'" th:text="#{editMember.button}">Edit (Member)</a>
                     </div>
                 </li>
             </ul>
-            <span th:if="${projects.length == 0}">No projects found</span>
+            <span th:if="${projects.length == 0}" th:text="#{noProjects.text}">No projects found</span>
         </div>
     </main>
     <div th:replace="common/footer :: footer"></div>
