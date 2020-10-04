@@ -37,32 +37,143 @@
 <div style="" class="root d-flex flex-column">
     <div th:replace="common/header :: header"></div>
     <div data-page="adminProfileProject" class="dataProvider"></div>
-    <main class="root__in pb-5" style="display: flex;">
-        <form method="GET" style="margin: 5px;">
-            <input class="d-block" name="industry" th:placeholder="#{industryS.hint}" />
-            <input class="d-block" name="role" th:placeholder="#{roleS.hint}" />
-            <input class="d-block" name="name" th:placeholder="#{nameS.hint}" />
-            <input style="width: 153.5px;" class="d-block" type="submit" />
-        </form>
-        <div style="flex: 1; font-size: 16px; margin: 2px;">
-            <a style="margin: 0 12px;" th:href="'/user/'+*{user.uuid}" th:object="${profileDTO}" th:each="profileDTO :${profileDTOs}">
-                <div th:text="*{user.first_name+' '+user.last_name}"></div>
-                <div th:if="*{industries.size() > 0}" style="border: 1px solid gray; margin: 6px;" th:text="#{industriesS.text}">Industries:
-                    <div th:each="industry:*{industries}">
-                        <span style="font-weight: bold;" th:text="${industry.projects.size()}+' '"></span>
-                        <span th:text="${industry.property}"></span>
+    <div class="container">
+        <main>
+                <form method="GET" style="margin: 5px; width: 100%;">
+                    <div class="row">
+                    <div class="col-3">
+                        <select class="" type="text" name="industry" placeholder="industry">
+                            <option value="none" label="Industry"></option>
+                            <option>Agricultural</option>
+                            <option>Automobile</option>
+                            <option>B2B</option>
+                            <option>B2C</option>
+                            <option>Banking</option>
+                            <option>Building</option>
+                            <option>Chemical</option>
+                            <option>Charity</option>
+                            <option>Computers</option>
+                            <option>Education</option>
+                            <option>Electronics</option>
+                            <option>Finance</option>
+                            <option>FMCG</option>
+                            <option>Food supply</option>
+                            <option>HoReCa</option>
+                            <option>Industrial equipment</option>
+                            <option>Insurance</option>
+                            <option>Investment</option>
+                            <option>Logistics</option>
+                            <option>Marketing</option>
+                            <option>Media</option>
+                            <option>Medicine</option>
+                            <option>Metallurgy</option>
+                            <option>Oil and gas</option>
+                            <option>Power industry</option>
+                            <option>PR</option>
+                            <option>Retail</option>
+                            <option>Social activities</option>
+                            <option>Telecommunications</option>
+                            <option maxlength="30">Other</option>
+                        </select>
                     </div>
-                </div>
-                <div th:if="*{roles.size() > 0}" style="border: 1px solid gray; margin: 6px;" th:text="#{rolesS.text}">Roles:
-                    <div th:each="role:*{roles}">
-                        <span style="font-weight: bold;" th:text="${role.projects.size()}+' '"></span>
-                        <span th:text="${role.property}"></span>
+                    <div class="col-3">
+                        <input class="" type="text" name="role" placeholder="role"/>
                     </div>
-                </div>
-                <hr>
-            </a>
-        </div>
-    </main>
+                    <div class="col-3">
+                        <input class="" type="text" name="name" placeholder="name"/>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn_secondary btn_sm search" type="submit">Search</button>
+                    </div>
+                    </div>
+                </form>
+<!--            <div class="row">-->
+<!--                <div class="col">-->
+<!--                <div style="flex: 1; font-size: 16px; margin: 2px;">-->
+<!--                    <a style="margin: 0 12px;" th:href="'/user/'+*{user.uuid}" th:object="${profileDTO}"-->
+<!--                       th:each="profileDTO :${profileDTOs}">-->
+<!--                        <div th:text="*{user.first_name+' '+user.last_name}"></div>-->
+<!--                        <div th:if="*{industries.size() > 0}" style="border: 1px solid gray; margin: 6px;">Industries:-->
+<!--                            <div th:each="industry:*{industries}">-->
+<!--                                <span style="font-weight: bold;" th:text="${industry.projects.size()}+' '"></span>-->
+<!--                                <span th:text="${industry.property}"></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div th:if="*{roles.size() > 0}" style="border: 1px solid gray; margin: 6px;">Roles:-->
+<!--                            <div th:each="role:*{roles}">-->
+<!--                                <span style="font-weight: bold;" th:text="${role.projects.size()}+' '"></span>-->
+<!--                                <span th:text="${role.property}"></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <hr>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="container">
+                <section class="box box_admin box_widget_white mt-4 py-0">
+                    <div class="box__inner">
+                        <div class="box__inner-widget">
+                            <div class="card card_alpha">
+                                <div class="card__image">
+                                    <div class="middle">
+                                        <div>
+                                            <img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" /><img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" />
+                                        </div>
+                                    </div>
+                                    <span class="card__caption" th:text="${user == null} ? 'Error':'Rating:'+${userData.rating}"></span>
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
+                                    <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my profile</a>
+                                    <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+', '+${user.country}"></div>
+                                    <div class="card__chain chain d-flex align-items-center">
+                                        <li class="chain__item">
+                                            <div class="middle">
+                                                <a href="#">
+                                                    <img src="/images/card/social/mail.svg">
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="chain__item">
+                                            <div class="middle">
+                                                <a href="#">
+                                                    <img src="/images/card/social/google-plus.svg">
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="chain__item">
+                                            <div class="middle">
+                                                <a href="#">
+                                                    <img src="/images/card/social/twitter.svg">
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="chain__item">
+                                            <div class="middle">
+                                                <a href="#">
+                                                    <img src="/images/card/social/facebook.svg">
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="chain__item">
+                                            <div class="middle">
+                                                <a href="#">
+                                                    <img src="/images/card/social/linkedin.svg">
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </div>
+                                    <div class="card__desc" th:text="${user == null} ? 'Error':${user.about_user}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
     <div th:replace="common/footer :: footer"></div>
 </div>
 <script src="/scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>
