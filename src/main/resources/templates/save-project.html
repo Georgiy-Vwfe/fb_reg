@@ -131,10 +131,43 @@
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectIndustry" class="form-group__label" th:text="#{industry.text}">Industry</label>
-                                            <input id="projectIndustry"
-                                                   th:readonly="${isEditing}"
-                                                   th:field="*{project.industry}" type="text" name="projectIndustry"
-                                                   th:placeholder="#{industry.hint}" class="form-group__field field">
+<!--                                            <input id="projectIndustry"-->
+<!--                                                   th:readonly="${isEditing}"-->
+<!--                                                   th:field="*{project.industry}" type="text" name="projectIndustry"-->
+<!--                                                   th:placeholder="#{industry.hint}" class="form-group__field field">-->
+                                            <select class="form-group__field field"id="projectIndustry"  th:readonly="${isEditing}" type="text" name="projectIndustry" th:placeholder="#{industry.hint}">
+                                                <option value="none" label="Industry"></option>
+                                                <option>Agricultural</option>
+                                                <option>Automobile</option>
+                                                <option>B2B</option>
+                                                <option>B2C</option>
+                                                <option>Banking</option>
+                                                <option>Building</option>
+                                                <option>Chemical</option>
+                                                <option>Charity</option>
+                                                <option>Computers</option>
+                                                <option>Education</option>
+                                                <option>Electronics</option>
+                                                <option>Finance</option>
+                                                <option>FMCG</option>
+                                                <option>Food supply</option>
+                                                <option>HoReCa</option>
+                                                <option>Industrial equipment</option>
+                                                <option>Insurance</option>
+                                                <option>Investment</option>
+                                                <option>Logistics</option>
+                                                <option>Marketing</option>
+                                                <option>Media</option>
+                                                <option>Medicine</option>
+                                                <option>Metallurgy</option>
+                                                <option>Oil and gas</option>
+                                                <option>Power industry</option>
+                                                <option>PR</option>
+                                                <option>Retail</option>
+                                                <option>Social activities</option>
+                                                <option>Telecommunications</option>
+                                                <option maxlength="30">Other</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -190,6 +223,8 @@
                                                             </div>
                                                         </div>
                                                     </section>
+                                                </div>
+                                                <div class="row">
                                                     <section>
                                                         <div class="col-12 col-md-12">
                                                             <div class="col">
