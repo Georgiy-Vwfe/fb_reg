@@ -46,7 +46,7 @@
                             <div class="card__content">
                                 <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
                                 <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my profile</a>
-                                <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+' '+${user.country}"></div>
+                                <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+', '+${user.country}"></div>
                                 <div class="card__chain chain d-flex align-items-center">
                                     <li class="chain__item">
                                         <div class="middle">
@@ -116,7 +116,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <!--<button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <!--<button type="button" class="btn btn_secondary btn_sm notAButton">Not Confirmed
                                             </button>-->
                                         </div>
                                     </div>
@@ -170,7 +170,7 @@
                                             <div th:text="${exp.duties}"></div>
                                         </div>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -196,7 +196,7 @@
                                             <div th:text="${exp.duties}"></div>
                                         </div>
                                         <!--<div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton">Not Confirmed
                                             </button>
                                         </div>-->
                                     </div>
@@ -224,7 +224,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -246,7 +246,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <!--<div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton">Not Confirmed
                                             </button>
                                         </div>-->
                                     </div>
@@ -274,7 +274,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -296,7 +296,7 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <!--<div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton">Not Confirmed
                                             </button>
                                         </div>-->
                                     </div>
@@ -387,7 +387,7 @@
                                         <!--TODO: Add expand button-->
                                     </div>
                                     <div class="card-project__btn" th:if="${projAndExp.project.confirmed == false}">
-                                        <button type="button" class="btn btn_secondary btn_sm" th:text="#{notConfirmed.button}">Not Confirmed</button>
+                                        <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed</button>
                                     </div>
                                 </div>
                             </div>
