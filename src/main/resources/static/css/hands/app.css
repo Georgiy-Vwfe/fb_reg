@@ -554,10 +554,16 @@ a.btn_primary:focus,
 a.btn_primary:active {
 	color: #95989a;
 }
-
+.notAButton{
+	background-color: pink;
+}
+.search{
+	font-size: 16px;
+}
 .btn_sm {
 	padding: 6px 30px;
 	font-size: 14px;
+	margin-bottom: 5px;
 }
 
 .btn_lg {
@@ -1446,7 +1452,7 @@ textarea.field {
 .form-group_large .form-group__label,
 .form-group_large .form-group__field {
 	height: 39px;
-	font-size: 32px;
+	font-size: 22px;
 	font-weight: 100;
 	line-height: 39px;
 }
@@ -2283,7 +2289,7 @@ hr.light {
 
 .box_admin .box__outer-title,
 .box_admin .box__inner-desc {
-	font-size: 18px;
+	font-size: 28px;
 }
 
 .box_admin .box__inner-title {
@@ -3055,7 +3061,7 @@ hr.light {
 	}
 
 	.box {
-		padding: 75px 0;
+		padding: 35px 0;
 	}
 
 	.box.box_text_left-md .box__inner-title,
