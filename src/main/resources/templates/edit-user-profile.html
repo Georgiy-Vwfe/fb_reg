@@ -41,7 +41,7 @@
         <div class="container">
             <section class="box box_admin box_text_center">
                 <div class="box__inner">
-                    <h2 class="box__inner-title title title_h2" th:text="${canEdit} ? ${user.first_name}+' '+${user.last_name}:'Error'"></h2>
+<!--                TODO разве оно нужно?    <h2 class="box__inner-title title title_h2" th:text="${canEdit} ? ${user.first_name}+' '+${user.last_name}:'Error'"></h2>-->
                     <div class="box__inner-desc">
                         <div th:text="${canEdit} ? 'Edit my profile':'You are not allowed to edit this profile'"></div>
                         <a th:if="${canEdit}" href="?edit=0" th:text="#{goBack.button}">Go back</a>
