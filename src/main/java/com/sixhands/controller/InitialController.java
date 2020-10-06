@@ -31,8 +31,7 @@ public class InitialController {
     @Autowired
     private ProjectService projectService;
 
-    private String tmpToken;
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/")
     public String index(Model model) {
@@ -80,7 +79,6 @@ public class InitialController {
             user.setResetToken(UUID.randomUUID().toString());
 
             userService.saveUser(user);
-
             if (userService.sendRecoverMail(user, request)) {
                 modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
             }
@@ -110,7 +108,6 @@ public class InitialController {
     public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams,  RedirectAttributes redir) {
         System.out.println("recover password call");
         Optional<User> user = userService.findFirstUserByResetToken(requestParams.get("token"));
-        //List<Optional<User>> user = userService.findUserByResetToken(requestParams.get("token"));
         System.out.println(user.isPresent());
         System.out.println(requestParams);
         if (user.isPresent()) {
@@ -135,24 +132,6 @@ public class InitialController {
     public ModelAndView handleMissingParams(MissingServletRequestParameterException ex) {
         return new ModelAndView("redirect:login");
     }
-
-    /*@PostMapping("/recovery-password")
-    public String recoverPassword(@ModelAttribute User user, Model model, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "recovery-password";
-        if (userService.isPasswordMatch(user.getPassword(),user.getConfirmPassword())) {
-            model.addAttribute("passNotEquals", "passwords isn't equals");
-            return "recovery-password";
-        }
-
-        String password = user.getPassword();
-        if (password == null) {
-            return "recovery-password";
-        } else {
-            user = userService.loadUserByUsername(userEmail);
-            userService.changeUserPassword(user, password);
-        }
-        return "redirect:/login";
-    }*/
 
     @GetMapping("/admin-profile-project")
     public String adminProfileProject() {

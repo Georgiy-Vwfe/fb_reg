@@ -39,9 +39,12 @@ dependencies {
     //https://stackoverflow.com/a/14365438
     //compile group: 'javassist', name: 'javassist', version: '2.5.1'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.0.RELEASE'
+    compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.3.0.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.3.0.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.0.RELEASE'
     compile group: 'mysql', name: 'mysql-connector-java'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.0.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.4.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.2.RELEASE'
     compile group: 'org.json', name: 'json', version: '20200518'

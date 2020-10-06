@@ -275,14 +275,18 @@ public class UserService implements UserDetailsService {
         String emailText = String.format(
                 "Hello, %s! \n" +
                         "You are invited as a member of a project. \n" +
-                        "Your password is %s\n" +
-                        "Please, visit this link to verify your account: http://%s/activation/%s",
+                        "To confirm, click on http://%s/activation/%s and get the unique features of the new social network right now!\n" +
+                        "Your username is %s, and your password is %s\n" +
+                        "Sincerely, the 6 hands team\n" +
+                        "http://%s",
+                user.getEmail(),
+                domain,
+                user.getActivationCode(),
                 user.getEmail(),
                 plainPassword,
-                domain,
-                user.getActivationCode()
+                domain
         );
-        mailSender.sendEmail(user.getEmail(), "Activate your profile", emailText);
+        mailSender.sendEmail(user.getEmail(), "Join the 6 hands network! Confirm your participation in the project!", emailText);
     }
 
     private void sendVerificationMail(User user) {

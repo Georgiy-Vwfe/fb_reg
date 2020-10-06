@@ -64,6 +64,6 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "User is not activated");
         }
-        return "redirect:/";
+        return "redirect:/user/me";
     }
 }
