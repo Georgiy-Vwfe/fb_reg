@@ -27,7 +27,7 @@ public class UserProjectExp implements CSVSerializable {
     private boolean project_creator = false;
     private boolean confirmed = false;
 
-    public UserProjectExp safeAssignProperties(UserProjectExp unsafe){
+    public UserProjectExp safeAssignProperties(UserProjectExp unsafe) {
         role = unsafe.getRole();
         duties = unsafe.getDuties();
         tools = unsafe.getTools();
@@ -39,16 +39,64 @@ public class UserProjectExp implements CSVSerializable {
     @Override
     public Map<String, String> toCSV() {
         return new CSVMap()
-                .putc("mem_creator",project_creator)
-                .putc("mem_confirmed",confirmed)
-                .putc("mem_position",position)
-                .putc("mem_role",role)
-                .putc("mem_skills",skills)
-                .putc("mem_tools",tools)
-                .putc("mem_duties",duties)
+                .putc("mem_creator", project_creator)
+                .putc("mem_confirmed", confirmed)
+                .putc("mem_position", position)
+                .putc("mem_role", role)
+                .putc("mem_skills", skills)
+                .putc("mem_tools", tools)
+                .putc("mem_duties", duties)
                 .getMap();
     }
 
+    public enum Role {
+        Architect,
+        Business_Analyst,
+        Business_Owner,
+        Designer,
+        Backend_Developer,
+        Frontend_Developer,
+        Web_Developer,
+        Lawyer,
+        Marketing,
+        Project_manager,
+        Product_manager,
+        System_Analyst,
+        Team_Lead,
+        Technologist,
+        Tester
+    }
+
+    public enum Industry {
+        Agricultural,
+        Automobile,
+        B2B,
+        B2C,
+        Banking,
+        Building,
+        Chemical,
+        Charity,
+        Computers,
+        Education,
+        Electronics,
+        Finance,
+        FMCG,
+        Food_supply,
+        HoReCa,
+        Industrial_equipment,
+        Insurance,
+        Investment,
+        Logistics,
+        Marketing,
+        Media,
+        Metallurgy,
+        Oil_and_gas,
+        Power_industry,
+        PR,
+        Retail,
+        Social_activities,
+        Telecommunications
+    }
     //#region getters/setters
     public Long getUser_uuid() {
         return user_uuid;
