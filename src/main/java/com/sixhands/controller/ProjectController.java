@@ -4,6 +4,7 @@ import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.controller.dtos.UserAndExpDTO;
 import com.sixhands.domain.Project;
 import com.sixhands.domain.User;
+import com.sixhands.domain.UserProjectExp;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserProjectExpRepository;
 import com.sixhands.repository.UserRepository;
@@ -117,6 +118,8 @@ public class ProjectController {
     public String createProject(Model model) {
         model.addAttribute("projectDTO",new ProjectDTO());
         model.addAttribute("isEditing",false);
+        model.addAttribute("roleEnum", UserProjectExp.Role.values());
+        model.addAttribute("industryEnum", UserProjectExp.Industry.values());
         return "save-project";
     }
     @RequestMapping(value = "/save", params = {"action=add-member"}, method = {RequestMethod.PUT,RequestMethod.POST})

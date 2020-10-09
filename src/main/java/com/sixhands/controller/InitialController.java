@@ -4,6 +4,7 @@ import com.sixhands.controller.dtos.EditUserSaveProjectDTO;
 import com.sixhands.controller.dtos.ProjectDTO;
 import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.User;
+import com.sixhands.domain.UserProjectExp;
 import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
 import org.apache.poi.openxml4j.opc.PackagingURIHelper;
@@ -151,6 +152,8 @@ public class InitialController {
         List<UserProfileDTO> users = userService.searchUsersByProps(null, null, industry, null, role);
         users = userService.searchUsersByName(users, name);
         model.addAttribute("profileDTOs", users);
+        model.addAttribute("roleEnum", UserProjectExp.Role.values());
+        model.addAttribute("industryEnum", UserProjectExp.Industry.values());
         return "search";
     }
 
@@ -164,6 +167,8 @@ public class InitialController {
     public String adminProfileProject(Model model) {
         model.addAttribute("editUserSaveProjectDTO", new EditUserSaveProjectDTO(userService.getCurUserOrThrow(), new ProjectDTO()));
         model.addAttribute("isEditing", false);
+        model.addAttribute("roleEnum", UserProjectExp.Role.values());
+        model.addAttribute("industryEnum", UserProjectExp.Industry.values());
         return "edit-user-save-project";
     }
 
