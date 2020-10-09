@@ -2713,7 +2713,9 @@ hr.light {
 .slick-dots li.slick-active button:before {
 	color: #ff9a00;
 }
+@media only screen and (max-width: 575px){
 
+}
 @media only screen and (min-width: 576px) {
 	.w-sm-auto {
 		width: auto !important;
@@ -3444,4 +3446,5 @@ hr.light {
 	.hidden-xs-down {
 		display: none !important;
 	}
+	
 }
