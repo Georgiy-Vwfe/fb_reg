@@ -44,7 +44,7 @@ public class RegistrationController {
             userService.registerUser(email, password);
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("usernameError", "A user with the same name already exists.");
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         try {
@@ -64,6 +64,6 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "User is not activated");
         }
-        return "redirect:/user/me";
+        return "redirect:/login";
     }
 }
