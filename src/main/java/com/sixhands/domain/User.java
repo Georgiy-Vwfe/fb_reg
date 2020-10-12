@@ -33,15 +33,15 @@ public class User implements UserDetails, CSVSerializable {
     @Transient
     private String confirmPassword;
 
-    private String first_name;
-    private String last_name;
+    private String first_name = "";
+    private String last_name = "";
     private char sex;
-    private String country;
-    private String about_user;
-    private Integer rating;
+    private String country = "";
+    private String about_user = "";
+    private Integer rating = 0;
     private String date_of_birth;
-    private String phone_number;
-    private String city;
+    private String phone_number = "";
+    private String city = "";
     private String user_img = "https://i.imgur.com/ahcplHm.png";
     private String social_networks;
     //TODO: ?Set on registration/persist
