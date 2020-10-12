@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
@@ -53,7 +52,8 @@ public class UserService implements UserDetailsService {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private Logger logger = Logger.getLogger(UserService.class.getName());
-    private boolean isEng = true;
+    private static String RU_LOCALE = "русский";
+    private static String EN_LOCALE = "английский";
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         UsernameNotFoundException notFoundException = new UsernameNotFoundException("Unable to find user " + username);
@@ -78,20 +78,20 @@ public class UserService implements UserDetailsService {
         return userRepo.findFirstByResetToken(resetToken);
     }
 
-    public User registerUser(String email) throws UserAlreadyExistsException {
-        return registerUser(email, GenericUtils.randomAlphaNumString(8));
+    public User registerUser(String email, Locale locale) throws UserAlreadyExistsException {
+        return registerUser(email, GenericUtils.randomAlphaNumString(8), locale);
     }
 
-    public User registerUser(String email, boolean isProjectMember) throws UserAlreadyExistsException {
-        return registerUser(email, GenericUtils.randomAlphaNumString(8), isProjectMember);
+    public User registerUser(String email, boolean isProjectMember, Locale locale) throws UserAlreadyExistsException {
+        return registerUser(email, GenericUtils.randomAlphaNumString(8), isProjectMember, locale);
     }
 
-    public User registerUser(String email, String plainPassword) throws UserAlreadyExistsException {
-        return registerUser(email, plainPassword, false);
+    public User registerUser(String email, String plainPassword, Locale locale) throws UserAlreadyExistsException {
+        return registerUser(email, plainPassword, false, locale);
     }
 
-    public User registerUser(String email, @NotNull String plainPassword, boolean isProjectMember) throws UserAlreadyExistsException {
-        if (plainPassword == null) return registerUser(email, isProjectMember);
+    public User registerUser(String email, @NotNull String plainPassword, boolean isProjectMember, Locale locale) throws UserAlreadyExistsException {
+        if (plainPassword == null) return registerUser(email, isProjectMember, locale);
         User user = null;
         try {
             user = loadUserByUsername(email);
@@ -107,7 +107,7 @@ public class UserService implements UserDetailsService {
         user = userRepo.save(user);
 
         if (SixHandsApplication.isSendingMail()) {
-            if (isProjectMember) sendMemberVerificationMail(user, plainPassword);
+            if (isProjectMember) sendMemberVerificationMail(user, plainPassword, locale);
             else sendVerificationMail(user);
         } else {
             logger.info("(disabled-mail-verification) Created user " + user.getUsername() + ", password: " + plainPassword);
@@ -270,11 +270,10 @@ public class UserService implements UserDetailsService {
 
     //#endregion
     //#region mail-send
-    //TODO Смену isEng на false если
-    private void sendMemberVerificationMail(User user, String plainPassword) {
+    private void sendMemberVerificationMail(User user, String plainPassword, Locale locale) {
         if (StringUtils.isEmpty(user.getEmail()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User email is null or empty");
-        if (isEng) {
+        if (locale.getDisplayLanguage().equals(EN_LOCALE)) {
             String emailText = String.format(
                     "Hello, %s! \n" +
                             "You are invited as a member of a project. \n" +
@@ -290,7 +289,7 @@ public class UserService implements UserDetailsService {
                     domain
             );
             mailSender.sendEmail(user.getEmail(), "Join the 6 hands network! Confirm your participation in the project!", emailText);
-        } else {
+        } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
             String emailText = String.format(
                     "Привет, %s! \n" +
                             "You are invited as a member of a project. \n" +
@@ -322,8 +321,8 @@ public class UserService implements UserDetailsService {
         mailSender.sendEmail(user.getEmail(), "Activate your profile", emailText);
     }
 
-    public boolean sendRecoverMail(User user) {
-        if (isEng) {
+    public boolean sendRecoverMail(User user, Locale locale) {
+        if (locale.getDisplayLanguage().equals(EN_LOCALE)) {
             String emailText = String.format(
                     "Hello, %s! \n" +
                             "To reset your password, click the link http://%s/recovery-password?token=%s",
@@ -331,7 +330,7 @@ public class UserService implements UserDetailsService {
                     domain,
                     user.getResetToken());
             mailSender.sendEmail(user.getEmail(), "Password Reset Request", emailText);
-        } else {
+        } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
             String emailText = String.format(
                     "Привет, %s! \n" +
                             "Для сброса пароля на сайте 6 hands нажмите на http://%s/recovery-password?token=%s",
