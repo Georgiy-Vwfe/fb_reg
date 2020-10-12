@@ -53,6 +53,7 @@ public class UserService implements UserDetailsService {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private Logger logger = Logger.getLogger(UserService.class.getName());
+    private boolean isEng = true;
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         UsernameNotFoundException notFoundException = new UsernameNotFoundException("Unable to find user " + username);
@@ -269,24 +270,43 @@ public class UserService implements UserDetailsService {
 
     //#endregion
     //#region mail-send
+    //TODO Смену isEng на false если
     private void sendMemberVerificationMail(User user, String plainPassword) {
         if (StringUtils.isEmpty(user.getEmail()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User email is null or empty");
-        String emailText = String.format(
-                "Hello, %s! \n" +
-                        "You are invited as a member of a project. \n" +
-                        "To confirm, click on http://%s/activation/%s and get the unique features of the new social network right now!\n" +
-                        "Your username is %s, and your password is %s\n" +
-                        "Sincerely, the 6 hands team\n" +
-                        "http://%s",
-                user.getEmail(),
-                domain,
-                user.getActivationCode(),
-                user.getEmail(),
-                plainPassword,
-                domain
-        );
-        mailSender.sendEmail(user.getEmail(), "Join the 6 hands network! Confirm your participation in the project!", emailText);
+        if (isEng) {
+            String emailText = String.format(
+                    "Hello, %s! \n" +
+                            "You are invited as a member of a project. \n" +
+                            "To confirm, click on http://%s/activation/%s and get the unique features of the new social network right now!\n" +
+                            "Your username is %s, and your password is %s\n" +
+                            "Sincerely, the 6 hands team\n" +
+                            "http://%s",
+                    user.getEmail(),
+                    domain,
+                    user.getActivationCode(),
+                    user.getEmail(),
+                    plainPassword,
+                    domain
+            );
+            mailSender.sendEmail(user.getEmail(), "Join the 6 hands network! Confirm your participation in the project!", emailText);
+        } else {
+            String emailText = String.format(
+                    "Привет, %s! \n" +
+                            "You are invited as a member of a project. \n" +
+                            "Для подтверждения нажмите на http://%s/activation/%s и получите уникальные возможности новой социальной сети уже сейчас!\n" +
+                            "Ваш логин - %s, ваш пароль - %s\n" +
+                            "С уважением, Команда 6 hands\n" +
+                            "http://%s",
+                    user.getEmail(),
+                    domain,
+                    user.getActivationCode(),
+                    user.getEmail(),
+                    plainPassword,
+                    domain
+            );
+            mailSender.sendEmail(user.getEmail(), "Присоединяйтесь к сети 6 hands! Подтвердите свое участие в проекте!", emailText);
+        }
     }
 
     private void sendVerificationMail(User user) {
@@ -302,17 +322,24 @@ public class UserService implements UserDetailsService {
         mailSender.sendEmail(user.getEmail(), "Activate your profile", emailText);
     }
 
-    public boolean sendRecoverMail(User user, HttpServletRequest request) {
-
-        String appUrl = request.getScheme() + "://" + request.getServerName() + ":8081";
-        String emailText = String.format(
-                "Hello, %s! \n" +
-                        "To reset your password, click the link below:\n" + appUrl + "/recovery-password?token=%s",
-                user.getEmail(),
-                user.getResetToken());
-//        domain
-//        http://%s/recovery-password
-        mailSender.sendEmail(user.getEmail(), "Password Reset Request", emailText);
+    public boolean sendRecoverMail(User user) {
+        if (isEng) {
+            String emailText = String.format(
+                    "Hello, %s! \n" +
+                            "To reset your password, click the link http://%s/recovery-password?token=%s",
+                    user.getEmail(),
+                    domain,
+                    user.getResetToken());
+            mailSender.sendEmail(user.getEmail(), "Password Reset Request", emailText);
+        } else {
+            String emailText = String.format(
+                    "Привет, %s! \n" +
+                            "Для сброса пароля на сайте 6 hands нажмите на http://%s/recovery-password?token=%s",
+                    user.getEmail(),
+                    domain,
+                    user.getResetToken());
+            mailSender.sendEmail(user.getEmail(), "Сбросить пароль на сайте 6 hands", emailText);
+        }
         return true;
     }
 
