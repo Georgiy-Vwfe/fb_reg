@@ -41,7 +41,7 @@
                                         <img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" />
                                     </div>
                                 </div>
-                                <span class="card__caption" th:text="${user == null} ? 'Error':'Rating:'+${userData.rating}"></span>
+                                <span class="card__caption" th:text="#{rating.text}+${userData.rating}"></span>
                             </div>
                             <div class="card__content">
                                 <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>

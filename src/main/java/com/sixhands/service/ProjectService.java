@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,7 +33,7 @@ public class ProjectService {
     private UserService userService;
 
     private static Logger logger = Logger.getLogger(ProjectService.class);
-    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO reqUserAndExp, Project project){ //Called for all project member on project creation/update
+    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO reqUserAndExp, Project project, Locale locale){ //Called for all project member on project creation/update
         Optional<UserAndExpDTO> oPersistedUserAndExp = Optional.empty();
         User reqCurUser = reqUserAndExp.getUser();
         UserProjectExp reqCurProjectExp = reqUserAndExp.getUserExp();
@@ -51,7 +48,7 @@ public class ProjectService {
             if(oUser.isPresent())
                 user = oUser.get();
             else{
-                User regUser = userService.registerUser(reqCurUser.getEmail(),true);
+                User regUser = userService.registerUser(reqCurUser.getEmail(),true, locale);
                 regUser.safeAssignProperties(reqCurUser);
                 user = regUser;
             }
@@ -87,7 +84,7 @@ public class ProjectService {
     }
 
     //TODO: Throw error if project creator specified himself as a member
-    public void saveNewProject(ProjectDTO projectDTO, User curUser){
+    public void saveNewProject(ProjectDTO projectDTO, User curUser, Locale locale){
         Project project = projectDTO.getProject();
         UserAndExpDTO[] members = projectDTO.getMembers();
         UserAndExpDTO creatorUserAndExp = projectDTO.getMember();
@@ -104,7 +101,7 @@ public class ProjectService {
         Project finalProject = project;
         List<UserAndExpDTO> memberExp = Arrays.stream(members)
                 .filter(Objects::nonNull)
-                .map((member)-> createOrUpdateProjectExp(member, finalProject) )
+                .map((member)-> createOrUpdateProjectExp(member, finalProject, locale) )
                 .collect(Collectors.toList());
 
         memberExp.forEach((ueDTO)->userProjectExpRepo.save(ueDTO.getUserExp()));
@@ -134,7 +131,7 @@ public class ProjectService {
         projectRepo.deleteById(uuid);
     }
 
-    public ProjectDTO updateProject(ProjectDTO projectDTO, boolean byCreator) {
+    public ProjectDTO updateProject(ProjectDTO projectDTO, boolean byCreator, Locale locale) {
         //TODO:
         // throw exception if user created two members with same mail/another member with his mail
         // Reuse createProject logic for members with updated emails
@@ -186,7 +183,7 @@ public class ProjectService {
         userProjectExpRepo.save(curUserProjectExp.getUserExp());
         UserAndExpDTO[] curMembers = Arrays.stream(projectDTO.getMembers())
                 .filter(Objects::nonNull)
-                .map((memDTO)-> createOrUpdateProjectExp(memDTO,projectDTO.getProject()))
+                .map((memDTO)-> createOrUpdateProjectExp(memDTO,projectDTO.getProject(), locale))
                 .toArray(UserAndExpDTO[]::new);
 
         projectRepo.save(curProject);

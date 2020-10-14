@@ -12,8 +12,6 @@ import com.sixhands.service.ProjectService;
 import com.sixhands.service.SheetService;
 import com.sixhands.service.UserService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -138,19 +136,19 @@ public class ProjectController {
     }
     @Transactional
     @PutMapping(value = "/save", params = {"action=persist"})
-    public String updateProject(@ModelAttribute ProjectDTO projectDTO){
+    public String updateProject(@ModelAttribute ProjectDTO projectDTO, Locale locale){
         //FIXME: Error when adding/removing members
         User curUser = getCurUser();
         Project curProject = projectRepo.getOne(projectDTO.getProject().getUuid());
         Optional<UserAndExpDTO> projectExp = projectService.userAndExpByUser(curProject,curUser);
         if(!projectExp.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project");
-        projectService.updateProject(projectDTO,projectExp.get().getUserExp().isProject_creator());
+        projectService.updateProject(projectDTO,projectExp.get().getUserExp().isProject_creator(), locale);
         return "redirect:/user/me";
     }
     @PostMapping(value = "/save", params = {"action=persist"})
     public String saveProject(@ModelAttribute ProjectDTO projectDTO){
-        projectService.saveNewProject(projectDTO,getCurUser());
+        projectService.saveNewProject(projectDTO,getCurUser(), Locale.getDefault());
         return "redirect:/user/me";
     }
 

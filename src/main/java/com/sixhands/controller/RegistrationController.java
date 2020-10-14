@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import java.util.Locale;
 
 @Controller
 public class RegistrationController {
@@ -31,7 +31,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute User user, Model model, BindingResult bindingResult, HttpServletRequest request) {
+    public String addUser(@ModelAttribute User user, Model model, BindingResult bindingResult, HttpServletRequest request, Locale locale) {
         if (bindingResult.hasErrors()) return "registration";
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             model.addAttribute("passNotEquals", "passwords isn't equals");
@@ -41,10 +41,10 @@ public class RegistrationController {
         String email = user.getEmail();
         String password = user.getPassword();
         try {
-            userService.registerUser(email, password);
+            userService.registerUser(email, password, locale);
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("usernameError", "A user with the same name already exists.");
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         try {
@@ -64,6 +64,6 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "User is not activated");
         }
-        return "redirect:/user/me";
+        return "redirect:/login";
     }
 }

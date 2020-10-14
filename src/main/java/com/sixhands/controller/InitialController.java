@@ -7,7 +7,6 @@ import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
 import com.sixhands.service.ProjectService;
 import com.sixhands.service.UserService;
-import org.apache.poi.openxml4j.opc.PackagingURIHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -70,9 +68,8 @@ public class InitialController {
 
     //FIXME: Messages are not displayed
     @PostMapping("/forget-password")
-    public ModelAndView sendRecoverMail(ModelAndView modelAndView, @RequestParam("email") String userEmail, HttpServletRequest request) {
+    public ModelAndView sendRecoverMail(ModelAndView modelAndView, @RequestParam("email") String userEmail, Locale locale) {
         Optional<User> optional = userService.findUserByUsername(userEmail);
-
         if (!optional.isPresent()) {
             modelAndView.addObject("errorMessage", "We didn't find an account for that e-mail address.");
         } else {
@@ -80,7 +77,7 @@ public class InitialController {
             user.setResetToken(UUID.randomUUID().toString());
 
             userService.saveUser(user);
-            if (userService.sendRecoverMail(user, request)) {
+            if (userService.sendRecoverMail(user,locale)) {
                 modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
             }
         }
@@ -189,10 +186,10 @@ public class InitialController {
     }
 
     @PutMapping("/edit-user-save-project")
-    public String persistEditUserSaveProjectForms(@ModelAttribute EditUserSaveProjectDTO dto) {
+    public String persistEditUserSaveProjectForms(@ModelAttribute EditUserSaveProjectDTO dto, Locale locale) {
         User curUser = userService.getCurUserOrThrow();
         if (!StringUtils.isEmpty(dto.getProjectDTO().getProject().getName()))
-            projectService.saveNewProject(dto.getProjectDTO(), curUser);
+            projectService.saveNewProject(dto.getProjectDTO(), curUser, locale);
         userService.safeAssignPersist(dto.getUser(), curUser);
         return "redirect:/user/me";
     }

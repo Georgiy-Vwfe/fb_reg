@@ -63,10 +63,12 @@
                                 <div class="row justify-content-center pt-4 pb-5">
                                     <div class="col-12 col-lg-2">
                                         <div class="upload">
-                                            <div class="card__image">
-                                                <div class="middle">
-                                                    <div class ="dropzone">
-                                                        <img th:src="*{user_img}" style="width:304px;height:228px" >
+                                            <div class="card__image" style="border:solid thick grey; border-radius: 1em;
+                                                                border-width:1px; padding-left:9px; padding-top:3px;
+                                                                padding-bottom:3px; margin:2px; style=width:number px; height:number px;">
+                                                <div class ="dropzone">
+                                                <div class="middle" >
+                                                        <img th:src="*{user_img}" style="width:100%; height:100%;" >
                                                         <input th:field="*{user_img}" style="display:none" id="UserImg" type="text" name="UserImg" placeholder="Link" class="form-group__field field" />
                                                     </div>
                                                 </div>
