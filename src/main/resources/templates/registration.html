@@ -38,12 +38,13 @@
 <div style="" class="root d-flex flex-column">
     <header class="header header_small">
         <div class="container d-flex align-items-center">
-           <div class="header__link ml-auto mr-5">
+            <div class="header__link ml-auto mr-5">
                 <a class="nav__link" th:href="@{?locale=en}" th:text="#{lang.en}"></a>
                 <span>|</span>
                 <a class="nav__link" th:href="@{?locale=ru}" th:text="#{lang.ru}"></a>
             </div>
-            <div class="header__link ml-5"><a th:href="@{/login}" class="nav__link" th:text="#{signIn.button}">Sign in</a>
+            <div class="header__link ml-5"><a th:href="@{/login}" class="nav__link" th:text="#{signIn.button}">Sign
+                in</a>
             </div>
         </div>
     </header>
@@ -58,11 +59,13 @@
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-11 col-sm-9">
-                                        <h1 class="title title_h1 text-center mb-2" th:text="#{registration.text}">Registration</h1>
+                                        <h1 class="title title_h1 text-center mb-2" th:text="#{registration.text}">
+                                            Registration</h1>
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="email" class="form-group__label" th:text="#{e-mail.text}">E-mail</label>
+                                            <label for="email" class="form-group__label"
+                                                   th:text="#{e-mail.text}">E-mail</label>
                                             <input id="email" required="required" type="email"
                                                    th:placeholder="#{e-mail.hint}" name="email"
                                                    class="form-group__field field" th:field="*{email}"/>
@@ -88,22 +91,28 @@
                                     </div>
                                     <div class="col-11 col-sm-9">
                                         <div class="form-group">
-                                            <label for="passwordCorrect" class="form-group__label" th:text="#{passwordCheck.text}">Password check</label>
+                                            <label for="passwordCorrect" class="form-group__label"
+                                                   th:text="#{passwordCheck.text}">Password check</label>
                                             <input id="passwordCorrect" required="required" type="password"
                                                    name="passwordCorrect"
-                                                   th:placeholder="#{passwordCheck.hint}" class="form-group__field field "
+                                                   th:placeholder="#{passwordCheck.hint}"
+                                                   class="form-group__field field "
                                                    th:field="*{confirmPassword}" }>
                                             <div class="alert alert-danger mt-2" role="alert"
-                                                 th:if="${passNotEquals}" style="color:red;" th:text="#{passNotEquals.text}">
+                                                 th:if="${passNotEquals}" style="color:red;"
+                                                 th:text="#{passNotEquals.text}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-11 col-sm-9 text-center mb-3">
-                                        <button id="submit" type="submit" class="btn btn_bordered" th:text="#{registration.button}">Register</button>
+                                        <button id="submit" type="submit" class="btn btn_bordered"
+                                                th:text="#{registration.button}">Register
+                                        </button>
                                     </div>
                                     <div class=" col-11 col-sm-9 text-center">
-                                        <a class="title title_h3" th:text="#{facebook.button}">Sign in through Facebook</a>
+                                        <a class="title title_h3" th:text="#{facebook.button}">Sign in through
+                                            Facebook</a>
                                     </div>
                                 </div>
                             </div>
