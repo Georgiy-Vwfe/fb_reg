@@ -110,7 +110,7 @@ public class ProjectController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User did not create this project or project was not found");
 
         Project project = projects[0];
-        if (project.isConfirmed() || !project.isConfirmed())
+        //if (project.isConfirmed())
             //throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to delete confirmed project");
             projectService.deleteProject(project);
         try {
