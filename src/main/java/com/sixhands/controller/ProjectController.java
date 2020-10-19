@@ -45,110 +45,124 @@ public class ProjectController {
     private SheetService sheetService;
 
     private Map<Long, ProjectDTO> editedProjects = new HashMap<>();
-    private User getCurUser(){
+
+    private User getCurUser() {
         return userService.loadUserByUsername(UserService.getCurrentUsername()
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"User is unauthorized")));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is unauthorized")));
     }
+
     @GetMapping(value = "/{id}/edit", params = {"as=creator"})
-    public String getEditProjectCreator(Model model, @PathVariable int id){
+    public String getEditProjectCreator(Model model, @PathVariable int id) {
         User curUser = getCurUser();
         //Get all projects that are created by current user
-        Project[] projects = projectService.findProjectsByUser(curUser,true);
+        Project[] projects = projectService.findProjectsByUser(curUser, true);
         //leave project that matches {id} from request path
-        projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
-        if(projects.length == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User did not create this project or project was not found");
-        ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0],curUser);
-        model.addAttribute("isEditing",true);
-        model.addAttribute("projectDTO",projectDTO);
+        projects = Arrays.stream(projects).filter((p) -> p.getUuid() == id).toArray(Project[]::new);
+        if (projects.length == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User did not create this project or project was not found");
+        ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0], curUser);
+        model.addAttribute("isEditing", true);
+        model.addAttribute("projectDTO", projectDTO);
         return "save-project";
     }
+
     @GetMapping(value = "/{id}/like")
-    public String likeProject(@PathVariable int id, HttpServletRequest request){
+    public String likeProject(@PathVariable int id, HttpServletRequest request) {
         User curUser = getCurUser();
         //Get all projects that are created by current user
-        Project project = projectRepo.getOne((long)id);
+        Project project = projectRepo.getOne((long) id);
         project.likeByUser(curUser);
         projectRepo.save(project);
-        try{
+        try {
             //https://stackoverflow.com/a/1525689
             URL referer = new URL(request.getHeader("Referer"));
-            return "redirect:"+referer;
-        }catch (MalformedURLException e){return "redirect:/";}
+            return "redirect:" + referer;
+        } catch (MalformedURLException e) {
+            return "redirect:/";
+        }
     }
+
     @GetMapping(value = "/{id}/edit", params = {"as=member"})
-    public String getEditProjectMember(Model model, @PathVariable int id){
+    public String getEditProjectMember(Model model, @PathVariable int id) {
         User curUser = getCurUser();
         //Get all projects that are created by current user
-        Project[] projects = projectService.findProjectsByUser(curUser,false);
+        Project[] projects = projectService.findProjectsByUser(curUser, false);
         //leave project that matches {id} from request path
-        projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
-        if(projects.length == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project or project was not found");
-        ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0],curUser);
-        if(projectDTO.getMember().getUserExp().isProject_creator())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User cannot edit this project as a member");
-        model.addAttribute("isEditing",true);
-        model.addAttribute("projectDTO",projectDTO);
+        projects = Arrays.stream(projects).filter((p) -> p.getUuid() == id).toArray(Project[]::new);
+        if (projects.length == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not a member of this project or project was not found");
+        ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0], curUser);
+        if (projectDTO.getMember().getUserExp().isProject_creator())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User cannot edit this project as a member");
+        model.addAttribute("isEditing", true);
+        model.addAttribute("projectDTO", projectDTO);
         return "save-project";
     }
+
     @DeleteMapping("/{id}/delete")
-    public String deleteProject(@PathVariable int id, HttpServletRequest request){
+    public String deleteProject(@PathVariable int id, HttpServletRequest request) {
         User curUser = getCurUser();
         //Get all projects that are created by current user
-        Project[] projects = projectService.findProjectsByUser(curUser,true);
+        Project[] projects = projectService.findProjectsByUser(curUser, true);
         //leave project that matches {id} from request path
-        projects = Arrays.stream(projects).filter((p)-> p.getUuid() == id).toArray(Project[]::new);
-        if(projects.length == 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User did not create this project or project was not found");
+        projects = Arrays.stream(projects).filter((p) -> p.getUuid() == id).toArray(Project[]::new);
+        if (projects.length == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User did not create this project or project was not found");
 
         Project project = projects[0];
-        if(project.isConfirmed())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to delete confirmed project");
-        projectService.deleteProject(project);
-        try{
+        if (project.isConfirmed() || !project.isConfirmed())
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to delete confirmed project");
+            projectService.deleteProject(project);
+        try {
             //https://stackoverflow.com/a/1525689
             URL referer = new URL(request.getHeader("Referer"));
-            return "redirect:"+referer;
-        }catch (MalformedURLException e){return "redirect:/";}
+            return "redirect:" + referer;
+        } catch (MalformedURLException e) {
+            return "redirect:/";
+        }
     }
+
     @GetMapping("/create")
     public String createProject(Model model) {
-        model.addAttribute("projectDTO",new ProjectDTO());
-        model.addAttribute("isEditing",false);
+        model.addAttribute("projectDTO", new ProjectDTO());
+        model.addAttribute("isEditing", false);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
         model.addAttribute("industryEnum", UserProjectExp.Industry.values());
         return "save-project";
     }
-    @RequestMapping(value = "/save", params = {"action=add-member"}, method = {RequestMethod.PUT,RequestMethod.POST})
+
+    @RequestMapping(value = "/save", params = {"action=add-member"}, method = {RequestMethod.PUT, RequestMethod.POST})
     public String addMember(@ModelAttribute ProjectDTO projectDTO, Model model, HttpServletRequest request) {
         projectDTO.addNewMember();
-        model.addAttribute("projectDTO",projectDTO);
-        model.addAttribute("isEditing",request.getMethod().equalsIgnoreCase("PUT"));
+        model.addAttribute("projectDTO", projectDTO);
+        model.addAttribute("isEditing", request.getMethod().equalsIgnoreCase("PUT"));
         return "save-project";
     }
-    @RequestMapping(value = "/save", params = {"action=delete-member"}, method = {RequestMethod.PUT,RequestMethod.POST})
-    public String deleteMember(@ModelAttribute ProjectDTO projectDTO, Model model, @RequestParam Integer index, HttpServletRequest request){
+
+    @RequestMapping(value = "/save", params = {"action=delete-member"}, method = {RequestMethod.PUT, RequestMethod.POST})
+    public String deleteMember(@ModelAttribute ProjectDTO projectDTO, Model model, @RequestParam Integer index, HttpServletRequest request) {
         projectDTO.deleteMember(index);
-        model.addAttribute("projectDTO",projectDTO);
-        model.addAttribute("isEditing",request.getMethod().equalsIgnoreCase("PUT"));
+        model.addAttribute("projectDTO", projectDTO);
+        model.addAttribute("isEditing", request.getMethod().equalsIgnoreCase("PUT"));
         return "save-project";
     }
+
     @Transactional
     @PutMapping(value = "/save", params = {"action=persist"})
-    public String updateProject(@ModelAttribute ProjectDTO projectDTO, Locale locale){
+    public String updateProject(@ModelAttribute ProjectDTO projectDTO, Locale locale) {
         //FIXME: Error when adding/removing members
         User curUser = getCurUser();
         Project curProject = projectRepo.getOne(projectDTO.getProject().getUuid());
-        Optional<UserAndExpDTO> projectExp = projectService.userAndExpByUser(curProject,curUser);
-        if(!projectExp.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User is not a member of this project");
-        projectService.updateProject(projectDTO,projectExp.get().getUserExp().isProject_creator(), locale);
+        Optional<UserAndExpDTO> projectExp = projectService.userAndExpByUser(curProject, curUser);
+        if (!projectExp.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not a member of this project");
+        projectService.updateProject(projectDTO, projectExp.get().getUserExp().isProject_creator(), locale);
         return "redirect:/user/me";
     }
+
     @PostMapping(value = "/save", params = {"action=persist"})
-    public String saveProject(@ModelAttribute ProjectDTO projectDTO){
-        projectService.saveNewProject(projectDTO,getCurUser(), Locale.getDefault());
+    public String saveProject(@ModelAttribute ProjectDTO projectDTO) {
+        projectService.saveNewProject(projectDTO, getCurUser(), Locale.getDefault());
         return "redirect:/user/me";
     }
 
@@ -156,13 +170,16 @@ public class ProjectController {
     @PostMapping("/import")
     @Transactional
     public String importProjects(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        if(multipartFile==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"File is null");
+        if (multipartFile == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File is null");
 
         XSSFWorkbook xssfWorkbook = null;
 
         try (InputStream input = multipartFile.getInputStream()) {
-            try { xssfWorkbook = new XSSFWorkbook(input); }
-            catch (Exception e) { throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid file type (xlsx is required)"); }
+            try {
+                xssfWorkbook = new XSSFWorkbook(input);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid file type (xlsx is required)");
+            }
         }
 
         List<ProjectDTO> imported = sheetService.parseSheet(xssfWorkbook.getSheetAt(0));
