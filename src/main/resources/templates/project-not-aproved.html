@@ -38,15 +38,19 @@
                             <div class="card__image">
                                 <div class="middle">
                                     <div>
-                                        <img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" />
+                                        <img th:src="${user == null} ? 'Error':${user.user_img}"
+                                             style="width:304px;height:228px"/>
                                     </div>
                                 </div>
                                 <span class="card__caption" th:text="#{rating.text}+${userData.rating}"></span>
                             </div>
                             <div class="card__content">
-                                <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
-                                <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my profile</a>
-                                <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+', '+${user.country}"></div>
+                                <h2 class="card__title"
+                                    th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
+                                <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my
+                                    profile</a>
+                                <div class="card__short-desc"
+                                     th:text="${user == null} ? 'Error':${user.city}+', '+${user.country}"></div>
                                 <div class="card__chain chain d-flex align-items-center">
                                     <li class="chain__item">
                                         <div class="middle">
@@ -116,7 +120,8 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton"
+                                                    th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -170,7 +175,8 @@
                                             <div th:text="${exp.duties}"></div>
                                         </div>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton"
+                                                    th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -224,7 +230,8 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton"
+                                                    th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -274,7 +281,8 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed
+                                            <button type="button" class="btn btn_secondary btn_sm notAButton"
+                                                    th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
                                     </div>
@@ -314,7 +322,10 @@
                             <span class="mod__elem-1 ml-auto" th:text="#{approvedOnly.text}">Approved only</span>
                         </div>
                         <div class="box__inner">
-                            <div th:if="${canEdit}" class="box__inner-widget"><a href="/project/create" class="link link_beta m-4" th:text="#{newProjectU.button}">New Project</a>
+                            <div th:if="${canEdit}" class="box__inner-widget"><a href="/project/create"
+                                                                                 class="link link_beta m-4"
+                                                                                 th:text="#{newProjectU.button}">New
+                                Project</a>
                             </div>
                         </div>
                     </section>
@@ -323,23 +334,26 @@
                         <div class="box__inner">
                             <div class="box__inner-widget">
                                 <!-- card-project-->
-                                <div class="card-project card-project_alpha card-project_admin" th:each="projAndExp : ${projects}" >
+                                <div class="card-project card-project_alpha card-project_admin"
+                                     th:each="projAndExp : ${projects}">
 
                                     <div class="d-flex">
                                         <h2 class="card-project__title" th:text="${projAndExp.project.name}">
                                             <small th:text="${projAndExp.project.end_date}"></small>
                                         </h2>
-                                            <!--<button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
+                                        <!--<button type="submit" disabled th:if="${canEdit}">Edit project</button>-->
                                         <div class="card-project__image">
                                             <div th:if="${canEdit}">
                                                 <a
                                                         th:if="${projAndExp.projectExp.project_creator}"
                                                         th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=creator'"
-                                                        class="btn btn_secondary btn_sm" th:text="#{editCreator.button}">Edit (Creator)</a>
+                                                        class="btn btn_secondary btn_sm"
+                                                        th:text="#{editCreator.button}">Edit (Creator)</a>
                                                 <a th:if="${projAndExp.projectExp.project_creator == false}"
                                                    th:href="'/project/'+${projAndExp.project.uuid}+'/edit?as=member'"
-                                                   class="btn btn_secondary btn_sm" th:text="#{editMember.button}">Edit (Member)</a>
-                                                <form th:if="${projAndExp.project.confirmed == false && projAndExp.projectExp.project_creator && canEdit}"
+                                                   class="btn btn_secondary btn_sm" th:text="#{editMember.button}">Edit
+                                                    (Member)</a>
+                                                <form th:if="${ projAndExp.projectExp.project_creator && canEdit}"
                                                       th:method="'delete'"
                                                       th:action="'/project/'+${projAndExp.project.uuid}+'/delete'">
                                                     <input
@@ -347,14 +361,15 @@
                                                             value="Delete" type="submit">
                                                 </form>
                                                 <div class="middle">
-                                            </div>
-                                            <!--<div>
-                                                <img src="/image" alt="Google glass"/>
-                                            </div>-->
+                                                </div>
+                                                <!--<div>
+                                                    <img src="/image" alt="Google glass"/>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-project__desc" th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>
+                                    <div class="card-project__desc"
+                                         th:text="${projAndExp.projectExp.custom_description==null} ? ${projAndExp.project.description}:${projAndExp.projectExp.custom_description}"></div>
                                     <div class="d-flex">
                                         <!--Project with labels-->
                                         <!--<ul class="card-project__list list" >
@@ -371,11 +386,13 @@
                                                 <span th:text="${projAndExp.projectExp.role}"></span>
                                             </li>
                                         </ul>-->
-                                        <ul class="card-project__list list" >
+                                        <ul class="card-project__list list">
                                             <li>
-                                                <a th:href="'/project/'+${projAndExp.project.uuid}+'/like'" th:text="${projAndExp.liked_by_user}?'Unlike':'Like'"></a>
+                                                <a th:href="'/project/'+${projAndExp.project.uuid}+'/like'"
+                                                   th:text="${projAndExp.liked_by_user}?'Unlike':'Like'"></a>
                                                 <!--<span th:text="${projAndExp.rating}"></span>-->
-                                                <span style="cursor: default;" th:text="${projAndExp.project.likedUserIDs.size()}"></span>
+                                                <span style="cursor: default;"
+                                                      th:text="${projAndExp.project.likedUserIDs.size()}"></span>
                                             </li>
                                             <li>
                                                 <span th:text="${projAndExp.projectExp.position}"></span>
@@ -387,7 +404,9 @@
                                         <!--TODO: Add expand button-->
                                     </div>
                                     <div class="card-project__btn" th:if="${projAndExp.project.confirmed == false}">
-                                        <button type="button" class="btn btn_secondary btn_sm notAButton" th:text="#{notConfirmed.button}">Not Confirmed</button>
+                                        <button type="button" class="btn btn_secondary btn_sm notAButton"
+                                                th:text="#{notConfirmed.button}">Not Confirmed
+                                        </button>
                                     </div>
                                 </div>
                             </div>
