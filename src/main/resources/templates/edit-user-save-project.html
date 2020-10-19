@@ -46,7 +46,7 @@
 						</div>
 					</section>
 				</div>
-				<form id="formProfile" th:object="${editUserSaveProjectDTO}" th:action="@{/edit-user-save-project}" th:method="PUT" novalidate="novalidate" autocomplete="off">
+				<form id="formProfile" th:object="${editUserSaveProjectDTO}" th:action="@{/edit-user-save-project}" th:method="PUT" autocomplete="off">
 					<div th:object="${editUserSaveProjectDTO.user}" class="container">
 						<section class="box box_admin box_widget_white py-0">
 							<div class="box__outer">
@@ -78,13 +78,13 @@
 													<div class="col-12 col-md-6 mb-md-5 pb-md-5">
 														<div class="form-group form-group_large">
 															<label for="profileSurname" class="form-group__label" th:text="#{surname.text}">Surname</label>
-															<input minlength="2" maxlength="24" pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" th:placeholder="#{surname.hint}" class="form-group__field field">
+															<input minlength="2" maxlength="24" required pattern="[A-Za-zА-Яа-я\d_]*?" th:field="*{last_name}" id="profileSurname" type="text" name="profileSurname" th:placeholder="#{surname.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6 mb-md-5 pb-md-5">
 														<div class="form-group form-group_large">
 															<label for="profileName" class="form-group__label" th:text="#{surname.text}">Name</label>
-															<input minlength="2" maxlength="20" th:field="*{first_name}" id="profileName" type="text" name="profileName" th:placeholder="#{surname.hint}" class="form-group__field field">
+															<input minlength="2" maxlength="20" required th:field="*{first_name}" id="profileName" type="text" name="profileName" th:placeholder="#{surname.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
@@ -96,32 +96,32 @@
 													<div class="col-12 col-md-6">
 														<div class="form-group">
 															<label for="sex" class="form-group__label" th:text="#{sex.text}">Sex</label>
-															<p><input id="sex" required th:field="*{sex}" type="radio" name="sex" value="M" class="form-group__field" th:text="#{sexM.button}"> Male</p>
-															<p><input id="sexW" required th:field="*{sex}" type="radio" name="sex" value="W" class="form-group__field" th:text="#{sexF.button}"> Female</p>
+															<p><input id="sex" th:field="*{sex}" type="radio" name="sex" value="M" class="form-group__field" th:text="#{sexM.button}"> Male</p>
+															<p><input id="sexW" th:field="*{sex}" type="radio" name="sex" value="W" class="form-group__field" th:text="#{sexF.button}"> Female</p>
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
 															<label for="phone" class="form-group__label" th:text="#{phone.text}">Phone</label>
-															<input th:field="*{phone_number}" id="phone" type="tel" name="profilePhone" th:placeholder="#{phone.hint}" class="form-group__field field">
+															<input th:field="*{phone_number}"required id="phone" type="tel" name="profilePhone" th:placeholder="#{phone.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
 															<label for="profileCountry" class="form-group__label" th:text="#{country.text}">Country</label>
-															<input th:field="*{country}" id="profileCountry" type="text" name="profileCountry" th:placeholder="#{country.hint}" class="form-group__field field">
+															<input th:field="*{country}" required id="profileCountry" type="text" name="profileCountry" th:placeholder="#{country.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
 															<label for="profileEmail" class="form-group__label" th:text="#{e-mailE.text}">E-Mail</label>
-															<input th:field="*{email}"  id="profileEmail" type="email" name="profileEmail"  th:placeholder="#{e-mailE.hint}" class="form-group__field field">
+															<input th:field="*{email}" required  id="profileEmail" type="email" name="profileEmail"  th:placeholder="#{e-mailE.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="form-group">
 															<label for="profileCity" class="form-group__label" th:text="#{city.text}">City</label>
-															<input th:field="*{city}" id="profileCity" type="text" name="profileCity" th:placeholder="#{city.hint}" class="form-group__field field">
+															<input th:field="*{city}" required id="profileCity" type="text" name="profileCity" th:placeholder="#{city.hint}" class="form-group__field field">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
