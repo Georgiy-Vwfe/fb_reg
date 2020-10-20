@@ -124,7 +124,9 @@ public class ProjectController {
 
     @GetMapping("/create")
     public String createProject(Model model) {
-        model.addAttribute("projectDTO", new ProjectDTO());
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.addNewMember();
+        model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("isEditing", false);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
         model.addAttribute("industryEnum", UserProjectExp.Industry.values());
