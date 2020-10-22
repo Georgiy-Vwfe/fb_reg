@@ -34,7 +34,7 @@
                         <!--TODO: ?Hide notificationList on blur-->
                         <span id="notificationCount" th:text="${notifications.size()}"></span>
                         <span id="collapsibleNotificationList"
-                        style="position: absolute; 
+                        style="position: absolute;
                         width: 300px;
                         overflow-y: auto;
                         background-color: white;
@@ -64,7 +64,7 @@
             </ul>
             <div class="header__user ml-2">
                 <div class="middle">
-                    <a th:href="@{/user/me}"><img th:src="${user == null} ? 'Error':${user.user_img}" style="width:100%;height:100%; border-radius:100px" /></a>
+                    <a th:href="@{/user/me}"><img th:src="${user == null} ? 'https://i.imgur.com/ahcplHm.png':${user.user_img}" style="width:100%;height:100%; border-radius:100px" /></a>
                 </div>
             </div>
         </div>

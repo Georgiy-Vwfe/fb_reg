@@ -47,14 +47,14 @@ public class ProjectController {
 
     private Map<Long, ProjectDTO> editedProjects = new HashMap<>();
 
-    private User getCurUser() {
+/*    private User getCurUser() {
         return userService.loadUserByUsername(UserService.getCurrentUsername()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is unauthorized")));
-    }
+    }*/
 
     @GetMapping(value = "/{id}/edit", params = {"as=creator"})
     public String getEditProjectCreator(Model model, @PathVariable int id) {
-        User curUser = getCurUser();
+        User curUser = userService.getCurUserOrThrow();
         //Get all projects that are created by current user
         Project[] projects = projectService.findProjectsByUser(curUser, true);
         //leave project that matches {id} from request path
@@ -64,12 +64,13 @@ public class ProjectController {
         ProjectDTO projectDTO = projectService.projectDTOFromProject(projects[0], curUser);
         model.addAttribute("isEditing", true);
         model.addAttribute("projectDTO", projectDTO);
+        model.addAttribute("user", curUser);
         return "save-project";
     }
 
     @GetMapping(value = "/{id}/like")
     public String likeProject(@PathVariable int id, HttpServletRequest request) {
-        User curUser = getCurUser();
+        User curUser = userService.getCurUserOrThrow();
         //Get all projects that are created by current user
         Project project = projectRepo.getOne((long) id);
         project.likeByUser(curUser);
@@ -85,7 +86,7 @@ public class ProjectController {
 
     @GetMapping(value = "/{id}/edit", params = {"as=member"})
     public String getEditProjectMember(Model model, @PathVariable int id) {
-        User curUser = getCurUser();
+        User curUser = userService.getCurUserOrThrow();
         //Get all projects that are created by current user
         Project[] projects = projectService.findProjectsByUser(curUser, false);
         //leave project that matches {id} from request path
@@ -102,7 +103,7 @@ public class ProjectController {
 
     @DeleteMapping("/{id}/delete")
     public String deleteProject(@PathVariable int id, HttpServletRequest request) {
-        User curUser = getCurUser();
+        User curUser = userService.getCurUserOrThrow();
         //Get all projects that are created by current user
         Project[] projects = projectService.findProjectsByUser(curUser, true);
         //leave project that matches {id} from request path
@@ -127,6 +128,7 @@ public class ProjectController {
     public String createProject(Model model) {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.addNewMember();
+        model.addAttribute("user", userService.getCurUserOrThrow());
         model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("isEditing", false);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
@@ -154,7 +156,7 @@ public class ProjectController {
     @PutMapping(value = "/save", params = {"action=persist"})
     public String updateProject(@ModelAttribute ProjectDTO projectDTO, Locale locale) {
         //FIXME: Error when adding/removing members
-        User curUser = getCurUser();
+        User curUser = userService.getCurUserOrThrow();
         Project curProject = projectRepo.getOne(projectDTO.getProject().getUuid());
         Optional<UserAndExpDTO> projectExp = projectService.userAndExpByUser(curProject, curUser);
         if (!projectExp.isPresent())
@@ -165,7 +167,7 @@ public class ProjectController {
 
     @PostMapping(value = "/save", params = {"action=persist"})
     public String saveProject(@ModelAttribute ProjectDTO projectDTO) {
-        projectService.saveNewProject(projectDTO, getCurUser(), Locale.getDefault());
+        projectService.saveNewProject(projectDTO, userService.getCurUserOrThrow(), Locale.getDefault());
         return "redirect:/user/me";
     }
 

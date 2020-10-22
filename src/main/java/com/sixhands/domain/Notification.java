@@ -7,11 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.Locale;
 import java.util.function.Function;
 
 @Entity
 public class Notification {
-    private Notification(){}
+    private Notification() {
+    }
+
     private Notification(Long userId, String messageRU, String messageEN, String urlPath) {
         this.messageRU = messageRU;
         this.messageEN = messageEN;
@@ -31,15 +34,88 @@ public class Notification {
     private String urlPath;
     private Date timestamp = new Date();
 
-    private Notification setDataFromTemplates(String urlPath, String ruTemplate, String enTemplate, Object... formatArgs){
+    private static String RU_LOCALE = "русский";
+    private static String EN_LOCALE = "английский";
+
+    private Notification setDataFromTemplates(String urlPath, String ruTemplate, String enTemplate, Locale locale, Object... formatArgs) {
         this.urlPath = urlPath;
         messageRU = String.format(ruTemplate, formatArgs);
         messageEN = String.format(enTemplate, formatArgs);
+
+        if (locale.getDisplayLanguage().equals(EN_LOCALE)){
+
+        } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
+
+        }
         return this;
     }
-    public String formatTime(){
+
+    public String formatTime() {
         return GenericUtils.formatDateToTHStr(timestamp);
     }
+
+    public static class NotificationBuilder {
+        private Notification notification = new Notification();
+        private Function<User, String> getDisplayUsername = (u) -> u.getFirst_name() + " " + u.getLast_name();
+
+        public NotificationBuilder(Long userId) {
+            notification.setUserUUID(userId);
+        }
+
+        private String detectLocale(Locale locale){
+            if (locale.getDisplayLanguage().equals(EN_LOCALE)){
+
+            } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
+
+            }
+            return null;
+        }
+
+        public Notification buildProjectChange(Project project, User changeByUser, Locale locale) {
+            return notification.setDataFromTemplates(
+                    "/user/" + changeByUser.getUuid(),
+                    MessageTemplates.PROJECT_CHANGE_RU,
+                    MessageTemplates.PROJECT_CHANGE_EN,
+                    locale,
+                    getDisplayUsername.apply(changeByUser),
+                    project.getName()
+            );
+        }
+
+        public Notification buildProjectConfirm(Project project, User confirmByUser, Locale locale) {
+            return notification.setDataFromTemplates(
+                    "/user/" + confirmByUser.getUuid(),
+                    MessageTemplates.PROJECT_CONFIRM_RU,
+                    MessageTemplates.PROJECT_CONFIRM_EN,
+                    locale,
+                    getDisplayUsername.apply(confirmByUser),
+                    project.getName()
+            );
+        }
+
+        public Notification buildProjectInvite(Project project, User projectCreator, Locale locale) {
+            return notification.setDataFromTemplates(
+                    "/user/me",
+                    MessageTemplates.PROJECT_INVITE_RU,
+                    MessageTemplates.PROJECT_INVITE_EN,
+                    locale,
+                    getDisplayUsername.apply(projectCreator),
+                    project.getName()
+            );
+        }
+
+        private static class MessageTemplates {
+            public static final String PROJECT_CHANGE_RU = "%s внес изменения в проект '%s'";
+            public static final String PROJECT_CHANGE_EN = "%s has made some changes in the '%s' project";
+
+            public static final String PROJECT_CONFIRM_RU = "%s подтвердил участие в проекте '%s'";
+            public static final String PROJECT_CONFIRM_EN = "%s confirmed role in project '%s'";
+
+            public static final String PROJECT_INVITE_RU = "%s пригласил вас в качестве участника в проекте '%s'";
+            public static final String PROJECT_INVITE_EN = "%s sent you a request to confirm a project";
+        }
+    }
+
     //#region getters/setters
     public Long getUuid() {
         return uuid;
@@ -88,50 +164,5 @@ public class Notification {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-
     //#endregion
-    public static class NotificationBuilder{
-        private Notification notification = new Notification();
-        private Function<User,String> getDisplayUsername = (u) -> u.getFirst_name() + " " + u.getLast_name();
-        public NotificationBuilder(Long userId){
-            notification.setUserUUID(userId);
-        }
-        public Notification buildProjectChange(Project project, User changeByUser){
-            return notification.setDataFromTemplates(
-                    "/user/"+changeByUser.getUuid(),
-                    MessageTemplates.PROJECT_CHANGE_RU,
-                    MessageTemplates.PROJECT_CHANGE_EN,
-                    getDisplayUsername.apply(changeByUser),
-                    project.getName()
-            );
-        }
-        public Notification buildProjectConfirm(Project project, User confirmByUser){
-            return notification.setDataFromTemplates(
-                    "/user/"+confirmByUser.getUuid(),
-                    MessageTemplates.PROJECT_CONFIRM_RU,
-                    MessageTemplates.PROJECT_CONFIRM_EN,
-                    getDisplayUsername.apply(confirmByUser),
-                    project.getName()
-            );
-        }
-        public Notification buildProjectInvite(Project project, User projectCreator){
-            return notification.setDataFromTemplates(
-                    "/user/me",
-                    MessageTemplates.PROJECT_INVITE_RU,
-                    MessageTemplates.PROJECT_INVITE_EN,
-                    getDisplayUsername.apply(projectCreator),
-                    project.getName()
-            );
-        }
-        private static class MessageTemplates{
-            public static final String PROJECT_CHANGE_RU = "%s внес изменения в проект '%s'";
-            public static final String PROJECT_CHANGE_EN = "%s has made some changes in the '%s' project";
-
-            public static final String PROJECT_CONFIRM_RU = "%s подтвердил участие в проекте '%s'";
-            public static final String PROJECT_CONFIRM_EN = "%s confirmed role in project '%s'";
-
-            public static final String PROJECT_INVITE_RU = "%s пригласил вас в качестве участника в проекте '%s'";
-            public static final String PROJECT_INVITE_EN = "%s sent you a request to confirm a project";
-        }
-    }
 }

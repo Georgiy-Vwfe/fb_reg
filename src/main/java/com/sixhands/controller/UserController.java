@@ -44,6 +44,12 @@ public class UserController {
         } catch (Exception ignored) {
         }
         User finalCurUser = curUser;
+
+        String currentUserImgPath = finalCurUser.getUser_img();
+        if (currentUserImgPath == null || currentUserImgPath.equals("")) {
+            finalCurUser.setUser_img("https://i.imgur.com/ahcplHm.png");
+        }
+
         ProjectAndUserExpDTO[] projectAndExps = userService.getProjectExpForUser(user).stream()
                 .map((ue) -> {
                     Project proj = projectRepo.getOne(ue.getProject_uuid());
