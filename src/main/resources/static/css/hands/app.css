@@ -2449,6 +2449,134 @@ hr.light {
 	width: 32px;
 	height: 32px;
 }
+.header__user .middle ul{
+	display: block;
+	position: absolute;
+}
+.header__user .middle a:hover {
+	display: block;
+}
+
+
+
+.navbar1{
+	background: #fff;
+	width: 100%;
+	height: 60px;
+	padding: 0 25px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+
+.navbar1 .profile .profile_dd{
+	position: absolute;
+	top: 48px;
+	right: -15px;
+	user-select: none;
+	background: #fff;
+	border: 1px solid #c7d8e2;
+	width: 350px;
+	height: auto;
+	display: none;
+	border-radius: 3px;
+	box-shadow: 10px 10px 35px rgba(0,0,0,0.125),
+	-10px -10px 35px rgba(0,0,0,0.125);
+}
+
+.navbar1 .profile .profile_dd:before{
+	content: "";
+	position: absolute;
+	top: -20px;
+	right: 15px;
+	border: 10px solid;
+	border-color: transparent transparent #fff transparent;
+}
+
+
+.navbar1 .profile .profile_dd{
+	width: 225px;
+}
+.navbar1 .profile .profile_dd:before{
+	rigth: 10px;
+}
+
+.navbar1 .profile .profile_dd ul li {
+	border-bottom: 1px solid #f1f2f4;
+}
+
+.navbar1 .profile .profile_dd ul li  a{
+	display: block;
+	padding: 15px 35px;
+	position: relative;
+}
+
+.navbar1 .profile .profile_dd ul li  a .picon{
+	display: inline-block;
+	width: 30px;
+}
+
+.navbar1 .profile .profile_dd ul li  a:hover{
+	color: #3b80f9;
+	background: #f0f5ff;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.navbar1 .profile .profile_dd ul li.profile_li a:hover {
+	background: transparent;
+	cursor: default;
+}
+
+.navbar1 .profile .profile_dd ul li .btn{
+	height: 32px;
+	padding: 7px 10px;
+	color: #fff;
+	border-radius: 3px;
+	cursor: pointer;
+	text-align: center;
+	background: #3b80f9;
+	width: 125px;
+	margin: 5px auto 15px;
+}
+
+.navbar1 .profile .profile_dd ul li .btn:hover{
+	background: #6593e4;
+}
+
+.profile.active .profile_dd{
+	display: block;
+}
+
+.popup {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: all 0.2s ease;
+	display: none;
+}
+
+.popup .shadow {
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.6;
+}
+
+.popup .inner_popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 100%;
+	height: auto;
+}
+
+
 
 .popup-hybrid {
 	position: fixed;
@@ -2716,6 +2844,9 @@ hr.light {
 @media only screen and (max-width: 575px){
 
 }
+.hide{
+	display: none;
+}
 @media only screen and (min-width: 576px) {
 	.w-sm-auto {
 		width: auto !important;
@@ -2837,7 +2968,73 @@ hr.light {
 		margin-top: 0;
 		margin-left: 60px;
 	}
+	.overlay {
 
+		/* Скрываем подложку  */
+		opacity: 0;
+		visibility: hidden;
+
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, .5);
+		z-index: 20;
+		transition: .3s all;
+	}
+
+
+	/* Стили для модальных окон */
+
+	.modal {
+
+		/* Скрываем окна  */
+		opacity: 0;
+		visibility: hidden;
+
+
+		/*  Установаем ширину окна  */
+		width: 100%;
+		max-width: 500px;
+
+		/*  Центрируем и задаем z-index */
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 30; /* Должен быть выше чем у подложки*/
+
+		/*  Побочные стили   */
+		box-shadow: 0 3px 10px -.5px rgba(0, 0, 0, .2);
+		text-align: center;
+		padding: 30px;
+		border-radius: 3px;
+		background-color: #fff;
+		transition: 0.3s all;
+	}
+
+
+	/* Стили для активных классов подложки и окна */
+
+	.modal.active,
+	.overlay.active{
+		opacity: 1;
+		visibility: visible;
+	}
+
+
+	/* Стили для кнопки закрытия */
+
+	.modal__cross {
+		width: 15px;
+		height: 15px;
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		fill: #444;
+		cursor: pointer;
+	}
 	.slick-slider_hidden-arrow-sm-up .slick-prev,
 	.slick-slider_hidden-arrow-sm-up .slick-next {
 		opacity: 0;
