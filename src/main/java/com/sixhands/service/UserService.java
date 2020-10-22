@@ -107,8 +107,16 @@ public class UserService implements UserDetailsService {
         user = userRepo.save(user);
 
         if (SixHandsApplication.isSendingMail()) {
-            if (isProjectMember) sendMemberVerificationMail(user, plainPassword, locale);
-            else sendVerificationMail(user);
+            //обработка ошибки "User email is null or empty"
+            try {
+                if (isProjectMember) {
+                    sendMemberVerificationMail(user, plainPassword, locale);
+                } else {
+                    sendVerificationMail(user);
+                }
+            } catch (ResponseStatusException e) {
+                e.printStackTrace();
+            }
         } else {
             logger.info("(disabled-mail-verification) Created user " + user.getUsername() + ", password: " + plainPassword);
         }

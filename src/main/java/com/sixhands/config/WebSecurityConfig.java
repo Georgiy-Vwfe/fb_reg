@@ -31,7 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/greeting",
             "/recovery-password",
             "/project",
-            "/project-not-aproved"
+            "/project-not-aproved",
+            "/search"
     };
 
     @Autowired

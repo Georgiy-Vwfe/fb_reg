@@ -14,7 +14,6 @@ import com.sixhands.service.UserService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -111,7 +110,7 @@ public class ProjectController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User did not create this project or project was not found");
 
         Project project = projects[0];
-        //if (project.isConfirmed())
+        if (project.isConfirmed() || !project.isConfirmed())
             //throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Unable to delete confirmed project");
             projectService.deleteProject(project);
         try {
@@ -126,11 +125,11 @@ public class ProjectController {
     @GetMapping("/create")
     public String createProject(Model model) {
         ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.addNewMember();
         model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("isEditing", false);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
         model.addAttribute("industryEnum", UserProjectExp.Industry.values());
-        projectDTO.addNewMember();
         return "save-project";
     }
 
@@ -139,7 +138,6 @@ public class ProjectController {
         projectDTO.addNewMember();
         model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("isEditing", request.getMethod().equalsIgnoreCase("PUT"));
-        //projectDTO.addNewMember();
         return "save-project";
     }
 
