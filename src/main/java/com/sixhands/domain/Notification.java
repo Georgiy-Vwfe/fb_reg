@@ -15,9 +15,17 @@ public class Notification {
     private Notification() {
     }
 
-    private Notification(Long userId, String messageRU, String messageEN, String urlPath) {
+    /*private Notification(Long userId, String messageRU, String messageEN, String urlPath) {
         this.messageRU = messageRU;
         this.messageEN = messageEN;
+        this.userUUID = userId;
+        this.urlPath = urlPath;
+    }*/
+
+    private Notification(Long userId, String messageRU, String messageEN, String message, String urlPath) {
+        this.messageRU = messageRU;
+        this.messageEN = messageEN;
+        this.message = message;
         this.userUUID = userId;
         this.urlPath = urlPath;
     }
@@ -31,22 +39,23 @@ public class Notification {
     private String messageRU;
     private String messageEN;
 
+    private String message;
+
     private String urlPath;
     private Date timestamp = new Date();
 
-    private static String RU_LOCALE = "русский";
-    private static String EN_LOCALE = "английский";
-
-    private Notification setDataFromTemplates(String urlPath, String ruTemplate, String enTemplate, Locale locale, Object... formatArgs) {
+/*    private Notification setDataFromTemplates(String urlPath, String ruTemplate, String enTemplate, Object... formatArgs) {
         this.urlPath = urlPath;
-        messageRU = String.format(ruTemplate, formatArgs);
+
         messageEN = String.format(enTemplate, formatArgs);
+        messageRU = String.format(ruTemplate, formatArgs);
 
-        if (locale.getDisplayLanguage().equals(EN_LOCALE)){
+        return this;
+    }*/
 
-        } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
-
-        }
+    private Notification setDataFromTemplates(String urlPath, String template, Object... formatArgs) {
+        this.urlPath = urlPath;
+        message = String.format(template, formatArgs);
         return this;
     }
 
@@ -62,43 +71,89 @@ public class Notification {
             notification.setUserUUID(userId);
         }
 
-        private String detectLocale(Locale locale){
-            if (locale.getDisplayLanguage().equals(EN_LOCALE)){
-
-            } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
-
-            }
-            return null;
+        private boolean isEngLocale(Locale locale) {
+            return locale.getDisplayLanguage().equals("английский");
         }
 
-        public Notification buildProjectChange(Project project, User changeByUser, Locale locale) {
+        public Notification buildProjectChangeLocaleSensitive(Project project, User changeByUser, Locale locale) {
+            if (isEngLocale(locale)) {
+                return notification.setDataFromTemplates(
+                        "/user/" + changeByUser.getUuid(),
+                        MessageTemplates.PROJECT_CHANGE_EN,
+                        getDisplayUsername.apply(changeByUser),
+                        project.getName()
+                );
+            } else {
+                return notification.setDataFromTemplates(
+                        "/user/" + changeByUser.getUuid(),
+                        MessageTemplates.PROJECT_CHANGE_RU,
+                        getDisplayUsername.apply(changeByUser),
+                        project.getName()
+                );
+            }
+        }
+
+        public Notification buildProjectConfirmLocaleSensitive(Project project, User confirmByUser, Locale locale) {
+            if (isEngLocale(locale)) {
+                return notification.setDataFromTemplates(
+                        "/user/" + confirmByUser.getUuid(),
+                        MessageTemplates.PROJECT_CONFIRM_EN,
+                        getDisplayUsername.apply(confirmByUser),
+                        project.getName()
+                );
+            } else {
+                return notification.setDataFromTemplates(
+                        "/user/" + confirmByUser.getUuid(),
+                        MessageTemplates.PROJECT_CONFIRM_RU,
+                        getDisplayUsername.apply(confirmByUser),
+                        project.getName()
+                );
+            }
+        }
+
+        public Notification buildProjectInviteLocaleSensitive(Project project, User projectCreator, Locale locale) {
+            if (isEngLocale(locale)) {
+                return notification.setDataFromTemplates(
+                        "/user/me",
+                        MessageTemplates.PROJECT_INVITE_EN,
+                        getDisplayUsername.apply(projectCreator),
+                        project.getName()
+                );
+            } else {
+                return notification.setDataFromTemplates(
+                        "/user/me",
+                        MessageTemplates.PROJECT_INVITE_RU,
+                        getDisplayUsername.apply(projectCreator),
+                        project.getName()
+                );
+            }
+        }
+
+        public Notification buildProjectChange(Project project, User changeByUser) {
             return notification.setDataFromTemplates(
                     "/user/" + changeByUser.getUuid(),
                     MessageTemplates.PROJECT_CHANGE_RU,
                     MessageTemplates.PROJECT_CHANGE_EN,
-                    locale,
                     getDisplayUsername.apply(changeByUser),
                     project.getName()
             );
         }
 
-        public Notification buildProjectConfirm(Project project, User confirmByUser, Locale locale) {
+        public Notification buildProjectConfirm(Project project, User confirmByUser) {
             return notification.setDataFromTemplates(
                     "/user/" + confirmByUser.getUuid(),
                     MessageTemplates.PROJECT_CONFIRM_RU,
                     MessageTemplates.PROJECT_CONFIRM_EN,
-                    locale,
                     getDisplayUsername.apply(confirmByUser),
                     project.getName()
             );
         }
 
-        public Notification buildProjectInvite(Project project, User projectCreator, Locale locale) {
+        public Notification buildProjectInvite(Project project, User projectCreator) {
             return notification.setDataFromTemplates(
                     "/user/me",
                     MessageTemplates.PROJECT_INVITE_RU,
                     MessageTemplates.PROJECT_INVITE_EN,
-                    locale,
                     getDisplayUsername.apply(projectCreator),
                     project.getName()
             );
@@ -123,6 +178,14 @@ public class Notification {
 
     public void setUuid(Long uuid) {
         this.uuid = uuid;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getMessageRU() {

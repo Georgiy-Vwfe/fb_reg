@@ -35,7 +35,8 @@ public class ProjectService {
 
     private static Logger logger = Logger.getLogger(ProjectService.class);
 
-    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO reqUserAndExp, Project project, Locale locale) { //Called for all project member on project creation/update
+    private UserAndExpDTO createOrUpdateProjectExp(UserAndExpDTO reqUserAndExp, Project project, Locale locale) {
+        //Called for all project member on project creation/update
         Optional<UserAndExpDTO> oPersistedUserAndExp = Optional.empty();
         User reqCurUser = reqUserAndExp.getUser();
         UserProjectExp reqCurProjectExp = reqUserAndExp.getUserExp();
@@ -82,7 +83,7 @@ public class ProjectService {
                 @Override
                 public void accept(UserAndExpDTO userAndExpDTO) {
                     Notification notification = new Notification.NotificationBuilder(userExp.getUser_uuid())
-                            .buildProjectInvite(project, userAndExpDTO.getUser(), locale);
+                            .buildProjectInviteLocaleSensitive(project, userAndExpDTO.getUser(), locale);
                     userService.sendUserNotification(
                             notification
                     );
@@ -182,7 +183,7 @@ public class ProjectService {
                 //Send out confirm notification
                 userService.sendUserNotification(
                         new Notification.NotificationBuilder(creatorAndExp.getUser().getUuid())
-                                .buildProjectConfirm(reqProject, curUserProjectExp.getUser(), locale)
+                                .buildProjectConfirmLocaleSensitive(reqProject, curUserProjectExp.getUser(), locale)
                 );
             curUserProjectExp
                     .getUserExp()
@@ -190,7 +191,7 @@ public class ProjectService {
             //Send out change notification
             userService.sendUserNotification(
                     new Notification.NotificationBuilder(creatorAndExp.getUser().getUuid())
-                            .buildProjectChange(reqProject, curUserProjectExp.getUser(), locale)
+                            .buildProjectChangeLocaleSensitive(reqProject, curUserProjectExp.getUser(), locale)
             );
         }
 

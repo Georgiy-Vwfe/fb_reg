@@ -48,7 +48,7 @@
                             display: block;
                             font-size: 12px;
                             width: 100%;" th:href="${notification.urlPath}" th:each="notification : ${notifications}">
-                                <div style="width: 100%; white-space: pre-wrap; padding: 10px;" th:text="${notification.messageEN}"></div>
+                                <div style="width: 100%; white-space: pre-wrap; padding: 10px;" th:text="${notification.message}"></div>
                                 <!--<div style="height: 25px; margin-top: 15px;" th:text="${notification.formatTime()}"></div>-->
                             </a>
                         </span>
