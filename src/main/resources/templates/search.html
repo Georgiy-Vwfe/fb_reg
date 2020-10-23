@@ -39,19 +39,19 @@
     <div data-page="adminProfileProject" class="dataProvider"></div>
     <div class="container">
         <main>
-                <form method="GET" style="margin: 5px; width: 100%;">
-                    <div class="row">
+            <form method="GET" style="margin: 5px; width: 100%;">
+                <div class="row">
                     <div class="col-3">
-<!--                        <input type="text" id="input" th:placeholder="#{industryS.hint}" >-->
-<!--                        <ul>-->
-<!--                            <li>Agricultural</li>-->
-<!--                            <li>Automobile</li>-->
-<!--                            <li>B2B</li>-->
-<!--                            <li>B2C</li>-->
-<!--                            <li>Banking</li>-->
-<!--                            <li>Building</li>-->
+                        <!--                        <input type="text" id="input" th:placeholder="#{industryS.hint}" >-->
+                        <!--                        <ul>-->
+                        <!--                            <li>Agricultural</li>-->
+                        <!--                            <li>Automobile</li>-->
+                        <!--                            <li>B2B</li>-->
+                        <!--                            <li>B2C</li>-->
+                        <!--                            <li>Banking</li>-->
+                        <!--                            <li>Building</li>-->
 
-<!--                        </ul>-->
+                        <!--                        </ul>-->
                         <select class="" type="text" id="input" name="industry" th:placeholder="#{industryS.hint}">
                             <option value="none" th:label="#{industryS.hint}"></option>
                             <option th:label="#{agricultural.hint}">Agricultural</option>
@@ -87,7 +87,7 @@
                         </select>
                     </div>
                     <div class="col-3">
-<!--                        <input class="" type="text" name="role" th:placeholder="#{roleS.hint}"/>-->
+                        <!--                        <input class="" type="text" name="role" th:placeholder="#{roleS.hint}"/>-->
                         <select class="" type="text" id="input" name="industry" th:placeholder="#{industryS.hint}">
                             <option value="none" th:label="#{industryS.hint}"></option>
                             <option th:label="#{agricultural.hint}">Agricultural</option>
@@ -126,91 +126,78 @@
                         <input class="" type="text" name="name" th:placeholder="#{nameS.hint}"/>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn_secondary btn_sm search" type="submit" th:text="#{search.button}"></button>
+                        <button class="btn btn_secondary btn_sm search" type="submit"
+                                th:text="#{search.button}"></button>
                     </div>
-                    </div>
-                </form>
-<!--            <div class="row">-->
-<!--                <div class="col">-->
-<!--                <div style="flex: 1; font-size: 16px; margin: 2px;">-->
-<!--                    <a style="margin: 0 12px;" th:href="'/user/'+*{user.uuid}" th:object="${profileDTO}"-->
-<!--                       th:each="profileDTO :${profileDTOs}">-->
-<!--                        <div th:text="*{user.first_name+' '+user.last_name}"></div>-->
-<!--                        <div th:if="*{industries.size() > 0}" style="border: 1px solid gray; margin: 6px;">Industries:-->
-<!--                            <div th:each="industry:*{industries}">-->
-<!--                                <span style="font-weight: bold;" th:text="${industry.projects.size()}+' '"></span>-->
-<!--                                <span th:text="${industry.property}"></span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div th:if="*{roles.size() > 0}" style="border: 1px solid gray; margin: 6px;">Roles:-->
-<!--                            <div th:each="role:*{roles}">-->
-<!--                                <span style="font-weight: bold;" th:text="${role.projects.size()}+' '"></span>-->
-<!--                                <span th:text="${role.property}"></span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <hr>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                </div>-->
-<!--            </div>-->
+                </div>
+            </form>
+            <!--                        <div class="row">-->
+            <!--                            <div class="col">-->
+            <!--                            <div style="flex: 1; font-size: 16px; margin: 2px;">-->
+            <!--                                <a style="margin: 0 12px;" th:href="'/user/'+*{user.uuid}" th:object="${profileDTO}"-->
+            <!--                                   th:each="profileDTO :${profileDTOs}">-->
+            <!--                                    <div th:text="*{user.first_name+' '+user.last_name}"></div>-->
+            <!--                                    <div th:if="*{industries.size() > 0}" style="border: 1px solid gray; margin: 6px;">Industries:-->
+            <!--                                        <div th:each="industry:*{industries}">-->
+            <!--                                            <span style="font-weight: bold;" th:text="${industry.projects.size()}+' '"></span>-->
+            <!--                                            <span th:text="${industry.property}"></span>-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+            <!--                                    <div th:if="*{roles.size() > 0}" style="border: 1px solid gray; margin: 6px;">Roles:-->
+            <!--                                        <div th:each="role:*{roles}">-->
+            <!--                                            <span style="font-weight: bold;" th:text="${role.projects.size()}+' '"></span>-->
+            <!--                                            <span th:text="${role.property}"></span>-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+            <!--                                    <hr>-->
+            <!--                                </a>-->
+            <!--                            </div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
             <div class="container">
                 <section class="box box_admin box_widget_white mt-4 py-0">
                     <div class="box__inner">
                         <div class="box__inner-widget">
-                            <div class="card card_alpha">
-                                <div class="card__image">
-                                    <div class="middle">
-                                        <div>
-                                            <img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" /><img th:src="${user == null} ? 'Error':${user.user_img}" style="width:304px;height:228px" />
+                            <a th:href="'/user/'+*{user.uuid}" th:object="${profileDTO}"
+                               th:each="profileDTO :${profileDTOs}">
+                                <div class="card card_alpha">
+                                    <div class="card__image">
+                                        <div class="middle">
+                                            <div>
+                                                <img th:src="${user == null} ? 'Error':*{user.user_img}"
+                                                     style="width:304px;height:228px"/>
+                                            </div>
+                                        </div>
+                                        <!--                                    <span class="card__caption"-->
+                                        <!--                                          th:text="${user == null} ? 'Error':'Rating:'+*{userData.rating}"></span>-->
+                                    </div>
+                                    <div class="card__content">
+                                        <h2 class="card__title"
+                                            th:text="${user == null} ? 'Error':*{user.first_name}+' '+*{user.last_name}"></h2>
+                                        <div th:if="*{industries.size() > 0}"
+                                             style="border: 1px solid gray; margin: 6px;">Industries:
+                                            <div th:each="industry:*{industries}">
+                                                <span style="font-weight: bold;"
+                                                      th:text="${industry.projects.size()}+' '"></span>
+                                                <span th:text="${industry.property}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="card__short-desc" th:if="*{roles.size() > 0}"><h4>Roles:</h4>
+                                            <div th:each="role:*{roles}">
+                                            <span style="font-weight: bold;"
+                                                  th:text="${role.projects.size()}+' '"></span>
+                                                <span th:text="${role.property}"></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="card__short-desc"
+                                             th:text="${user == null} ? 'Error':*{user.city+', '+ user.country}"></div>
+                                        <div class="card__desc" th:text="${user == null} ? 'Error':*{user.about_user}">
                                         </div>
                                     </div>
-                                    <span class="card__caption" th:text="${user == null} ? 'Error':'Rating:'+${userData.rating}"></span>
                                 </div>
-                                <div class="card__content">
-                                    <h2 class="card__title"  th:text="${user == null} ? 'Error':${user.first_name}+' '+${user.last_name}"></h2>
-                                    <a th:if="${canEdit}" href="?edit=1" th:text="#{editMyProfile.button}">Edit my profile</a>
-                                    <div class="card__short-desc" th:text="${user == null} ? 'Error':${user.city}+', '+${user.country}"></div>
-                                    <div class="card__chain chain d-flex align-items-center">
-                                        <li class="chain__item">
-                                            <div class="middle">
-                                                <a href="#">
-                                                    <img src="/images/card/social/mail.svg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="chain__item">
-                                            <div class="middle">
-                                                <a href="#">
-                                                    <img src="/images/card/social/google-plus.svg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="chain__item">
-                                            <div class="middle">
-                                                <a href="#">
-                                                    <img src="/images/card/social/twitter.svg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="chain__item">
-                                            <div class="middle">
-                                                <a href="#">
-                                                    <img src="/images/card/social/facebook.svg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="chain__item">
-                                            <div class="middle">
-                                                <a href="#">
-                                                    <img src="/images/card/social/linkedin.svg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </div>
-                                    <div class="card__desc" th:text="${user == null} ? 'Error':${user.about_user}">
-                                    </div>
-                                </div>
-                            </div>
+                                <hr>
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -226,7 +213,7 @@
     window.onload = () => {
         let input = document.querySelector('#input');
 
-        input.oninput = function() {
+        input.oninput = function () {
             let value = this.value.trim();
             let list = document.querySelectorAll('ul li');
 
