@@ -60,6 +60,7 @@ public class UserController {
                 .sorted((a, b) -> (int) b.getProject().getCreated().getTime() - (int) a.getProject().getCreated().getTime())
                 .toArray(ProjectAndUserExpDTO[]::new);
 
+        model.addAttribute("cur_user", finalCurUser);
         model.addAttribute("user", user);
         model.addAttribute("userData", userService.getProfileDtoForUser(user));
         model.addAttribute("canEdit", canEdit);

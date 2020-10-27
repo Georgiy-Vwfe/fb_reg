@@ -148,7 +148,9 @@ public class InitialController {
                          @RequestParam(required = false) String name) {
         List<UserProfileDTO> users = userService.searchUsersByProps(null, null, industry, null, role);
         users = userService.searchUsersByName(users, name);
-        model.addAttribute("user", userService.getCurUserOrThrow());
+        User curUser = userService.getCurUserOrThrow();
+        model.addAttribute("user", curUser);
+        model.addAttribute("cur_user", curUser);
         model.addAttribute("profileDTOs", users);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
         model.addAttribute("industryEnum", UserProjectExp.Industry.values());

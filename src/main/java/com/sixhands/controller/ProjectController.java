@@ -65,6 +65,7 @@ public class ProjectController {
         model.addAttribute("isEditing", true);
         model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("user", curUser);
+        model.addAttribute("cur_user", curUser);
         return "save-project";
     }
 
@@ -128,7 +129,9 @@ public class ProjectController {
     public String createProject(Model model) {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.addNewMember();
-        model.addAttribute("user", userService.getCurUserOrThrow());
+        User curUser = userService.getCurUserOrThrow();
+        model.addAttribute("user", curUser);
+        model.addAttribute("cur_user", curUser);
         model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("isEditing", false);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
