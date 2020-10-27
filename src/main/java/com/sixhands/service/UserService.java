@@ -52,8 +52,6 @@ public class UserService implements UserDetailsService {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private Logger logger = Logger.getLogger(UserService.class.getName());
-    private static String RU_LOCALE = "русский";
-    private static String EN_LOCALE = "английский";
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         UsernameNotFoundException notFoundException = new UsernameNotFoundException("Unable to find user " + username);
@@ -281,7 +279,7 @@ public class UserService implements UserDetailsService {
     private void sendMemberVerificationMail(User user, String plainPassword, Locale locale) {
         if (StringUtils.isEmpty(user.getEmail()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User email is null or empty");
-        if (locale.getDisplayLanguage().equals(EN_LOCALE)) {
+        if (isEngLocale(locale)) {
             String emailText = String.format(
                     "Hello, %s! \n" +
                             "You are invited as a member of a project. \n" +
@@ -297,7 +295,7 @@ public class UserService implements UserDetailsService {
                     domain
             );
             mailSender.sendEmail(user.getEmail(), "Join the 6 hands network! Confirm your participation in the project!", emailText);
-        } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
+        } else {
             String emailText = String.format(
                     "Привет, %s! \n" +
                             "You are invited as a member of a project. \n" +
@@ -330,7 +328,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean sendRecoverMail(User user, Locale locale) {
-        if (locale.getDisplayLanguage().equals(EN_LOCALE)) {
+        if (isEngLocale(locale)) {
             String emailText = String.format(
                     "Hello, %s! \n" +
                             "To reset your password, click the link http://%s/recovery-password?token=%s",
@@ -338,7 +336,7 @@ public class UserService implements UserDetailsService {
                     domain,
                     user.getResetToken());
             mailSender.sendEmail(user.getEmail(), "Password Reset Request", emailText);
-        } else if (locale.getDisplayLanguage().equals(RU_LOCALE)) {
+        } else {
             String emailText = String.format(
                     "Привет, %s! \n" +
                             "Для сброса пароля на сайте 6 hands нажмите на http://%s/recovery-password?token=%s",
@@ -348,6 +346,31 @@ public class UserService implements UserDetailsService {
             mailSender.sendEmail(user.getEmail(), "Сбросить пароль на сайте 6 hands", emailText);
         }
         return true;
+    }
+
+    public boolean sendUserContactsMail(User user, Locale locale) {
+        if (isEngLocale(locale)) {
+            String emailText = String.format(
+                    "Hello, %s! \n" +
+                            "To reset your password, click the link http://%s/recovery-password?token=%s",
+                    user.getEmail(),
+                    domain,
+                    user.getResetToken());
+            mailSender.sendEmail(user.getEmail(), "New contact request", emailText);
+        } else {
+            String emailText = String.format(
+                    "Привет, %s! \n" +
+                            "Для сброса пароля на сайте 6 hands нажмите на http://%s/recovery-password?token=%s",
+                    user.getEmail(),
+                    domain,
+                    user.getResetToken());
+            mailSender.sendEmail(user.getEmail(), "Новый запрос на обмен контактами", emailText);
+        }
+        return true;
+    }
+
+    private boolean isEngLocale(Locale locale) {
+        return locale.getDisplayLanguage().equals("английский");
     }
 
     public void changeUserPassword(User user, String rawPassword) {
