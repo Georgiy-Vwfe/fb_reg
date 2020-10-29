@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -77,7 +78,7 @@ public class InitialController {
             user.setResetToken(UUID.randomUUID().toString());
 
             userService.saveUser(user);
-            if (userService.sendRecoverMail(user,locale)) {
+            if (userService.sendRecoverMail(user, locale)) {
                 modelAndView.addObject("successMessage", "A password reset link has been sent to " + userEmail);
             }
         }
@@ -103,7 +104,7 @@ public class InitialController {
     }
 
     @PostMapping("/recovery-password")
-    public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams,  RedirectAttributes redir) {
+    public ModelAndView recoverPassword(ModelAndView modelAndView, @RequestParam Map<String, String> requestParams, RedirectAttributes redir) {
         System.out.println("recover password call");
         Optional<User> user = userService.findFirstUserByResetToken(requestParams.get("token"));
         System.out.println(user.isPresent());
@@ -148,9 +149,17 @@ public class InitialController {
                          @RequestParam(required = false) String name) {
         List<UserProfileDTO> users = userService.searchUsersByProps(null, null, industry, null, role);
         users = userService.searchUsersByName(users, name);
-        User curUser = userService.getCurUserOrThrow();
+        User curUser = null;
+
+        try {
+            curUser = userService.getCurUserOrThrow();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         model.addAttribute("user", curUser);
         model.addAttribute("cur_user", curUser);
+        model.addAttribute("userData", userService.getProfileDtoForUser(curUser));
         model.addAttribute("profileDTOs", users);
         model.addAttribute("roleEnum", UserProjectExp.Role.values());
         model.addAttribute("industryEnum", UserProjectExp.Industry.values());
