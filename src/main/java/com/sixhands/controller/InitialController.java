@@ -150,13 +150,11 @@ public class InitialController {
         List<UserProfileDTO> users = userService.searchUsersByProps(null, null, industry, null, role);
         users = userService.searchUsersByName(users, name);
         User curUser = null;
-
         try {
             curUser = userService.getCurUserOrThrow();
         } catch (Exception e){
             e.printStackTrace();
         }
-
         model.addAttribute("user", curUser);
         model.addAttribute("cur_user", curUser);
         model.addAttribute("userData", userService.getProfileDtoForUser(curUser));
