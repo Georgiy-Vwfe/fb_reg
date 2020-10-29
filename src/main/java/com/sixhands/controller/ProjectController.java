@@ -142,6 +142,7 @@ public class ProjectController {
     @RequestMapping(value = "/save", params = {"action=add-member"}, method = {RequestMethod.PUT, RequestMethod.POST})
     public String addMember(@ModelAttribute ProjectDTO projectDTO, Model model, HttpServletRequest request) {
         projectDTO.addNewMember();
+        model.addAttribute("cur_user", userService.getCurUserOrThrow());
         model.addAttribute("projectDTO", projectDTO);
         model.addAttribute("isEditing", request.getMethod().equalsIgnoreCase("PUT"));
         return "save-project";

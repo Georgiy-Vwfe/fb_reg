@@ -155,10 +155,11 @@ public class ProjectService {
         Project curProject = projectRepo.getOne(reqProject.getUuid());
         curProject = GenericUtils.initializeAndUnproxy(curProject);
 
-        if (byCreator)
+        if (byCreator) {
             curProject.setDescription(reqProject.getDescription());
-        else
+        } else {
             curProject.setConfirmed(true);
+        }
 
         UserAndExpDTO reqUserAndExp = projectDTO.getMember();
         UserAndExpDTO curUserProjectExp = userAndExpByUser(curProject,
@@ -257,6 +258,11 @@ public class ProjectService {
         if (!exp.isPresent()) return Optional.empty();
         User user = userRepo.getOne(exp.get().getUser_uuid());
         return Optional.of(new UserAndExpDTO(user, exp.get()));
+    }
+
+    public Project updateCompanyName(Project project, String newCompanyName) {
+        project.setCompany(newCompanyName);
+        return project;
     }
     //#endregion
 }
