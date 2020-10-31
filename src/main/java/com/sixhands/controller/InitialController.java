@@ -46,7 +46,8 @@ public class InitialController {
     }
 
     @GetMapping("/forget-me")
-    public ResponseEntity<Map<String, Object>> forgetMe(HttpServletRequest request) {
+    public String forgetMe(HttpServletRequest request) {
+        //ResponseEntity<Map<String, Object>>
         HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
         Map<String, Object> resp = new HashMap<>();
@@ -54,7 +55,8 @@ public class InitialController {
             session.invalidate();
             resp.put("message", "success");
         } else resp.put("error", "user is already logged in");
-        return ResponseEntity.ok(resp);
+        ResponseEntity.ok(resp);
+        return "redirect:/login";
     }
 
     @GetMapping("/project-not-aproved")
