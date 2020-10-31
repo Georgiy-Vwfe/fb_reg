@@ -297,7 +297,7 @@ public class UserService implements UserDetailsService {
             mailSender.sendEmail(user.getEmail(), "Join the 6 hands network! Confirm your participation in the project!", emailText);
         } else {
             String emailText = String.format(
-                    "Привет, %s! \n" +
+                    "Привет, %s ! \n" +
                             "You are invited as a member of a project. \n" +
                             "Для подтверждения нажмите на http://%s/activation/%s и получите уникальные возможности новой социальной сети уже сейчас!\n" +
                             "Ваш логин - %s, ваш пароль - %s\n" +
@@ -348,23 +348,27 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean sendUserContactsMail(User user, Locale locale) {
+    public boolean sendUserContactsMail(User userTo, User userFrom, Locale locale) {
         if (isEngLocale(locale)) {
             String emailText = String.format(
-                    "Hello, %s! \n" +
-                            "To reset your password, click the link http://%s/recovery-password?token=%s",
-                    user.getEmail(),
-                    domain,
-                    user.getResetToken());
-            mailSender.sendEmail(user.getEmail(), "New contact request", emailText);
+                    "Hello, %s %s! \n" +
+                            "User %s %s wants to contact with you. His mail: %s",
+                    userTo.getFirst_name(),
+                    userTo.getLast_name(),
+                    userFrom.getFirst_name(),
+                    userFrom.getLast_name(),
+                    userFrom.getEmail());
+            mailSender.sendEmail(userTo.getEmail(), "New contact request", emailText);
         } else {
             String emailText = String.format(
-                    "Привет, %s! \n" +
-                            "Для сброса пароля на сайте 6 hands нажмите на http://%s/recovery-password?token=%s",
-                    user.getEmail(),
-                    domain,
-                    user.getResetToken());
-            mailSender.sendEmail(user.getEmail(), "Новый запрос на обмен контактами", emailText);
+                    "Привет, %s %s! \n" +
+                            "Пользователь %s %s хочет с вами связаться. Его почта: %s",
+                    userTo.getFirst_name(),
+                    userTo.getLast_name(),
+                    userFrom.getFirst_name(),
+                    userFrom.getLast_name(),
+                    userFrom.getEmail());
+            mailSender.sendEmail(userTo.getEmail(), "Новый запрос на обмен контактами", emailText);
         }
         return true;
     }

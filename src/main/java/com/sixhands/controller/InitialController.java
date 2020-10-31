@@ -47,6 +47,7 @@ public class InitialController {
 
     @GetMapping("/forget-me")
     public String forgetMe(HttpServletRequest request) {
+        //ResponseEntity<Map<String, Object>>
         HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
         Map<String, Object> resp = new HashMap<>();
