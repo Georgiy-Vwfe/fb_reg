@@ -58,7 +58,8 @@
                                                    th:text="#{projectName.text}">Project name</label>
                                             <input id="projectName"
                                                    th:field="*{project.name}" type="text" name="projectName"
-                                                   th:placeholder="#{projectName.hint}" class="form-group__field field">
+                                                   th:placeholder="#{projectName.hint}"
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -67,7 +68,8 @@
                                                    th:text="#{company.text}">Company</label>
                                             <input id="projectCompany"
                                                    th:field="*{project.company}" type="text" name="projectCompany"
-                                                   th:placeholder="#{company.hint}" class="form-group__field field">
+                                                   th:placeholder="#{company.hint}"
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -76,7 +78,7 @@
                                                    th:text="#{position.text}">Position</label>
                                             <input id="projectPosition" th:field="*{member.userExp.position}"
                                                    type="text" name="projectPosition" th:placeholder="#{position.hint}"
-                                                   class="form-group__field field">
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -84,7 +86,7 @@
                                             <label for="projectRole" class="form-group__label" th:text="#{role.text}">Role</label>
                                             <input id="projectRole" th:field="*{member.userExp.role}" type="text"
                                                    name="projectRole" th:placeholder="#{role.hint}"
-                                                   class="form-group__field field">
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -93,7 +95,7 @@
                                                    th:text="#{duties.text}">Duties</label>
                                             <input th:field="*{member.userExp.duties}" id="projectDuties" type="text"
                                                    name="projectDuties" th:placeholder="#{duties.hint}"
-                                                   class="form-group__field field">
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -106,13 +108,13 @@
                                                     id="projectDescription"
                                                     th:field="*{project.description}" type="text"
                                                     name="projectDescription" th:placeholder="#{projectDesc.hint}"
-                                                    class="form-group__field field">
+                                                    class="form-group__field field input_filled">
                                             <input
                                                     th:if="*{member.userExp.custom_description!=null}"
                                                     id="customPojectDescription"
                                                     th:field="*{member.userExp.custom_description}" type="text"
                                                     name="projectDescription" th:placeholder="#{projectDesc.hint}"
-                                                    class="form-group__field field">
+                                                    class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -121,7 +123,7 @@
                                                    th:text="#{skills.text}">Skills</label>
                                             <input id="projectSkills" th:field="*{member.userExp.skills}" type="text"
                                                    name="projectSkills" th:placeholder="#{skills.hint}"
-                                                   class="form-group__field field">
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -129,60 +131,69 @@
                                             <label for="projectTools" class="form-group__label" th:text="#{tools.text}">Tools</label>
                                             <input id="projectTools"
                                                    th:field="*{member.userExp.tools}" type="text" name="projectTools"
-                                                   th:placeholder="#{tools.hint}" class="form-group__field field">
+                                                   th:placeholder="#{tools.hint}"
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <div class="form-group">
                                             <label for="projectIndustry" class="form-group__label"
                                                    th:text="#{industry.text}">Industry</label>
-                                            <input list="industry" id="projectIndustry" th:placeholder="#{industry.hint}"class="form-group__field field" name="projectIndustry" />
-                                            <datalist th:field="*{project.industry}" id="industry"type="text" name="projectIndustry"
-                                            th:placeholder="#{industry.hint}">
-                                                <option label="Industry"></option>
-                                                <option th:each="industry : ${industryEnum}"
-                                                        th:text="${industry.toString()}" th:value="*{project.industry}">
-                                                <option value="none" th:label="#{industryS.hint}"></option>
-                                                <option th:label="#{agricultural.hint}">Agricultural</option>
-                                                <option th:label="#{automobile.hint}">Automobile</option>
-                                                <option th:label="#{b2b.hint}">B2B</option>
-                                                <option th:label="#{b2c.hint}">B2C</option>
-                                                <option th:label="#{banking.hint}">Banking</option>
-                                                <option th:label="#{building.hint}">Building</option>
-                                                <option th:label="#{chemical.hint}">Chemical</option>
-                                                <option th:label="#{charity.hint}">Charity</option>
-                                                <option th:label="#{computers.hint}">Computers</option>
-                                                <option th:label="#{education.hint}">Education</option>
-                                                <option th:label="#{electronics.hint}">Electronics</option>
-                                                <option th:label="#{finance.hint}">Finance</option>
-                                                <option th:label="#{fmcg.hint}">FMCG</option>
-                                                <option th:label="#{foodSupply.hint}">Food supply</option>
-                                                <option th:label="#{horeca.hint}">HoReCa</option>
-                                                <option th:label="#{industrialEquipment.hint}">Industrial equipment</option>
-                                                <option th:label="#{insurance.hint}">Insurance</option>
-                                                <option th:label="#{investment.hint}">Investment</option>
-                                                <option th:label="#{logistics.hint}">Logistics</option>
-                                                <option th:label="#{marketing.hint}">Marketing</option>
-                                                <option th:label="#{media.hint}">Media</option>
-                                                <option th:label="#{medicine.hint}">Medicine</option>
-                                                <option th:label="#{metallurgy.hint}">Metallurgy</option>
-                                                <option th:label="#{oilAndGas.hint}">Oil and gas</option>
-                                                <option th:label="#{powerIndustry.hint}">Power industry</option>
-                                                <option th:label="#{pr.hint}">PR</option>
-                                                <option th:label="#{retail.hint}">Retail</option>
-                                                <option th:label="#{socialActivities.hint}">Social activities</option>
-                                                <option th:label="#{telecommunications.hint}">Telecommunications</option>
-                                                <option maxlength="30" th:label="#{other.hint}">Other</option>
-                                            </datalist>
-<!--                                            <select type="text" name="projectIndustry"-->
-<!--                                                    class="form-group__field field" id="projectIndustry"-->
-<!--                                                    th:placeholder="#{industry.hint}">-->
-<!--                                                <option value="none" label="Industry"></option>-->
-<!--                                                <option th:each="industry : ${industryEnum}"-->
-<!--                                                        th:text="${industry.toString()}"-->
-<!--                                                        >-->
-<!--                                                <option maxlength="30">Other</option>-->
-<!--                                            </select>-->
+                                            <input id="projectIndustry"
+                                                   th:placeholder="#{industry.hint}"
+                                                   class="form-group__field field input_filled" name="projectIndustry"/>
+                                            <!--                                            <tr th:each="industry, iter : ** {industryEnum}">-->
+                                            <!--                                                <td><span th:text="${industry.toString()}"> Title </span></td>-->
+                                            <!--                                            </tr>-->
+                                            <!--                                            <datalist th:field="*{project.industry}" id="industry" type="text"-->
+                                            <!--                                                      name="projectIndustry"-->
+                                            <!--                                                      th:placeholder="#{industry.hint}">-->
+                                            <!--                                                <option label="Industry"></option>-->
+                                            <!--                                                <option th:each="industry : ${industryEnum}"-->
+                                            <!--                                                        th:text="${industry.toString()}" th:value="*{project.industry}">-->
+                                            <!--                                                <option value="none" th:label="#{industryS.hint}"></option>-->
+                                            <!--                                                <option th:label="#{agricultural.hint}">Agricultural</option>-->
+                                            <!--                                                <option th:label="#{automobile.hint}">Automobile</option>-->
+                                            <!--                                                <option th:label="#{b2b.hint}">B2B</option>-->
+                                            <!--                                                <option th:label="#{b2c.hint}">B2C</option>-->
+                                            <!--                                                <option th:label="#{banking.hint}">Banking</option>-->
+                                            <!--                                                <option th:label="#{building.hint}">Building</option>-->
+                                            <!--                                                <option th:label="#{chemical.hint}">Chemical</option>-->
+                                            <!--                                                <option th:label="#{charity.hint}">Charity</option>-->
+                                            <!--                                                <option th:label="#{computers.hint}">Computers</option>-->
+                                            <!--                                                <option th:label="#{education.hint}">Education</option>-->
+                                            <!--                                                <option th:label="#{electronics.hint}">Electronics</option>-->
+                                            <!--                                                <option th:label="#{finance.hint}">Finance</option>-->
+                                            <!--                                                <option th:label="#{fmcg.hint}">FMCG</option>-->
+                                            <!--                                                <option th:label="#{foodSupply.hint}">Food supply</option>-->
+                                            <!--                                                <option th:label="#{horeca.hint}">HoReCa</option>-->
+                                            <!--                                                <option th:label="#{industrialEquipment.hint}">Industrial equipment-->
+                                            <!--                                                </option>-->
+                                            <!--                                                <option th:label="#{insurance.hint}">Insurance</option>-->
+                                            <!--                                                <option th:label="#{investment.hint}">Investment</option>-->
+                                            <!--                                                <option th:label="#{logistics.hint}">Logistics</option>-->
+                                            <!--                                                <option th:label="#{marketing.hint}">Marketing</option>-->
+                                            <!--                                                <option th:label="#{media.hint}">Media</option>-->
+                                            <!--                                                <option th:label="#{medicine.hint}">Medicine</option>-->
+                                            <!--                                                <option th:label="#{metallurgy.hint}">Metallurgy</option>-->
+                                            <!--                                                <option th:label="#{oilAndGas.hint}">Oil and gas</option>-->
+                                            <!--                                                <option th:label="#{powerIndustry.hint}">Power industry</option>-->
+                                            <!--                                                <option th:label="#{pr.hint}">PR</option>-->
+                                            <!--                                                <option th:label="#{retail.hint}">Retail</option>-->
+                                            <!--                                                <option th:label="#{socialActivities.hint}">Social activities</option>-->
+                                            <!--                                                <option th:label="#{telecommunications.hint}">Telecommunications-->
+                                            <!--                                                </option>-->
+                                            <!--                                                <option maxlength="30" th:label="#{other.hint}">Other</option>-->
+                                            <!--                                            </datalist>-->
+                                            <select type="text" name="projectIndustry"
+                                                    class="form-group__field field" id="projectIndustry"
+                                                    th:placeholder="#{industry.hint}">
+                                                <option value="none" label="Industry"></option>
+                                                <option th:each="industry,iter : ${industryEnum}"
+                                                        th:text="**{getIndustries[__${iter.index}__}"
+                                                >
+                                                <option maxlength="30">Other</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -191,7 +202,8 @@
                                                    th:text="#{projectLink.text}">Project Link</label>
                                             <input id="projectLink"
                                                    th:field="*{project.link}" type="text" name="projectLink"
-                                                   th:placeholder="#{projectLink.hint}" class="form-group__field field">
+                                                   th:placeholder="#{projectLink.hint}"
+                                                   class="form-group__field field input_filled">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-9">
@@ -312,7 +324,7 @@
                                                             th:field="*{project.start_date}" id="projectStartDate"
                                                             type="date" name="projectStartDate"
                                                             th:placeholder="#{projectSDate.hint}"
-                                                            class="form-group__field field">
+                                                            class="form-group__field field input_filled">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-5 col-lg-4">
@@ -324,7 +336,7 @@
                                                             th:field="*{project.end_date}" id="projectFinishDate"
                                                             type="date" name="projectFinishDate"
                                                             th:placeholder="#{projectFDate.hint}"
-                                                            class="form-group__field field">
+                                                            class="form-group__field field input_filled">
                                                 </div>
                                             </div>
                                         </div>

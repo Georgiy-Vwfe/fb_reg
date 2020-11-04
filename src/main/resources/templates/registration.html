@@ -70,7 +70,7 @@
                                                    th:text="#{e-mail.text}">E-mail</label>
                                             <input id="email" required="required" type="email"
                                                    th:placeholder="#{e-mail.hint}" name="email"
-                                                   class="form-group__field field" th:field="*{email}"/>
+                                                   class="form-group__field field input_filled" th:field="*{email}"/>
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                                             </div>
@@ -84,7 +84,7 @@
                                         <div class="form-group">
                                             <label for="password" class="form-group__label" th:text="#{password.text}">Password</label>
                                             <input id="password" required="required" type="password" name="password"
-                                                   th:placeholder="#{password.hint}" class="form-group__field field"
+                                                   th:placeholder="#{password.hint}" class="form-group__field field input_filled"
                                                    th:field="*{password}"/>
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
@@ -98,7 +98,7 @@
                                             <input id="passwordCorrect" required="required" type="password"
                                                    name="passwordCorrect"
                                                    th:placeholder="#{passwordCheck.hint}"
-                                                   class="form-group__field field "
+                                                   class="form-group__field field input_filled"
                                                    th:field="*{confirmPassword}" }>
                                             <div class="alert alert-danger mt-2" role="alert"
                                                  th:if="${passNotEquals}" style="color:red;"
@@ -108,7 +108,7 @@
                                     </div>
 
                                     <div class="col-11 col-sm-9 text-center mb-3">
-                                        <button id="submit" type="submit" class="btn btn_bordered"
+                                        <button id="submit" type="submit" class="btn btn_bordered btn_filled"
                                                 th:text="#{registration.button}">Register
                                         </button>
                                     </div>
