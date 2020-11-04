@@ -23,6 +23,9 @@
     <link href="/css/vendor/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
     <link href="/css/vendor/bootstrap-grid.min.css" rel="stylesheet" type="text/css">
     <link href="/css/hands/app.css?t=1571117825218" rel="stylesheet" type="text/css">
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">   </head>-->
+
+
 </head>
 
 <body>
@@ -34,7 +37,7 @@
             <section class="box box_admin box_widget_white mt-4 py-0">
                 <div class="box__inner">
                     <div class="box__inner-widget">
-                        <div class="card card_alpha">
+                        <div class="card card_alpha list_item_person">
                             <div class="card__image">
                                 <div class="middle">
                                     <div>
@@ -93,25 +96,24 @@
                             </div>
                             <div class="col-6">
                                 <div class="middle">
-                                    <a href="#" class="js-open-modal" data-modal="1">
+                                    <a onclick="logoutClick2()">
                                         <img src="/images/chain/alpha/message.svg"
                                              style="width:15%;width: 15%;text-align: right;margin-top: 9%;margin-left: 90%;"/>
                                     </a>
-                                    <div class="modal" style="height: 50%" data-modal="1">
-                                        <h1>Ghbdtn</h1>
-                                        <!--   Svg иконка для закрытия окна  -->
-                                        <svg class="modal__cross js-modal-close" xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 24 24">
-                                            <path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z"/>
-                                        </svg>
-                                        <button type="submit" class="btn btn_secondary btn_sm ">Submit
-                                        </button>
-                                        <button type="button" class="btn btn_secondary btn_sm " style="margin-left: 10px;">Cancel
-                                        </button>
-                                    </div>
-
-                                    <!-- Подложка под модальным окном -->
-                                    <div class="overlay js-overlay-modal"></div>
+                                    <span id="logout2"
+                                          style="position: absolute;
+                                          width: 120%;
+                                          height: 100%;
+                                          overflow-y: auto;
+                                          background-color: white;
+                                          border: 2px solid gray;
+                                          max-height: 120px;
+                                          padding: 20px 0px 4px;
+                                          display: none">
+                                        <h3>Are you sure you want to send a letter <br> to a specialist with a job offer?</h3>
+                                        <button id="submit" type="submit" class="btn btn_secondary btn_sm">Send</button>
+                                        <button  class="btn btn_secondary btn_sm">Cancel</button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +130,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title" th:text="#{skillsU.text}">Skills</div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getSkills(false)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getSkills(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -151,7 +153,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getSkills(true)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getSkills(true)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -179,7 +181,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title" th:text="#{companyU.text}">Company</div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getCompanies(false)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getCompanies(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -206,7 +208,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getCompanies(true)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getCompanies(true)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -238,7 +240,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title" th:text="#{industryU.text}">Industry</div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getIndustries(false)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getIndustries(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -261,7 +263,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getIndustries(true)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getIndustries(true)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -289,7 +291,7 @@
                         <div class="box__outer">
                             <div class="box__outer-title" th:text="#{toolsU.text}">Tools</div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getTools(false)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getTools(false)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -304,7 +306,8 @@
                                     <div class="bit__content">
                                         <h3 class="bit__title" th:text="${prop.property}"></h3>
                                         <div class="bit__btn">
-                                            <button type="button" class="btn btn_secondary btn_sm notAButton"
+                                            <button type="button"
+                                                    class="btn btn_secondary btn_sm notAButton inspect_block"
                                                     th:text="#{notConfirmed.button}">Not Confirmed
                                             </button>
                                         </div>
@@ -312,7 +315,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="box__inner" th:each="prop,iter : ${userData.getTools(true)}">
+                        <div class="box__inner list_item_bg" th:each="prop,iter : ${userData.getTools(true)}">
                             <div class="box__inner-widget">
                                 <!-- bit-->
                                 <div class="bit bit_alpha">
@@ -344,7 +347,7 @@
                             <div class="box__outer-title" th:text="#{projects.text}">Projects</div>
                             <span class="mod__elem-1 ml-auto" th:text="#{approvedOnly.text}">Approved only</span>
                         </div>
-                        <div class="box__inner">
+                        <div class="box__inner list_item_bg">
                             <div th:if="${canEdit}" class="box__inner-widget"><a href="/project/create"
                                                                                  class="link link_beta m-4"
                                                                                  th:text="#{newProjectU.button}">New
@@ -354,7 +357,7 @@
                     </section>
                     <!-- Project item-->
                     <section class="box box_admin py-0 mt-4">
-                        <div class="box__inner">
+                        <div class="box__inner list_item_bg">
                             <div class="box__inner-widget">
                                 <!-- card-project-->
                                 <div class="card-project card-project_alpha card-project_admin"
@@ -441,91 +444,25 @@
     </main>
     <div th:replace="common/footer :: footer"></div>
 </div>
-<script src="/scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>
+<!--<script src="/scripts/vendor/jquery-3.3.1.min.js" type="text/javascript"></script>-->
 <script src="/scripts/vendor/babelHelpers.min.js" type="text/javascript"></script>
 <script src="/scripts/hands/app.js" type="text/javascript"></script>
 <script>
-    !function (e) {
-        "function" != typeof e.matches && (e.matches = e.msMatchesSelector || e.mozMatchesSelector || e.webkitMatchesSelector || function (e) {
-            for (var t = this, o = (t.document || t.ownerDocument).querySelectorAll(e), n = 0; o[n] && o[n] !== t;) ++n;
-            return Boolean(o[n])
-        }), "function" != typeof e.closest && (e.closest = function (e) {
-            for (var t = this; t && 1 === t.nodeType;) {
-                if (t.matches(e)) return t;
-                t = t.parentNode
-            }
-            return null
-        })
-    }(window.Element.prototype);
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-
-        /* Записываем в переменные массив элементов-кнопок и подложку.
-           Подложке зададим id, чтобы не влиять на другие элементы с классом overlay*/
-        var modalButtons = document.querySelectorAll('.js-open-modal'),
-            overlay = document.querySelector('.js-overlay-modal'),
-            closeButtons = document.querySelectorAll('.js-modal-close');
-
-
-        /* Перебираем массив кнопок */
-        modalButtons.forEach(function (item) {
-
-            /* Назначаем каждой кнопке обработчик клика */
-            item.addEventListener('click', function (e) {
-
-                /* Предотвращаем стандартное действие элемента. Так как кнопку разные
-                   люди могут сделать по-разному. Кто-то сделает ссылку, кто-то кнопку.
-                   Нужно подстраховаться. */
-                e.preventDefault();
-
-                /* При каждом клике на кнопку мы будем забирать содержимое атрибута data-modal
-                   и будем искать модальное окно с таким же атрибутом. */
-                var modalId = this.getAttribute('data-modal'),
-                    modalElem = document.querySelector('.modal[data-modal="' + modalId + '"]');
-
-
-                /* После того как нашли нужное модальное окно, добавим классы
-                   подложке и окну чтобы показать их. */
-                modalElem.classList.add('active');
-                overlay.classList.add('active');
-            }); // end click
-
-        }); // end foreach
-
-
-        closeButtons.forEach(function (item) {
-
-            item.addEventListener('click', function (e) {
-                var parentModal = this.closest('.modal');
-
-                parentModal.classList.remove('active');
-                overlay.classList.remove('active');
-            });
-
-        }); // end foreach
-
-
-        document.body.addEventListener('keyup', function (e) {
-            var key = e.keyCode;
-
-            if (key == 27) {
-
-                document.querySelector('.modal.active').classList.remove('active');
-                document.querySelector('.overlay').classList.remove('active');
-            }
-            ;
-        }, false);
-
-
-        overlay.addEventListener('click', function () {
-            document.querySelector('.modal.active').classList.remove('active');
-            this.classList.remove('active');
-        });
-
-
-    }); // end ready
+    function logoutClick2() {
+        const listEl = document.getElementById('logout2');
+        listEl.style.display = listEl.style.display == 'none' ? 'block' : 'none';
+    }
 </script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
 </body>
 
 </html>
