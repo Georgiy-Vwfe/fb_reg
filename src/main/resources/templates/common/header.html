@@ -4,34 +4,108 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
 <body>
-    <header class="header" th:fragment="header">
-        <div class="container d-flex align-items-center">
-            <nav class="header__nav nav nav_inline nav_alpha">
-                <li class="nav__item"><a th:href="@{/user/me}" class="nav__link" th:text="#{myNetwork.button}">My network</a>
-                </li>
-                <li class="nav__item"><a th:href="@{/search}" class="nav__link" th:text="#{searchProf.button}">Search professional</a>
-                </li>
-            </nav>
-            <div class="header__link ml-auto">
-                    <a class="nav__link" th:href="@{?locale=en}" th:text="#{lang.en}"></a>
-                    <span>|</span>
-                    <a class="nav__link" th:href="@{?locale=ru}" th:text="#{lang.ru}"></a>
-            </div>
-            <ul class="chain chain_alpha header__chain d-flex align-items-center">
-                <li class="chain__item">
-                    <div class="middle">
+<header class="header" th:fragment="header">
+    <div class="container d-flex align-items-center">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light header__nav nav nav_inline nav_alpha ">
+
+            <a class="navbar-brand" th:href="@{/user/me}" th:text="#{myNetwork.button}">My network</a>
+            <a class="navbar-brand" th:href="@{/search}" th:text="#{searchProf.button}">Search professional</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav__link" th:href="@{?locale=en}" th:text="#{lang.en}"></a>
+                        <span>|</span>
+                        <a class="nav__link" th:href="@{?locale=ru}" th:text="#{lang.ru}"></a>
+                    </li>
+                    <li class="nav-item">
+
                         <a href="#">
-                            <img src="/images/chain/alpha/star.svg" />
+                            <img src="/images/chain/alpha/star.svg"/>
                         </a>
-                    </div>
-                </li>
-                <li class="chain__item" th:if="${notifications!=null}">
-                    <div class="middle">
+
+                    </li>
+                    <li class="nav-item">
+
                         <a href="#" onclick="notificationClick()">
-                            <img src="/images/chain/alpha/bell.svg" />
+                            <img src="/images/chain/alpha/bell.svg"/>
                         </a>
                         <!--TODO: ?Hide notificationList on blur-->
+                        <span id="notificationCount" th:text="${notifications.size()}"></span>
+                        <span id="collapsibleNotificationList"
+                              style="position: absolute;
+                        width: 300px;
+                        overflow-y: auto;
+                        background-color: white;
+                        border: 2px solid gray;
+                        max-height: 120px;
+                        padding: 3px;
+                        display: none;">
+                            <a style="
+                            margin-bottom: 4px;
+                            border-top: 1px solid gray;
+                            display: block;
+                            font-size: 12px;
+                            width: 100%;" th:href="${notification.urlPath}" th:each="notification : ${notifications}">
+<!--                                notification.messageEN-->
+                                <div style="width: 100%; white-space: pre-wrap; padding: 10px;"
+                                     th:text="${notification.message}"></div>
+                                <!--<div style="height: 25px; margin-top: 15px;" th:text="${notification.formatTime()}"></div>-->
+                            </a>
+                    </li>
+                    <li class="nav-item">
+
+                        <a href="#">
+                            <img src="/images/chain/alpha/message.svg"/>
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+
+                        <a onclick="logoutClick()"><img
+                                th:src="${user == null} ? 'https://i.imgur.com/ahcplHm.png':${cur_user.user_img}"
+                                style="width:100%;height:100%; border-radius:100px"/></a>
+                        <span id="logout"
+                              style="position: absolute;
+                        width: 300px;
+                        overflow-y: auto;
+                        background-color: white;
+                        border: 2px solid gray;
+                        max-height: 120px;
+                        padding: 3px;
+                        display: none;"><a th:href="@{/forget-me}">Выход из аккаунта</a></span>
+
+                    </li>
+                </ul>
+            </div>
+            <!--    <div class="header__link ml-auto">
+
+                </div>
+                <ul class="chain chain_alpha header__chain d-flex align-items-center">
+                    <li class="chain__item">
+                        <div class="middle">
+                            <a href="#">
+                                <img src="/images/chain/alpha/star.svg" />
+                            </a>
+                        </div>
+                    </li>
+                    <li class="chain__item" th:if="${notifications!=null}">
+                        <div class="middle">
+                            <a href="#" onclick="notificationClick()">
+                                <img src="/images/chain/alpha/bell.svg" />
+                            </a> -->
+            <!-- TODO: ?Hide notificationList on blur--> <!--
                         <span id="notificationCount" th:text="${notifications.size()}"></span>
                         <span id="collapsibleNotificationList"
                         style="position: absolute;
@@ -48,9 +122,11 @@
                             display: block;
                             font-size: 12px;
                             width: 100%;" th:href="${notification.urlPath}" th:each="notification : ${notifications}">
-<!--                                notification.messageEN-->
-                                <div style="width: 100%; white-space: pre-wrap; padding: 10px;" th:text="${notification.message}"></div>
-                                <!--<div style="height: 25px; margin-top: 15px;" th:text="${notification.formatTime()}"></div>-->
+--><!--                                notification.messageEN-->
+            <!--
+                            <div style="width: 100%; white-space: pre-wrap; padding: 10px;" th:text="${notification.message}"></div>
+                           -->
+            <!--<div style="height: 25px; margin-top: 15px;" th:text="${notification.formatTime()}"></div>--> <!--
                             </a>
                         </span>
                     </div>
@@ -67,20 +143,39 @@
                 <div class="middle">
                     <a th:href="@{/user/me}"><img th:src="${cur_user == null} ? 'https://i.imgur.com/ahcplHm.png':${cur_user.user_img}" style="width:100%;height:100%; border-radius:100px" /></a>
                 </div>
-            </div>
-        </div>
-        <script>
-/*<![CDATA[*/
-function notificationClick(){
-    const listEl = document.getElementById('collapsibleNotificationList');
-    listEl.style.display = listEl.style.display == 'none' ? 'block' : 'none';
-}
-// var notifications = /*[[${notifications}]]*/ undefined;
-// console.log({notifications});
-// document.getElementById('notificationCount').innerHTML = Math.round( Math.random()*50 );
+            </div> -->
+        </nav>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        function notificationClick() {
+            const listEl = document.getElementById('collapsibleNotificationList');
+            listEl.style.display = listEl.style.display == 'none' ? 'block' : 'none';
+        }
+        function logoutClick() {
+            const listEl = document.getElementById('logout');
+            listEl.style.display = listEl.style.display == 'none' ? 'block' : 'none';
+        }
 
-/*]]>*/
-</script>
-    </header>
+        // var notifications = /*[[${notifications}]]*/ undefined;
+        // console.log({notifications});
+        // document.getElementById('notificationCount').innerHTML = Math.round( Math.random()*50 );
+
+        /*]]>*/
+    </script>
+</header>
+<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
