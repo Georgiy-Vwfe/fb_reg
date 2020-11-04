@@ -203,6 +203,7 @@ textarea {
 }
 
 .root {
+	overflow: hidden;
 	min-height: 100%;
 }
 
@@ -3041,6 +3042,129 @@ hr.light {
 	}
 }
 
+@media only screen and (max-width: 600px) {
+
+	.input_filled{
+
+		font-size: 16px !important;
+		width: 100%;
+		border: none !important;
+		padding: 1em !important;
+		background: #F5F5F5 !important;
+		border-radius: 10px !important;
+
+	}
+
+	.btn_filled{
+		background-color: #8FACA7 !important;
+		color: #fff !important;
+		font-weight: 500;
+		border-radius: 100px;
+		width: 100% !important;
+		padding: 0.7em !important;
+		box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.25);
+	}
+
+
+	.list_item_bg{
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: column;
+		flex-direction: row;
+		padding: 1em;
+		height: auto;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+		border-radius: 10px;
+		background: #fff;
+	}
+
+	button{
+		width: 45px;
+		border: none;
+		background: none;
+
+	}
+
+	.list_item_bg p{
+		width: 100%;
+		margin-bottom: 0;
+		margin-right: 1em;
+	}
+
+	.inspect_block{
+		position: absolute;
+		display: none;
+		background: #FFFFFF;
+		box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05);
+		border-radius: 10px;
+		padding: 1em;
+		padding-right: 5em;
+		right: 2.1em;
+	}
+
+	.inspect_trigger{
+
+		z-index: 100;
+
+	}
+
+	.inspect_trigger:hover .inspect_block{
+
+		display: block;
+
+	}
+
+	#more {display: none;
+		padding: 1em;}
+
+	.list_item_dropdown{
+		width: 100%;
+		margin: 1em;
+		height: auto;
+		background: #FAFAFA;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+		border-radius: 10px;
+
+	}
+
+	ul{
+		padding: 0;
+		widht: auto;
+		margin-bottom: 0;
+		min-width: 10em;
+		list-style: none;
+	}
+
+	.list_item_person{
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: flex-start;
+		flex-direction: column;
+		flex-direction: row;
+		padding: 1em;
+		height: auto;
+		background: #FAFAFA;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+		border-radius: 10px;
+
+	}
+
+
+	.project_desc{
+		font-weight: 500;
+		font-size: 18px;
+	}
+
+	.project_positions{
+		font-weight: 300;
+		font-size: 16px;
+		color: #BDC0CF;
+	}
+
+}
 @media only screen and (min-width: 768px) {
 	.w-md-auto {
 		width: auto !important;
@@ -3643,5 +3767,5 @@ hr.light {
 	.hidden-xs-down {
 		display: none !important;
 	}
-	
+
 }
