@@ -24,6 +24,35 @@ public class UserProjectExp implements CSVSerializable {
     //private String industry;
 
     private String custom_description;
+    private String custom_company;
+    private String custom_name;
+    private String custom_start_date;
+    private String custom_end_date;
+
+    public String getCustom_name() {
+        return custom_name;
+    }
+
+    public void setCustom_name(String custom_name) {
+        this.custom_name = custom_name;
+    }
+
+    public String getCustom_start_date() {
+        return custom_start_date;
+    }
+
+    public void setCustom_start_date(String custom_start_date) {
+        this.custom_start_date = custom_start_date;
+    }
+
+    public String getCustom_end_date() {
+        return custom_end_date;
+    }
+
+    public void setCustom_end_date(String custom_end_date) {
+        this.custom_end_date = custom_end_date;
+    }
+
     private boolean project_creator = false;
     private boolean confirmed = false;
 
@@ -97,6 +126,7 @@ public class UserProjectExp implements CSVSerializable {
         Social_activities,
         Telecommunications
     }
+
     //#region getters/setters
     public Long getUser_uuid() {
         return user_uuid;
@@ -164,6 +194,14 @@ public class UserProjectExp implements CSVSerializable {
 
     public void setProject_creator(boolean project_creator) {
         this.project_creator = project_creator;
+    }
+
+    public String getCustom_company() {
+        return custom_company;
+    }
+
+    public void setCustom_company(String custom_company) {
+        this.custom_company = custom_company;
     }
 
     public String getCustom_description() {

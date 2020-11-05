@@ -157,6 +157,10 @@ public class ProjectService {
 
         if (byCreator) {
             curProject.setDescription(reqProject.getDescription());
+            curProject.setCompany(reqProject.getCompany());
+            curProject.setName(reqProject.getName());
+            curProject.setStart_date(reqProject.getStart_date());
+            curProject.setEnd_date(reqProject.getEnd_date());
         } else {
             curProject.setConfirmed(true);
         }
@@ -180,6 +184,18 @@ public class ProjectService {
             curUserProjectExp
                     .getUserExp()
                     .setCustom_description(reqProject.getDescription());
+            curUserProjectExp
+                    .getUserExp()
+                    .setCustom_company(reqProject.getCompany());
+            curUserProjectExp
+                    .getUserExp()
+                    .setCustom_name(reqProject.getName());
+            curUserProjectExp
+                    .getUserExp()
+                    .setCustom_start_date(reqProject.getStart_date());
+            curUserProjectExp
+                    .getUserExp()
+                    .setCustom_end_date(reqProject.getEnd_date());
             if (!curUserProjectExp.getUserExp().isConfirmed())
                 //Send out confirm notification
                 userService.sendUserNotification(
