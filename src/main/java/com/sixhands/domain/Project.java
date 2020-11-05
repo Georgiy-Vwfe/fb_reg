@@ -32,7 +32,8 @@ public class Project implements CSVSerializable {
     private List<Long> likedUserIDs = new ArrayList<>();
     @Column(unique = true)
     private String importID;
-    public Project safeAssignProperties(Project reqProject){
+
+    public Project safeAssignProperties(Project reqProject) {
         name = reqProject.getName();
         description = reqProject.getDescription();
         company = reqProject.getCompany();
@@ -43,22 +44,24 @@ public class Project implements CSVSerializable {
         return this;
     }
 
-    public String getDisplayDate(){
-        try{
+    public String getDisplayDate() {
+        try {
             //TODO: Check if only start is specified, else - ret nothing
             Date start = GenericUtils.parseDateFromTHStr(start_date);
             Date end = GenericUtils.parseDateFromTHStr(end_date);
-            if(start.getTime() > end.getTime())
+            if (start.getTime() > end.getTime())
                 return null;
-            Map<TimeUnit,Long> dif = GenericUtils.computeDiff(start,end);
+            Map<TimeUnit, Long> dif = GenericUtils.computeDiff(start, end);
             Long days = dif.get(TimeUnit.DAYS);
-            return days+(days == 1 ? " day":" days");
-        }catch(ParseException e){ return null; }
+            return days + (days == 1 ? " day" : " days");
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
-    public Project likeByUser(User user){
+    public Project likeByUser(User user) {
         long id = user.getUuid();
-        if(likedUserIDs.contains(id))
+        if (likedUserIDs.contains(id))
             likedUserIDs.remove(id);
         else
             likedUserIDs.add(id);
@@ -68,14 +71,14 @@ public class Project implements CSVSerializable {
     @Override
     public Map<String, String> toCSV() {
         return new CSVMap()
-                .putc("proj_id",uuid)
-                .putc("proj_name",name)
-                .putc("proj_desc",description)
-                .putc("proj_confirmed",confirmed)
-                .putc("proj_industry",industry)
-                .putc("proj_start_date",start_date)
-                .putc("proj_end_date",end_date)
-                .putc("proj_link",link)
+                .putc("proj_id", uuid)
+                .putc("proj_name", name)
+                .putc("proj_desc", description)
+                .putc("proj_confirmed", confirmed)
+                .putc("proj_industry", industry)
+                .putc("proj_start_date", start_date)
+                .putc("proj_end_date", end_date)
+                .putc("proj_link", link)
                 .getMap();
     }
 
