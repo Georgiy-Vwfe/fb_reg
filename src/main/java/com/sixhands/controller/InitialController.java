@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -154,7 +153,7 @@ public class InitialController {
         User curUser = null;
         try {
             curUser = userService.getCurUserOrThrow();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         model.addAttribute("user", curUser);

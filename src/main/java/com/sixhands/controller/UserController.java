@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Locale;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -25,6 +27,7 @@ public class UserController {
     private UserRepository userRepo;
     @Autowired
     private ProjectRepository projectRepo;
+    private Long userId = 0L;
 
     @GetMapping("/me")
     public String getMeUser(Model model) {
@@ -34,7 +37,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0", required = false) Integer edit, Model model) {
+    public String getUser(@PathVariable Long id, @RequestParam(defaultValue = "0", required = false) Integer edit, Model model, Locale locale) {
+        userId = id;
         User user = userRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " is not found"));
         boolean canEdit = false;
         User curUser = null;
@@ -74,5 +78,17 @@ public class UserController {
         return "redirect:/user/me";
     }
 
-
+    @GetMapping("/contact-offer")
+    public String contactOffer(Locale locale) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " is not found"));
+        User curUser = userService.getCurUserOrThrow();
+        try {
+            if (!user.getEmail().equals(curUser.getEmail())) {
+                userService.sendUserContactsMail(user, curUser, locale);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
+    }
 }
