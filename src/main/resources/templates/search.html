@@ -195,6 +195,28 @@
                                         <div class="card__desc" th:text="${user == null} ? 'Error':*{user.about_user}">
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="middle">
+                                            <a onclick="sendOffer()">
+                                                <img src="/images/chain/alpha/message.svg"
+                                                     style="width:15%;width: 15%;text-align: right;margin-top: 9%;margin-left: 90%;"/>
+                                            </a>
+                                            <span id="sendOfr"
+                                                  style="position: absolute;
+                                          width: 120%;
+                                          height: 100%;
+                                          overflow-y: auto;
+                                          background-color: white;
+                                          border: 2px solid gray;
+                                          max-height: 120px;
+                                          padding: 20px 0px 4px;
+                                          display: none">
+                                        <h3>Are you sure you want to send a letter <br> to a specialist with a job offer?</h3>
+                                        <button id="submit" type="submit" class="btn btn_secondary btn_sm">Send</button>
+                                        <button id="cancel" class="btn btn_secondary btn_sm">Cancel</button>
+                                    </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
                             </a>
@@ -241,6 +263,16 @@
         };
     };
 
+</script>
+<script>
+    const listEl = document.getElementById('sendOfr');
+    const cancel = document.getElementById('cancel');
+    function sendOffer() {
+        listEl.style.display = listEl.style.display == 'none' ? 'block' : 'none';
+    }
+    cancel.addEventListener('click',function(){
+        listEl.style.display = 'none';
+    });
 </script>
 </body>
 
