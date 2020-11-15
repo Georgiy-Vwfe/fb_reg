@@ -89,6 +89,6 @@ public class UserController {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return "redirect:/";
+        return "redirect:/user/me";
     }
 }
