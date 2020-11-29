@@ -6,6 +6,7 @@ import com.sixhands.domain.User;
 import com.sixhands.repository.ProjectRepository;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.ProjectService;
+import com.sixhands.service.SocialAuthService;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.Locale;
 
 @Controller
@@ -27,10 +29,16 @@ public class UserController {
     private UserRepository userRepo;
     @Autowired
     private ProjectRepository projectRepo;
+    @Autowired
+    private SocialAuthService authService;
     private Long userId = 0L;
 
     @GetMapping("/me")
-    public String getMeUser(Model model) {
+    public String getMeUser(Principal principal, Model model) {
+        User user = authService.extractUserFromAuthInfo(principal);
+        if (user != null) {
+            System.out.println(user.toString());
+        }
         User curUser = userService.loadUserByUsername(UserService.getCurrentUsername().orElse(null));
         if (curUser == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not logged in");
         return "redirect:/user/" + curUser.getUuid();

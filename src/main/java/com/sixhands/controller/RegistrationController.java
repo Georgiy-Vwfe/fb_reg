@@ -3,6 +3,7 @@ package com.sixhands.controller;
 import com.sixhands.domain.User;
 import com.sixhands.exception.UserAlreadyExistsException;
 import com.sixhands.repository.UserRepository;
+import com.sixhands.service.SocialAuthService;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -6,7 +6,9 @@ import com.sixhands.controller.dtos.UserProfileDTO;
 import com.sixhands.domain.User;
 import com.sixhands.domain.UserProjectExp;
 import com.sixhands.service.ProjectService;
+import com.sixhands.service.SocialAuthService;
 import com.sixhands.service.UserService;
+import com.sun.media.jfxmedia.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.*;
 
 @Controller
