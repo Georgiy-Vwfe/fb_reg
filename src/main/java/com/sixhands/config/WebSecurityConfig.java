@@ -3,6 +3,7 @@ package com.sixhands.config;
 import com.sixhands.repository.UserRepository;
 import com.sixhands.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -22,13 +24,14 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilt
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.social.security.SpringSocialConfigurer;
 import org.springframework.web.filter.CompositeFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-//@EnableOAuth2Sso
+@EnableOAuth2Sso
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties
@@ -56,8 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserRepository userRepo;
     @Autowired
     private UserService userService;
-    @Autowired
-    private OAuth2ClientContext oauth2ClientContext;
+    /*@Autowired
+    private OAuth2ClientContext oauth2ClientContext;*/
 
     @Bean
     public DaoAuthenticationProvider myAuthProvider() {
@@ -67,13 +70,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-/*    @Bean
+    @Bean
     public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(filter);
         registration.setOrder(-100);
         return registration;
-    }*/
+    }
 
     @Bean
     @ConfigurationProperties("facebook.client")
@@ -81,11 +84,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AuthorizationCodeResourceDetails();
     }
 
-    @Bean
-    @ConfigurationProperties("facebook.resource")
-    public ResourceServerProperties facebookResource() {
-        return new ResourceServerProperties();
-    }
+//    @Bean
+//    @ConfigurationProperties("facebook.resource")
+//    public ResourceServerProperties facebookResource() {
+//        return new ResourceServerProperties();
+//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -105,12 +108,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .defaultSuccessUrl("/", true)
                 .and()
-                .addFilterAt(ssoFilter(), BasicAuthenticationFilter.class)
+                //.addFilterAt(ssoFilter(), BasicAuthenticationFilter.class)
                 .logout()
+                .logoutSuccessUrl("/login")
                 .permitAll();
+
+        // Spring Social Config
+        http.apply(new SpringSocialConfigurer()).signupUrl("/register");
     }
 
-    private CompositeFilter ssoFilter() {
+    @Override
+    public UserDetailsService userDetailsService() {
+        return userDetailsService();
+    }
+/*    private CompositeFilter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<OAuth2ClientAuthenticationProcessingFilter> filters = new ArrayList<>();
 
@@ -130,5 +141,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         oAuthFilter.setTokenServices(tokenServices);
 
         return oAuthFilter;
-    }
+    }*/
 }
